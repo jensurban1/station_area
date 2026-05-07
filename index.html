@@ -1,0 +1,1013 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>역세권 활성화사업 검토 툴 — 해안건축 도시건축본부</title>
+  <meta name="description" content="서울시 역세권 활성화사업 입지요건, 용적률, 공공기여 자동 산정 툴">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #F5F4F0;
+      --surface: #FFFFFF;
+      --surface2: #EDECE8;
+      --border: #D8D6CF;
+      --border-light: #E8E6E0;
+      --text: #1A1916;
+      --text-secondary: #6B6960;
+      --text-tertiary: #9B9890;
+      --accent: #1A5276;
+      --accent-light: #EBF2F8;
+      --green: #1A6B4A;
+      --green-bg: #EBF5F0;
+      --red: #8B1A1A;
+      --red-bg: #FDF0F0;
+      --yellow: #7A5C00;
+      --yellow-bg: #FDF8EC;
+      --blue: #1A3F6B;
+      --blue-bg: #EBF0F8;
+      --mono: 'DM Mono', monospace;
+      --sans: 'Noto Sans KR', sans-serif;
+      --radius: 6px;
+      --radius-lg: 10px;
+      --shadow: 0 1px 4px rgba(26,25,22,0.08);
+      --shadow-md: 0 4px 16px rgba(26,25,22,0.10);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: var(--sans);
+      background: var(--bg);
+      color: var(--text);
+      font-size: 14px;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    /* ── HEADER ── */
+    header {
+      background: var(--text);
+      color: white;
+      padding: 0 2rem;
+      height: 52px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 200;
+    }
+    .header-logo {
+      font-family: var(--mono);
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      color: rgba(255,255,255,0.6);
+    }
+    .header-title {
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: -0.01em;
+    }
+    .header-version {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: rgba(255,255,255,0.4);
+    }
+
+    /* ── LAYOUT ── */
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem 4rem;
+    }
+
+    .page-intro {
+      margin-bottom: 2rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .page-intro h1 {
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      margin-bottom: 6px;
+    }
+    .page-intro p {
+      font-size: 13px;
+      color: var(--text-secondary);
+    }
+    .badge-row {
+      display: flex;
+      gap: 8px;
+      margin-top: 10px;
+      flex-wrap: wrap;
+    }
+    .badge {
+      font-family: var(--mono);
+      font-size: 10px;
+      padding: 3px 8px;
+      border-radius: 4px;
+      border: 1px solid var(--border);
+      color: var(--text-secondary);
+      background: var(--surface);
+    }
+
+    /* ── STEP NAV ── */
+    .step-nav {
+      display: flex;
+      gap: 0;
+      margin-bottom: 2rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+    .step-btn {
+      flex: 1;
+      padding: 12px 6px;
+      font-family: var(--sans);
+      font-size: 12px;
+      font-weight: 400;
+      background: var(--surface2);
+      color: var(--text-secondary);
+      border: none;
+      border-right: 1px solid var(--border);
+      cursor: pointer;
+      transition: all 0.15s;
+      text-align: center;
+      line-height: 1.4;
+    }
+    .step-btn:last-child { border-right: none; }
+    .step-btn.active {
+      background: var(--text);
+      color: white;
+      font-weight: 500;
+    }
+    .step-btn .step-num {
+      display: block;
+      font-family: var(--mono);
+      font-size: 9px;
+      opacity: 0.5;
+      margin-bottom: 3px;
+      letter-spacing: 0.05em;
+    }
+    .step-btn.active .step-num { opacity: 0.6; }
+
+    /* ── PANELS ── */
+    .panel { display: none; }
+    .panel.active { display: block; }
+
+    /* ── SECTION TITLE ── */
+    .section-title {
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--text-tertiary);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border-light);
+    }
+
+    /* ── FIELDS ── */
+    .field { margin-bottom: 1rem; }
+    .field label {
+      display: block;
+      font-size: 12px;
+      color: var(--text-secondary);
+      margin-bottom: 5px;
+      font-weight: 500;
+    }
+    .field input[type="text"],
+    .field input[type="number"],
+    .field select {
+      width: 100%;
+      padding: 9px 11px;
+      font-size: 13px;
+      font-family: var(--sans);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--surface);
+      color: var(--text);
+      transition: border-color 0.15s, box-shadow 0.15s;
+      -webkit-appearance: none;
+      appearance: none;
+    }
+    .field input:focus, .field select:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(26,82,118,0.08);
+    }
+    .field select {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%236B6960' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 10px center;
+      padding-right: 28px;
+    }
+    .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .field-row3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+    .hint { font-size: 11px; color: var(--text-tertiary); margin-top: 4px; }
+
+    /* ── TOGGLE ── */
+    .toggle-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 8px 0;
+      border-bottom: 1px solid var(--border-light);
+    }
+    .toggle-row:last-of-type { border-bottom: none; }
+    .toggle-row label { font-size: 13px; flex: 1; }
+    .toggle {
+      width: 38px;
+      height: 22px;
+      border-radius: 11px;
+      background: var(--border);
+      border: none;
+      cursor: pointer;
+      position: relative;
+      transition: background 0.2s;
+      flex-shrink: 0;
+    }
+    .toggle.on { background: var(--green); }
+    .toggle::after {
+      content: '';
+      position: absolute;
+      width: 16px; height: 16px;
+      border-radius: 50%;
+      background: white;
+      top: 3px; left: 3px;
+      transition: left 0.2s;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+    }
+    .toggle.on::after { left: 19px; }
+
+    /* ── TAGS ── */
+    .tag {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 500;
+      font-family: var(--mono);
+    }
+    .tag-ok  { background: var(--green-bg); color: var(--green); }
+    .tag-warn{ background: var(--yellow-bg); color: var(--yellow); }
+    .tag-fail{ background: var(--red-bg); color: var(--red); }
+    .tag-info{ background: var(--blue-bg); color: var(--blue); }
+
+    /* ── CARDS ── */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 14px 16px;
+      margin-bottom: 12px;
+      box-shadow: var(--shadow);
+    }
+    .card-label { font-size: 11px; color: var(--text-tertiary); margin-bottom: 4px; letter-spacing: 0.04em; }
+    .card-value { font-size: 22px; font-weight: 700; font-family: var(--mono); color: var(--text); letter-spacing: -0.02em; }
+    .card-sub { font-size: 11px; color: var(--text-secondary); margin-top: 3px; }
+
+    .metrics-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
+    .metrics-grid4 { display: grid; grid-template-columns: repeat(4,1fr); gap: 10px; margin-bottom: 14px; }
+
+    /* ── INLINE RESULT ── */
+    .inline-result {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 12px;
+      background: var(--surface2);
+      border-radius: var(--radius);
+      margin-top: 6px;
+      font-size: 13px;
+      flex-wrap: wrap;
+      border: 1px solid var(--border-light);
+    }
+
+    /* ── ISSUE ITEMS ── */
+    .issue {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      padding: 10px 14px;
+      border-radius: var(--radius);
+      margin-bottom: 8px;
+      border: 1px solid;
+      font-size: 12px;
+      line-height: 1.5;
+    }
+    .issue-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; margin-top: 5px; }
+    .issue-warn { background: var(--yellow-bg); border-color: #E8D080; color: var(--yellow); }
+    .issue-warn .issue-dot { background: var(--yellow); }
+    .issue-danger { background: var(--red-bg); border-color: #E8B0B0; color: var(--red); }
+    .issue-danger .issue-dot { background: var(--red); }
+    .issue-ok { background: var(--green-bg); border-color: #A0D8B8; color: var(--green); }
+    .issue-ok .issue-dot { background: var(--green); }
+    .issue-info { background: var(--blue-bg); border-color: #A0C0E0; color: var(--blue); }
+    .issue-info .issue-dot { background: var(--blue); }
+
+    /* ── DIVIDER ── */
+    .divider { height: 1px; background: var(--border-light); margin: 1.4rem 0; }
+
+    /* ── BUTTONS ── */
+    .nav-btns {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 2rem;
+      padding-top: 1.2rem;
+      border-top: 1px solid var(--border-light);
+    }
+    .btn {
+      padding: 9px 22px;
+      border-radius: var(--radius);
+      font-size: 13px;
+      font-family: var(--sans);
+      cursor: pointer;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text);
+      transition: all 0.15s;
+      font-weight: 400;
+    }
+    .btn:hover { background: var(--surface2); border-color: var(--text-secondary); }
+    .btn-primary {
+      background: var(--text);
+      color: white;
+      border-color: var(--text);
+      font-weight: 500;
+    }
+    .btn-primary:hover { opacity: 0.85; }
+
+    /* ── STATION SEARCH ── */
+    .station-wrap { position: relative; }
+    .station-row { display: flex; gap: 8px; }
+    .station-row input { flex: 1; }
+    .dropdown {
+      position: absolute;
+      top: calc(100% + 4px);
+      left: 0; right: 0;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      z-index: 300;
+      max-height: 280px;
+      overflow-y: auto;
+      box-shadow: var(--shadow-md);
+    }
+    .dd-group {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      color: var(--text-tertiary);
+      padding: 8px 14px 4px;
+      background: var(--surface2);
+      position: sticky;
+      top: 0;
+      text-transform: uppercase;
+    }
+    .dd-item {
+      padding: 9px 14px;
+      font-size: 13px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border-bottom: 1px solid var(--border-light);
+      transition: background 0.1s;
+    }
+    .dd-item:last-child { border-bottom: none; }
+    .dd-item:hover { background: var(--surface2); }
+    .dd-item .radius-hint { margin-left: auto; font-family: var(--mono); font-size: 11px; color: var(--text-tertiary); }
+
+    .dd-badge { font-size: 10px; padding: 2px 7px; border-radius: 4px; white-space: nowrap; font-family: var(--mono); }
+    .db-도심  { background: var(--red-bg); color: var(--red); }
+    .db-광역  { background: var(--yellow-bg); color: var(--yellow); }
+    .db-지역  { background: var(--blue-bg); color: var(--blue); }
+    .db-환승  { background: var(--surface2); color: var(--text-secondary); border: 1px solid var(--border); }
+    .db-기타  { background: var(--surface2); color: var(--text-tertiary); }
+
+    .station-card {
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      margin-top: 12px;
+      box-shadow: var(--shadow);
+    }
+    .station-card-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 9px 14px;
+      font-size: 13px;
+      border-bottom: 1px solid var(--border-light);
+    }
+    .station-card-row:last-child { border-bottom: none; }
+    .sc-label { color: var(--text-secondary); font-size: 12px; }
+    .radius-display {
+      font-family: var(--mono);
+      font-size: 28px;
+      font-weight: 500;
+      color: var(--text);
+      letter-spacing: -0.02em;
+    }
+    .manual-link {
+      font-size: 12px;
+      color: var(--text-tertiary);
+      cursor: pointer;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+      margin-top: 8px;
+      display: inline-block;
+    }
+
+    /* ── ROAD CHECK ── */
+    .road-box {
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      margin-bottom: 12px;
+    }
+    .road-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 14px;
+      font-size: 13px;
+      border-bottom: 1px solid var(--border-light);
+      background: var(--surface);
+    }
+    .road-row:last-child { border-bottom: none; background: var(--surface2); }
+    .road-label { color: var(--text-secondary); font-size: 12px; }
+
+    /* ── PROGRESS BAR ── */
+    .fap-bar { height: 6px; border-radius: 3px; background: var(--border); margin: 6px 0 2px; overflow: hidden; }
+    .fap-fill { height: 100%; border-radius: 3px; transition: width 0.4s ease; }
+
+    /* ── OPEN SPACE BOX ── */
+    .os-box {
+      border: 1px solid #A0C0E0;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      margin-top: 12px;
+    }
+    .os-header {
+      background: var(--blue-bg);
+      padding: 8px 14px;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--blue);
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+    .os-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px 14px;
+      font-size: 12px;
+      border-bottom: 1px solid #D0E4F0;
+      background: var(--surface);
+    }
+    .os-row:last-child { border-bottom: none; }
+    .os-label { color: var(--text-secondary); }
+    .os-val { font-weight: 500; }
+    .os-formula {
+      font-family: var(--mono);
+      font-size: 11px;
+      background: var(--surface2);
+      padding: 10px 14px;
+      border-top: 1px solid var(--border-light);
+      line-height: 1.8;
+      color: var(--text-secondary);
+    }
+    .os-result-val { font-family: var(--mono); font-size: 15px; font-weight: 500; color: var(--blue); }
+
+    /* ── VERDICT ── */
+    .verdict {
+      text-align: center;
+      padding: 24px 20px;
+      border-radius: var(--radius-lg);
+      border: 1px solid;
+      margin-bottom: 1.5rem;
+    }
+    .verdict-icon { font-size: 32px; margin-bottom: 10px; font-family: var(--mono); }
+    .verdict-title { font-size: 20px; font-weight: 700; margin-bottom: 6px; letter-spacing: -0.02em; }
+    .verdict-sub { font-size: 13px; opacity: 0.7; }
+
+    /* ── SCENARIO CARDS ── */
+    .scenario-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 1.5rem; }
+    .sc-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 16px;
+      box-shadow: var(--shadow);
+    }
+    .sc-card.rec { border-color: var(--green); border-width: 1.5px; }
+    .sc-title {
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .rec-badge {
+      font-size: 9px;
+      font-family: var(--mono);
+      padding: 2px 6px;
+      border-radius: 3px;
+      background: var(--green-bg);
+      color: var(--green);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .sc-data-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 5px 0;
+      border-bottom: 1px solid var(--border-light);
+      font-size: 12px;
+    }
+    .sc-data-row:last-child { border-bottom: none; }
+    .sc-data-row span:first-child { color: var(--text-secondary); }
+    .sc-data-row span:last-child { font-family: var(--mono); font-weight: 500; }
+
+    /* ── SCHEDULE GRID ── */
+    .schedule-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 10px; }
+
+    /* ── FOOTER ── */
+    footer {
+      margin-top: 4rem;
+      padding: 1.5rem;
+      text-align: center;
+      font-size: 11px;
+      color: var(--text-tertiary);
+      border-top: 1px solid var(--border);
+      font-family: var(--mono);
+      letter-spacing: 0.04em;
+    }
+
+    @media (max-width: 600px) {
+      .container { padding: 1rem; }
+      .metrics-grid4 { grid-template-columns: 1fr 1fr; }
+      .scenario-grid { grid-template-columns: 1fr; }
+      .schedule-grid { grid-template-columns: 1fr 1fr; }
+      .field-row3 { grid-template-columns: 1fr; }
+      header { padding: 0 1rem; }
+      .header-version { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <span class="header-logo">HAEAHN ARCHITECTURE</span>
+  <span class="header-title">역세권 활성화사업 검토 툴</span>
+  <span class="header-version">v1.0 · 2025.10 기준</span>
+</header>
+
+<div class="container">
+
+  <div class="page-intro">
+    <h1>역세권 활성화사업 검토 툴</h1>
+    <p>입지요건 판단 → 용도지역 변경 범위 → 공공기여 자동 산정까지 단계별로 검토합니다.</p>
+    <div class="badge-row">
+      <span class="badge">역세권 활성화사업 운영기준 2025.10.31 반영</span>
+      <span class="badge">서울시 도시공간전략과 역세권 범위 2025.08 기준</span>
+      <span class="badge">해안건축 도시건축본부</span>
+    </div>
+  </div>
+
+  <div class="step-nav">
+    <button class="step-btn active" onclick="goStep(0)"><span class="step-num">STEP 01</span>입지요건</button>
+    <button class="step-btn" onclick="goStep(1)"><span class="step-num">STEP 02</span>대상지요건</button>
+    <button class="step-btn" onclick="goStep(2)"><span class="step-num">STEP 03</span>용도·용적률</button>
+    <button class="step-btn" onclick="goStep(3)"><span class="step-num">STEP 04</span>공공기여</button>
+    <button class="step-btn" onclick="goStep(4)"><span class="step-num">STEP 05</span>종합결과</button>
+  </div>
+
+  <!-- ── STEP 1 ── -->
+  <div id="panel0" class="panel active">
+    <p class="section-title">01 입지 적격성 판단</p>
+
+    <div class="field station-wrap">
+      <label>역 이름 검색</label>
+      <div class="station-row">
+        <input type="text" id="stationInput" placeholder="역 이름을 입력하세요 (예: 합정, 강남...)" oninput="onStationInput()" autocomplete="off">
+        <button class="btn" onclick="clearStation()">초기화</button>
+      </div>
+      <div class="dropdown" id="dropdown" style="display:none"></div>
+    </div>
+
+    <div id="stationResultCard" style="display:none" class="station-card">
+      <div class="station-card-row"><span class="sc-label">역명</span><span id="src-name" style="font-weight:500">-</span></div>
+      <div class="station-card-row"><span class="sc-label">분류</span><span id="src-type">-</span></div>
+      <div class="station-card-row"><span class="sc-label">중심지 체계</span><span id="src-center" style="font-weight:500">-</span></div>
+      <div class="station-card-row"><span class="sc-label">역세권 반경</span><span><span class="radius-display" id="src-radius">-</span></span></div>
+    </div>
+
+    <span class="manual-link" id="manualLink" style="display:none" onclick="toggleManual()">▸ 반경을 직접 지정하려면 클릭</span>
+    <div id="manualPanel" style="display:none;margin-top:8px">
+      <div class="field"><label>역세권 반경 직접 지정</label>
+        <select id="manualRadius" onchange="calcAll()">
+          <option value="0">자동 (역 검색 결과 적용)</option>
+          <option value="250">250m (지구중심·비중심지)</option>
+          <option value="350">350m (도심·광역·지역중심 또는 환승역)</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+    <div class="field">
+      <label>대상지~승강장 경계 거리 (m)</label>
+      <input type="number" id="distToStation" value="150" min="0" oninput="calcAll()">
+    </div>
+    <div id="stationCheck" class="inline-result"></div>
+
+    <div class="divider"></div>
+    <p class="section-title">제외 대상 여부 확인</p>
+    <div class="toggle-row"><label>5,000㎡ 이상 도시계획변경 사전협상 대상지</label><button class="toggle" id="t_pre" onclick="tog('t_pre')"></button></div>
+    <div class="toggle-row"><label>정비구역·정비예정구역</label><button class="toggle" id="t_zone" onclick="tog('t_zone')"></button></div>
+    <div class="toggle-row"><label>재정비촉진지구</label><button class="toggle" id="t_regen" onclick="tog('t_regen')"></button></div>
+    <div class="toggle-row"><label>서울도심 기본계획 특성관리지구</label><button class="toggle" id="t_special" onclick="tog('t_special')"></button></div>
+    <div class="toggle-row"><label>도시·군계획시설 부지</label><button class="toggle" id="t_facility" onclick="tog('t_facility')"></button></div>
+    <div id="excludeResult" class="inline-result" style="margin-top:10px"></div>
+
+    <div class="nav-btns"><div></div><button class="btn btn-primary" onclick="goStep(1)">다음 단계 →</button></div>
+  </div>
+
+  <!-- ── STEP 2 ── -->
+  <div id="panel1" class="panel">
+    <p class="section-title">02 대상지 요건 충족 여부</p>
+
+    <div class="field"><label>대지면적 (㎡)</label><input type="number" id="siteArea" value="2121" min="0" oninput="calcAll()"></div>
+    <div id="areaCheck" class="inline-result" style="margin-bottom:1rem"></div>
+
+    <div class="divider"></div>
+    <p style="font-size:12px;font-weight:500;color:var(--text-secondary);margin-bottom:12px">도로 요건</p>
+    <div class="field-row" style="margin-bottom:10px">
+      <div class="field">
+        <label>4m 이상 도로에 접하는 면 수</label>
+        <select id="roadFaces" onchange="calcAll()">
+          <option value="0">0면</option><option value="1">1면</option>
+          <option value="2" selected>2면</option><option value="3">3면</option><option value="4">4면</option>
+        </select>
+      </div>
+      <div class="field"><label>가장 넓은 접면 도로 폭 (m)</label><input type="number" id="maxRoadWidth" value="40" min="0" oninput="calcAll()"></div>
+    </div>
+    <div id="roadCheck" class="road-box"></div>
+
+    <div class="divider"></div>
+    <div class="field"><label>사업 방식</label>
+      <select id="bizType" onchange="calcAll()">
+        <option value="jgu">지구단위계획 (건축허가·사업계획승인)</option>
+        <option value="jbi">도시정비형 재개발사업</option>
+      </select>
+    </div>
+    <div id="agingPanel">
+      <div class="field-row">
+        <div class="field"><label>전체 건축물 동수</label><input type="number" id="totalBuildings" value="1" min="1" oninput="calcAll()"></div>
+        <div class="field"><label>20년 이상 경과 동수</label><input type="number" id="oldBuildings" value="1" min="0" oninput="calcAll()"></div>
+      </div>
+    </div>
+    <div id="jbiPanel" style="display:none">
+      <div class="field-row3">
+        <div class="field"><label>노후건축물 비율 (%)</label><input type="number" id="oldRatio" value="60" oninput="calcAll()"></div>
+        <div class="field"><label>150㎡ 미만 필지비율 (%)</label><input type="number" id="smallLot" value="40" oninput="calcAll()"></div>
+        <div class="field"><label>2층 이하 건축물비율 (%)</label><input type="number" id="lowBldg" value="50" oninput="calcAll()"></div>
+      </div>
+    </div>
+    <div id="agingCheck" class="inline-result" style="margin-bottom:1rem"></div>
+
+    <div class="divider"></div>
+    <div class="field"><label>현재 용도지역</label>
+      <select id="currentZone" onchange="calcAll()">
+        <option value="2종7층">2종일반주거지역 (7층이하)</option>
+        <option value="2종">2종일반주거지역</option>
+        <option value="3종">3종일반주거지역</option>
+        <option value="준주거" selected>준주거지역</option>
+        <option value="근린상업">근린상업지역</option>
+        <option value="일반상업">일반상업지역</option>
+      </select>
+    </div>
+    <div class="toggle-row" style="margin-top:12px"><label>기존 지구단위계획구역 내 대상지</label><button class="toggle" id="t_jgu" onclick="tog('t_jgu')"></button></div>
+    <div id="jguFarPanel" style="display:none;margin-top:8px">
+      <div class="field"><label>지구단위계획 허용용적률 (%)</label><input type="number" id="jguFar" value="350" min="0" oninput="calcAll()"></div>
+      <p class="hint">운영기준 1-3-5: 기존 지구단위계획구역 내 상향지역은 지구단위계획으로 결정된 허용용적률 적용</p>
+    </div>
+
+    <div class="nav-btns"><button class="btn" onclick="goStep(0)">← 이전</button><button class="btn btn-primary" onclick="goStep(2)">다음 단계 →</button></div>
+  </div>
+
+  <!-- ── STEP 3 ── -->
+  <div id="panel2" class="panel">
+    <p class="section-title">03 용도지역 변경 및 용적률 체계</p>
+    <div class="field-row">
+      <div class="field"><label>사업 대상지 입지 특성</label>
+        <select id="locChar" onchange="calcAll()">
+          <option value="일반">일반 (해당없음)</option>
+          <option value="역인접부">역 인접부 (승강장 경계에 1m 이상 접함)</option>
+          <option value="간선가로연접부" selected>간선가로 연접부 (폭 20m 이상 도로)</option>
+          <option value="역인접+간선">역인접부 + 간선가로 연접부</option>
+        </select>
+      </div>
+      <div class="field"><label>복합용도 도입 여부</label>
+        <select id="mixedUse" onchange="calcAll()">
+          <option value="N" selected>미도입</option>
+          <option value="Y">도입 (전체 용적률의 50% 이상 업무·관광숙박)</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="card" style="margin-bottom:1rem">
+      <div class="card-label">최대 변경 가능 용도지역</div>
+      <div class="card-value" id="maxZoneVal" style="font-family:var(--sans);font-size:18px">-</div>
+      <div class="card-sub" id="maxZoneSub"></div>
+    </div>
+
+    <div class="field"><label>변경 후 용도지역 (시나리오 선택)</label><select id="targetZone" onchange="calcAll()"></select></div>
+    <div class="divider"></div>
+
+    <div class="metrics-grid4">
+      <div class="card"><div class="card-label">기준(허용)용적률</div><div class="card-value" id="baseFar">-</div></div>
+      <div class="card"><div class="card-label">상한용적률</div><div class="card-value" id="maxFar">-</div></div>
+      <div class="card"><div class="card-label">증가용적률</div><div class="card-value" id="incFar">-</div></div>
+      <div class="card"><div class="card-label">상향 단계</div><div class="card-value" id="stepCount">-</div></div>
+    </div>
+
+    <div class="divider"></div>
+    <p style="font-size:12px;font-weight:500;color:var(--text-secondary);margin-bottom:12px">추가 인센티브 (선택)</p>
+    <div class="toggle-row"><label>관광숙박시설 도입 — 상한용적률 × 1.2배 이내</label><button class="toggle" id="t_hotel" onclick="tog('t_hotel')"></button></div>
+    <div class="toggle-row"><label>ZEB·녹색건축 인증 — 기준용적률 × 최대 15%</label><button class="toggle" id="t_zeb" onclick="tog('t_zeb')"></button></div>
+    <div class="toggle-row"><label>창의혁신 디자인 — 상업지역 최대 110%p</label><button class="toggle" id="t_design" onclick="tog('t_design')"></button></div>
+    <div class="toggle-row"><label>공개공지 의무면적 초과 설치</label><button class="toggle" id="t_openspace" onclick="tog('t_openspace')"></button></div>
+
+    <div id="openspacePanel" style="display:none;margin-top:14px;margin-bottom:4px">
+      <div class="field-row3">
+        <div class="field"><label>계획 연면적 합계 (㎡)</label><input type="number" id="totalFloorArea" value="12726" min="0" oninput="calcAll()"></div>
+        <div class="field"><label>건축물 유형</label>
+          <select id="bldgType" onchange="calcAll()">
+            <option value="A">건축조례 26조①1호 대상</option>
+            <option value="B" selected>그 외 건축물</option>
+          </select>
+        </div>
+        <div class="field"><label>계획 공개공지 면적 (㎡)</label><input type="number" id="actualOpenSpace" value="0" min="0" oninput="calcAll()"></div>
+      </div>
+      <div id="openspaceResult"></div>
+    </div>
+
+    <div id="incentiveResult" style="margin-top:14px"></div>
+    <div class="nav-btns"><button class="btn" onclick="goStep(1)">← 이전</button><button class="btn btn-primary" onclick="goStep(3)">다음 단계 →</button></div>
+  </div>
+
+  <!-- ── STEP 4 ── -->
+  <div id="panel3" class="panel">
+    <p class="section-title">04 공공기여 산정</p>
+    <div class="field"><label>공시지가 (원/㎡)</label><input type="number" id="publicLandPrice" value="14890000" min="0" oninput="calcAll()"></div>
+    <p class="hint" style="margin-top:-8px;margin-bottom:1rem">부지가액 = 공시지가 × 2 적용 (도시계획조례 제21조)</p>
+    <div class="field"><label>관광숙박·노인복지주택 도입 비율 (공공기여율 감면)</label>
+      <select id="hotelRatio" onchange="calcAll()">
+        <option value="0">미도입 (0%) — 증가용적률의 50% 기준</option>
+        <option value="30">30% 도입 — 증가용적률의 40% 적용</option>
+        <option value="50">50% 이상 도입 — 증가용적률의 30% 적용</option>
+      </select>
+    </div>
+    <div class="divider"></div>
+    <div class="metrics-grid">
+      <div class="card"><div class="card-label">공공기여율</div><div class="card-value" id="contribRate">-</div><div class="card-sub" id="contribRateFormula"></div></div>
+      <div class="card"><div class="card-label">공공기여 면적</div><div class="card-value" id="contribArea" style="font-size:18px">-</div><div class="card-sub" id="contribAreaSub"></div></div>
+    </div>
+    <div class="card">
+      <div class="card-label">공공기여 개략 금액</div>
+      <div class="card-value" id="contribAmt">-</div>
+      <div class="card-sub">대지면적 × 공공기여율 × 부지가액 (공시지가 × 2)</div>
+    </div>
+    <div id="contribGuide" style="margin-top:12px"></div>
+    <div class="issue issue-info"><div class="issue-dot"></div><div>공공임대주택 30% 이상 설치 권장 (운영기준 4-1-2 나)</div></div>
+    <div class="issue issue-info"><div class="issue-dot"></div><div>단일 유형 시설 50% 초과 설치 지양 권장 (운영기준 4-1-2 나)</div></div>
+    <div class="nav-btns"><button class="btn" onclick="goStep(2)">← 이전</button><button class="btn btn-primary" onclick="goStep(4)">종합결과 →</button></div>
+  </div>
+
+  <!-- ── STEP 5 ── -->
+  <div id="panel4" class="panel">
+    <p class="section-title">05 종합 결과</p>
+    <div id="verdictBox" class="verdict"></div>
+    <div class="divider"></div>
+    <p style="font-size:12px;font-weight:500;color:var(--text-secondary);margin-bottom:12px">시나리오별 비교</p>
+    <div class="scenario-grid" id="scenarioGrid"></div>
+    <div class="divider"></div>
+    <p style="font-size:12px;font-weight:500;color:var(--text-secondary);margin-bottom:12px">주요 예상 이슈</p>
+    <div id="issueList"></div>
+    <div class="divider"></div>
+    <p style="font-size:12px;font-weight:500;color:var(--text-secondary);margin-bottom:12px">예상 사업 일정</p>
+    <div class="schedule-grid">
+      <div class="card"><div class="card-label">대상지선정~지원자문단</div><div class="card-value" style="font-size:16px">약 10개월</div></div>
+      <div class="card"><div class="card-label">지구단위계획 변경</div><div class="card-value" style="font-size:16px">약 8개월</div></div>
+      <div class="card"><div class="card-label">건축설계</div><div class="card-value" style="font-size:16px">약 12개월</div></div>
+      <div class="card"><div class="card-label">착공까지 총 소요</div><div class="card-value" style="font-size:16px;color:var(--accent)">약 32개월</div></div>
+    </div>
+    <div class="nav-btns"><button class="btn" onclick="goStep(3)">← 이전</button><button class="btn btn-primary" onclick="window.print()">🖨 인쇄 / PDF 저장</button></div>
+  </div>
+
+</div>
+
+<footer>HAEAHN ARCHITECTURE 도시건축본부 · 역세권 활성화사업 운영기준 2025.10.31 기준 · 본 툴은 참고용이며 실제 사업 적용 시 관련 법령 및 지침을 직접 확인하시기 바랍니다.</footer>
+
+<script>
+const TRANSFER_STATIONS = new Set(['신도림','동대문역사문화공원','고속터미널','왕십리','서울역','사당','종로3가','충무로','교대','잠실','군자','건대입구','천호','공덕','선릉','합정','가산디지털단지','영등포구청','홍대입구','창동','대림','복정','을지로3가','당산','총신대입구','강남','온수','여의도','강남구청','약수','동대문','시청','삼각지','김포공항','동묘앞','태릉입구','논현','신길','석촌','상봉','동작','신당','신사','도봉산','가락시장','디지털미디어시티','신설동','노원','청구','까치산','연신내','종합운동장','신림','도곡','오금','옥수','이촌','성수','성신여대입구','청량리','을지로4가','올림픽공원','석계','불광','보라매','수서','양재','모란','보문','충정로','신내','효창공원앞','강동']);
+const STATION_TO_CENTER = {'서울역':'도심','시청':'도심','종각':'도심','종로3가':'도심','을지로3가':'도심','을지로4가':'도심','충무로':'도심','동대문역사문화공원':'도심','신당':'도심','동묘앞':'도심','영등포구청':'도심','영등포시장':'도심','영등포':'도심','신길':'도심','여의도':'도심','여의나루':'도심','당산':'도심','문래':'도심','강남':'도심','선릉':'도심','역삼':'도심','삼성':'도심','신논현':'도심','논현':'도심','학동':'도심','강남구청':'도심','압구정':'도심','신사':'도심','교대':'도심','용산':'광역중심','삼각지':'광역중심','효창공원앞':'광역중심','이촌':'광역중심','왕십리':'광역중심','청량리':'광역중심','신설동':'광역중심','창동':'광역중심','도봉산':'광역중심','노원':'광역중심','태릉입구':'광역중심','상봉':'광역중심','디지털미디어시티':'광역중심','수색':'광역중심','마곡':'광역중심','발산':'광역중심','가산디지털단지':'광역중심','대림':'광역중심','구로디지털단지':'광역중심','잠실':'광역중심','종합운동장':'광역중심','석촌':'광역중심','김포공항':'광역중심','공덕':'지역중심','마포':'지역중심','충정로':'지역중심','신촌':'지역중심','홍대입구':'지역중심','합정':'지역중심','연신내':'지역중심','불광':'지역중심','성수':'지역중심','건대입구':'지역중심','군자':'지역중심','망우':'지역중심','수서':'지역중심','복정':'지역중심','문정':'지역중심','천호':'지역중심','강동':'지역중심','목동':'지역중심','까치산':'지역중심','봉천':'지역중심','서울대입구':'지역중심','사당':'지역중심','총신대입구':'지역중심','이수':'지역중심','성신여대입구':'지역중심','보문':'지역중심','고속터미널':'지역중심','동작':'지역중심','도곡':'지역중심','양재':'지역중심','오금':'지역중심','가락시장':'지역중심','보라매':'지역중심','동대문':'지역중심','약수':'지역중심','청구':'지역중심','온수':'지역중심','신내':'지역중심','석계':'지역중심','올림픽공원':'지역중심','모란':'지역중심','신림':'지역중심','옥수':'지역중심'};
+const SAMPLE = ['강남','홍대입구','합정','신촌','공덕','마포','서울역','시청','종로3가','을지로3가','충무로','동대문역사문화공원','왕십리','청량리','잠실','종합운동장','석촌','천호','강동','사당','이수','총신대입구','교대','고속터미널','강남구청','선릉','역삼','삼성','논현','신사','신당','용산','삼각지','효창공원앞','이촌','디지털미디어시티','가산디지털단지','대림','여의도','영등포구청','당산','신도림','성수','건대입구','군자','노원','창동','도봉산','상봉','수서','복정','목동','봉천','연신내','불광','까치산','성신여대입구','도곡','양재','오금','가락시장','보라매','온수','약수','동작','신길','석계','올림픽공원','보문','충정로','신내','모란','동대문','태릉입구','동묘앞','을지로4가','옥수','신림','청구','김포공항','신설동'];
+
+const ZONES=['2종일반주거지역','3종일반주거지역','준주거지역','근린상업지역','일반상업지역','중심상업지역'];
+const ZONE_FAR=[200,250,400,600,800,1000];
+const ZONE_KEYS=['2종','3종','준주거','근린상업','일반상업','중심상업'];
+
+const state={toggles:{t_pre:0,t_zone:0,t_regen:0,t_special:0,t_facility:0,t_jgu:0,t_hotel:0,t_zeb:0,t_design:0,t_openspace:0},station:null};
+
+function getSI(n){const t=TRANSFER_STATIONS.has(n),c=STATION_TO_CENTER[n]||null,u=c==='도심'||c==='광역중심'||c==='지역중심';return{name:n,isT:t,center:c,isU:u,radius:(u||t)?350:250};}
+
+function onStationInput(){
+  const v=document.getElementById('stationInput').value.trim(),dd=document.getElementById('dropdown');
+  if(!v){dd.style.display='none';return;}
+  const all=[...new Set([...SAMPLE,...Array.from(TRANSFER_STATIONS)])].sort();
+  const matches=all.filter(s=>s.includes(v));
+  if(!matches.length){dd.style.display='none';return;}
+  const G={'도심':[],'광역중심':[],'지역중심':[],'환승역(비중심)':[],'지구중심·비중심지':[]};
+  const BC={'도심':'db-도심','광역중심':'db-광역','지역중심':'db-지역','환승역(비중심)':'db-환승','지구중심·비중심지':'db-기타'};
+  matches.forEach(s=>{const i=getSI(s);if(i.center==='도심')G['도심'].push(s);else if(i.center==='광역중심')G['광역중심'].push(s);else if(i.center==='지역중심')G['지역중심'].push(s);else if(i.isT)G['환승역(비중심)'].push(s);else G['지구중심·비중심지'].push(s);});
+  let h='';
+  Object.entries(G).forEach(([g,st])=>{if(!st.length)return;h+=`<div class="dd-group">${g} — ${g==='지구중심·비중심지'?'250m':'350m'}</div>`;st.forEach(s=>{h+=`<div class="dd-item" onclick="selectStation('${s}')"><span>${s}역</span><span class="dd-badge ${BC[g]}">${g}</span><span class="radius-hint">${getSI(s).radius}m</span></div>`;});});
+  dd.innerHTML=h;dd.style.display='block';
+}
+
+function selectStation(n){
+  state.station=n;
+  document.getElementById('stationInput').value=n+'역';
+  document.getElementById('dropdown').style.display='none';
+  document.getElementById('manualLink').style.display='block';
+  const i=getSI(n);
+  const CM={'도심':'db-도심','광역중심':'db-광역','지역중심':'db-지역'};
+  const cl=i.center||(i.isT?'비중심지 환승역':'지구중심·비중심지');
+  const cc=CM[i.center]||(i.isT?'db-환승':'db-기타');
+  document.getElementById('stationResultCard').style.display='block';
+  document.getElementById('src-name').textContent=n+'역';
+  document.getElementById('src-type').innerHTML=`<span class="dd-badge ${cc}">${cl}</span>${i.isT?' <span class="dd-badge db-환승">환승역</span>':''}`;
+  document.getElementById('src-center').textContent=i.center?(i.center+(i.isT?' + 환승역':'')):(i.isT?'비중심지 + 환승역':'지구중심·비중심지');
+  document.getElementById('src-radius').textContent=i.radius+'m';
+  calcAll();
+}
+
+function clearStation(){state.station=null;document.getElementById('stationInput').value='';document.getElementById('dropdown').style.display='none';document.getElementById('stationResultCard').style.display='none';document.getElementById('manualLink').style.display='none';calcAll();}
+
+function toggleManual(){const p=document.getElementById('manualPanel'),v=p.style.display==='none';p.style.display=v?'block':'none';document.querySelector('.manual-link').textContent=v?'▾ 반경을 직접 지정하려면 클릭':'▸ 반경을 직접 지정하려면 클릭';}
+
+document.addEventListener('click',e=>{if(!e.target.closest('.station-wrap'))document.getElementById('dropdown').style.display='none';});
+
+function getR(){const m=parseInt(document.getElementById('manualRadius')?.value||'0');if(m>0)return m;if(state.station)return getSI(state.station).radius;return null;}
+function getC(){if(state.station)return getSI(state.station).center||'비중심지';return '비중심지';}
+
+function tog(id){state.toggles[id]=state.toggles[id]?0:1;document.getElementById(id).classList.toggle('on',!!state.toggles[id]);if(id==='t_jgu')document.getElementById('jguFarPanel').style.display=state.toggles[id]?'block':'none';if(id==='t_openspace')document.getElementById('openspacePanel').style.display=state.toggles[id]?'block':'none';calcAll();}
+
+function goStep(n){document.querySelectorAll('.panel').forEach((p,i)=>p.classList.toggle('active',i===n));document.querySelectorAll('.step-btn').forEach((b,i)=>{b.classList.remove('active');if(i===n)b.classList.add('active');});calcAll();}
+
+function gv(id){return document.getElementById(id)?.value||'';}
+function gn(id){return parseFloat(document.getElementById(id)?.value)||0;}
+
+function getMaxZ(c,loc,mix){const sp=loc!=='일반',hm=mix==='Y';if(c==='도심'||c==='광역중심')return(sp&&hm)?5:4;if(c==='지역중심')return 4;if(c==='지구중심')return sp?4:3;return sp?3:2;}
+function getCurZ(z){if(z==='2종7층'||z==='2종')return 0;if(z==='3종')return 1;if(z==='준주거')return 2;if(z==='근린상업')return 3;if(z==='일반상업')return 4;return 0;}
+
+function getOblig(area,tfa,bt){
+  if(bt==='A'){if(tfa>=5000)return{pct:10,area:area*.1,label:'건축조례 26조①1호 대상, 연면적 5천㎡↑ → 대지면적 10%'};return{pct:0,area:0,label:'연면적 5천㎡ 미만 — 의무 적용 없음'};}
+  if(tfa<5000)return{pct:0,area:0,label:'연면적 5천㎡ 미만 — 의무 적용 없음'};
+  if(tfa<10000)return{pct:5,area:area*.05,label:'연면적 5천~1만㎡ 미만 → 대지면적 5%'};
+  if(tfa<30000)return{pct:7,area:area*.07,label:'연면적 1만~3만㎡ 미만 → 대지면적 7%'};
+  return{pct:10,area:area*.1,label:'연면적 3만㎡ 이상 → 대지면적 10%'};
+}
+
+function calcOS(bFar,legalFar,siteArea,obligArea,actualArea){
+  if(actualArea<=obligArea)return{far:0,excess:0,note:'계획 공개공지 ≤ 의무면적 — 인센티브 없음'};
+  const excess=actualArea-obligArea;
+  const add=legalFar*(excess/siteArea);
+  const cap=legalFar*1.2;
+  const result=Math.min(bFar+add,cap);
+  return{far:parseFloat((result-bFar).toFixed(2)),excess:parseFloat(excess.toFixed(2)),resultFar:parseFloat(result.toFixed(2)),rawAdd:parseFloat(add.toFixed(2)),cap:parseFloat(cap.toFixed(0)),capped:(bFar+add)>cap,note:(bFar+add)>cap?`상한(법적용적률 ${legalFar}% × 1.2 = ${cap.toFixed(0)}%) 적용`:'상한 미도달'};
+}
+
+function calcAll(){
+  const biz=gv('bizType');
+  document.getElementById('agingPanel').style.display=biz==='jgu'?'block':'none';
+  document.getElementById('jbiPanel').style.display=biz==='jbi'?'block':'none';
+
+  const R=getR(),dist=gn('distToStation'),stEl=document.getElementById('stationCheck');
+  if(!R)stEl.innerHTML='<span style="color:var(--text-tertiary)">역을 먼저 검색하세요</span>';
+  else if(dist<=R)stEl.innerHTML=`<span style="color:var(--green)">역세권 범위 내 해당 (${dist}m ≤ ${R}m)</span><span class="tag tag-ok">적합</span>`;
+  else stEl.innerHTML=`<span style="color:var(--red)">역세권 범위 외 (${dist}m > ${R}m)</span><span class="tag tag-fail">부적합</span>`;
+
+  const excl=['t_pre','t_zone','t_regen','t_special','t_facility'].some(k=>state.toggles[k]);
+  document.getElementById('excludeResult').innerHTML=excl?'<span style="color:var(--red)">제외 대상 해당 — 사전 확인 필수</span><span class="tag tag-fail">주의</span>':'<span style="color:var(--green)">제외 대상 없음</span><span class="tag tag-ok">이상 없음</span>';
+
+  const area=gn('siteArea'),aEl=document.getElementById('areaCheck');
+  if(area<1500)aEl.innerHTML='<span style="color:var(--red)">면적 미달 (최소 1,500㎡)</span><span class="tag tag-fail">부적합</span>';
+  else if(area>10000&&area<=30000)aEl.innerHTML='<span style="color:var(--yellow)">면적 초과 — 자문단 인정 필요</span><span class="tag tag-warn">조건부</span>';
+  else if(area>30000)aEl.innerHTML='<span style="color:var(--red)">30,000㎡ 초과</span><span class="tag tag-fail">부적합</span>';
+  else aEl.innerHTML=`<span style="color:var(--green)">면적 요건 충족 (${area.toLocaleString()}㎡)</span><span class="tag tag-ok">적합</span>`;
+
+  const faces=parseInt(gv('roadFaces')),maxW=gn('maxRoadWidth'),c1=faces>=2,c2=maxW>=8,roadOk=c1&&c2;
+  document.getElementById('roadCheck').innerHTML=`
+    <div class="road-row"><span class="road-label">2면 이상이 4m 이상 도로에 접할 것</span><span>${faces}면 접도 <span class="tag ${c1?'tag-ok':'tag-fail'}">${c1?'충족':'미충족'}</span></span></div>
+    <div class="road-row"><span class="road-label">최소 1면이 8m 이상 도로에 접할 것</span><span>최대 ${maxW}m <span class="tag ${c2?'tag-ok':'tag-fail'}">${c2?'충족':'미충족'}</span></span></div>
+    <div class="road-row"><span class="road-label" style="font-weight:500">도로 요건 종합</span><span class="tag ${roadOk?'tag-ok':'tag-fail'}" style="font-size:12px">${roadOk?'적합':'부적합'}</span></div>`;
+
+  const agEl=document.getElementById('agingCheck');
+  if(biz==='jgu'){const tot=gn('totalBuildings'),old=gn('oldBuildings'),r=tot>0?old/tot:0,p=(r*100).toFixed(1),bw=Math.min(r*100,100).toFixed(1);agEl.innerHTML=`<div style="width:100%"><div style="display:flex;align-items:center;gap:8px"><span style="color:${r>=2/3?'var(--green)':'var(--red)'}">${old}/${tot}동 (${p}%) — 2/3 이상 ${r>=2/3?'충족':'미달'}</span><span class="tag ${r>=2/3?'tag-ok':'tag-fail'}">${r>=2/3?'적합':'부적합'}</span></div><div class="fap-bar"><div class="fap-fill" style="width:${bw}%;background:${r>=2/3?'var(--green)':'var(--red)'}"></div></div></div>`;}
+  else{const ol=gn('oldRatio'),sl=gn('smallLot'),lb=gn('lowBldg'),ok=ol>=60&&(sl>=40||lb>=50);agEl.innerHTML=ok?'<span style="color:var(--green)">도시정비형 노후도 요건 충족</span><span class="tag tag-ok">적합</span>':'<span style="color:var(--red)">도시정비형 노후도 요건 미달</span><span class="tag tag-fail">부적합</span>';}
+
+  const ct=getC(),lc=gv('locChar'),mu=gv('mixedUse'),maxIdx=getMaxZ(ct,lc,mu),cz=gv('currentZone'),cIdx=getCurZ(cz);
+  document.getElementById('maxZoneVal').textContent=ZONES[maxIdx];
+  document.getElementById('maxZoneSub').textContent=cIdx>=maxIdx?'현재 용도지역이 이미 최대 수준':'현재에서 최대 '+(maxIdx-cIdx)+'단계 상향 가능';
+
+  const tzEl=document.getElementById('targetZone'),pv=tzEl.value;tzEl.innerHTML='';
+  for(let i=cIdx+1;i<=maxIdx;i++){const o=document.createElement('option');o.value=ZONE_KEYS[i];o.textContent=ZONES[i];tzEl.appendChild(o);}
+  if([...tzEl.options].some(o=>o.value===pv))tzEl.value=pv;
+
+  const tk=tzEl.value||ZONE_KEYS[Math.min(cIdx+1,maxIdx)],tIdx=ZONE_KEYS.indexOf(tk);
+  const isJgu=state.toggles['t_jgu'],bFar=isJgu?gn('jguFar'):ZONE_FAR[cIdx],mFar=ZONE_FAR[tIdx]||bFar,iFar=mFar-bFar,legalFar=ZONE_FAR[cIdx];
+
+  document.getElementById('baseFar').textContent=bFar+'%';
+  document.getElementById('maxFar').textContent=mFar+'%';
+  document.getElementById('incFar').textContent='+'+iFar+'%p';
+  document.getElementById('stepCount').textContent=(tIdx-cIdx)+'단계';
+
+  const tZN=ZONES[tIdx]||'';let exFar=0;
+  if(state.toggles['t_hotel'])exFar+=Math.round(mFar*0.2);
+  if(state.toggles['t_zeb'])exFar+=Math.round(bFar*0.15);
+  if(state.toggles['t_design']&&tZN.includes('상업'))exFar+=110;
+
+  let osExtra=0,osResultFar=0;
+  if(state.toggles['t_openspace']){
+    const tfa=gn('totalFloorArea'),bt=gv('bldgType'),aOS=gn('actualOpenSpace');
+    const ob=getOblig(area,tfa,bt),osc=calcOS(bFar,legalFar,area,ob.area,aOS);
+    osExtra=osc.far;osResultFar=osc.resultFar||0;
+    const osEl=document.getElementById('openspaceResult');
+    if(ob.pct===0){osEl.innerHTML=`<div class="os-box"><div class="os-header">공개공지 인센티브</div><div class="os-row"><span class="os-label">적용 기준</span><span class="os-val">${ob.label}</span></div></div>`;}
+    else{osEl.innerHTML=`<div class="os-box"><div class="os-header">공개공지 인센티브 산정 (지구단위계획 수립기준 Ⅱ.3-8-3)</div><div class="os-row"><span class="os-label">의무면적 기준</span><span class="os-val">${ob.label}</span></div><div class="os-row"><span class="os-label">의무 공개공지 면적</span><span class="os-val">${ob.area.toFixed(1)}㎡ (대지 × ${ob.pct}%)</span></div><div class="os-row"><span class="os-label">계획 공개공지 면적</span><span class="os-val">${aOS.toFixed(1)}㎡</span></div><div class="os-row"><span class="os-label">초과 면적 (의무면적 차감 후)</span><span class="os-val">${osc.excess>0?osc.excess.toFixed(2)+'㎡':'-'}</span></div><div class="os-formula">산정식: 허용용적률 + 법적용적률 × {(공개공지등 − 의무면적) / 대지면적}<br>= ${bFar}% + ${legalFar}% × {(${aOS.toFixed(1)} − ${ob.area.toFixed(1)}) / ${area}}<br>= ${bFar}% + ${osc.rawAdd.toFixed(2)}%p<br>완화 상한: 법적용적률 ${legalFar}% × 1.2배 = ${osc.cap}%</div><div class="os-row"><span class="os-label">공개공지 인센티브 가산</span><span class="os-result-val">+${osc.far.toFixed(2)}%p → 허용용적률 ${osResultFar.toFixed(2)}%</span></div><div class="os-row"><span class="os-label">비고</span><span class="os-val" style="font-size:11px">${osc.note}</span></div></div>`;}
+  }
+
+  const allInc=['t_hotel','t_zeb','t_design','t_openspace'].filter(k=>state.toggles[k]);
+  const iEl=document.getElementById('incentiveResult');
+  if(allInc.length>0){
+    const lines=[];
+    if(state.toggles['t_hotel'])lines.push('관광숙박 ＋'+Math.round(mFar*0.2)+'%p');
+    if(state.toggles['t_zeb'])lines.push('ZEB·녹색건축 ＋'+Math.round(bFar*0.15)+'%p');
+    if(state.toggles['t_design']&&tZN.includes('상업'))lines.push('창의혁신 ＋110%p');
+    if(state.toggles['t_openspace']&&osExtra>0)lines.push('공개공지 ＋'+osExtra.toFixed(2)+'%p');
+    else if(state.toggles['t_openspace'])lines.push('공개공지: 의무면적 초과 시 산정');
+    const total=mFar+exFar+(osExtra>0?osExtra:0);
+    const ov=allInc.length>=2?'<div class="issue issue-warn"><div class="issue-dot"></div><div>2개 이상 인센티브 중첩 — 지원 자문단 자문 필요 (운영기준 3-2-2)</div></div>':'';
+    iEl.innerHTML=`<div class="card"><div class="card-label">인센티브 포함 최대 용적률</div><div class="card-value">${total.toFixed(1)}%</div><div class="card-sub">${lines.join(' · ')}</div></div>${ov}`;
+  } else iEl.innerHTML='';
+
+  const hr=parseInt(gv('hotelRatio'));let mf=0.5;if(hr===30)mf=0.4;if(hr===50)mf=0.3;
+  const plp=gn('publicLandPrice'),cr=iFar>0?iFar*mf/mFar:0,crp=cr*100,cab=area*cr*plp*2/1e8;
+  document.getElementById('contribRate').textContent=crp.toFixed(2)+'%';
+  document.getElementById('contribRateFormula').textContent=`(${mFar}−${bFar}) × ${(mf*100).toFixed(0)}% ÷ ${mFar}`;
+  document.getElementById('contribArea').textContent=(area*cr).toFixed(2)+'㎡';
+  document.getElementById('contribAreaSub').textContent=`${area.toLocaleString()}㎡ × ${crp.toFixed(2)}%`;
+  document.getElementById('contribAmt').textContent=cab.toFixed(2)+'억원';
+  document.getElementById('contribGuide').innerHTML=hr>0?`<div class="issue issue-info"><div class="issue-dot"></div><div>관광숙박·노인복지 ${hr}% 도입 — 증가용적률의 ${(mf*100).toFixed(0)}% 기준 적용 (운영기준 4-1-1 나)</div></div>`:'';
+
+  buildSummary(dist,R,area,bFar,mFar,iFar,crp,cIdx,tIdx,roadOk);
+}
+
+function buildSummary(dist,R,area,bFar,mFar,iFar,cRate,cIdx,tIdx,roadOk){
+  const stOk=R&&dist<=R,aOk=area>=1500&&area<=30000,nEx=!['t_pre','t_zone','t_regen','t_special','t_facility'].some(k=>state.toggles[k]),go=stOk&&aOk&&roadOk&&nEx&&tIdx>cIdx;
+  const vEl=document.getElementById('verdictBox');
+  if(go){vEl.style.cssText='background:var(--green-bg);border-color:#A0D8B8';vEl.innerHTML='<div class="verdict-icon" style="color:var(--green)">✓</div><div class="verdict-title" style="color:var(--green)">사업 추진 가능</div><div class="verdict-sub">주요 요건 충족 — 위원회 심의를 통해 진행 가능</div>';}
+  else if(!stOk||!nEx){vEl.style.cssText='background:var(--red-bg);border-color:#E8B0B0';vEl.innerHTML='<div class="verdict-icon" style="color:var(--red)">✕</div><div class="verdict-title" style="color:var(--red)">사업 추진 불가</div><div class="verdict-sub">핵심 입지 요건 미충족 또는 제외 대상 해당</div>';}
+  else{vEl.style.cssText='background:var(--yellow-bg);border-color:#E8D080';vEl.innerHTML='<div class="verdict-icon" style="color:var(--yellow)">!</div><div class="verdict-title" style="color:var(--yellow)">조건부 검토 필요</div><div class="verdict-sub">일부 요건 경계 케이스 — 세부 검토 필요</div>';}
+
+  const sg=document.getElementById('scenarioGrid');
+  const scs=[];
+  for(let i=cIdx+1;i<=Math.min(cIdx+2,5);i++){const sf=ZONE_FAR[i],si=sf-bFar,sr=si>0?(si*.5/sf*100).toFixed(2):'0.00',sa=(gn('siteArea')*parseFloat(sr)/100).toFixed(1);scs.push({name:ZONES[i],mf:sf,r:sr,a:sa,rec:i===cIdx+1});}
+  sg.innerHTML=scs.map(s=>`<div class="sc-card ${s.rec?'rec':''}"><div class="sc-title">${s.name}${s.rec?'<span class="rec-badge">우선 검토</span>':''}</div><div class="sc-data-row"><span>상한용적률</span><span>${s.mf}%</span></div><div class="sc-data-row"><span>공공기여율</span><span>${s.r}%</span></div><div class="sc-data-row"><span>공공기여 면적</span><span>${s.a}㎡</span></div></div>`).join('');
+
+  const issues=[];
+  if(!roadOk)issues.push({t:'danger',x:'도로 요건 미충족 — 2면 이상 4m 접도 + 최소 1면 8m 이상 필요'});
+  if(tIdx-cIdx>=3)issues.push({t:'warn',x:'3단계 이상 상향 — 역세권 활성화 기능 확보 당위성 별도 제시 필요 (운영기준 3-1-2 나)'});
+  if(tIdx>=3)issues.push({t:'warn',x:'인접 저층 주거지역 있을 경우 완충공간·용도관리 계획 필요 (지구단위계획 수립기준)'});
+  if(state.toggles['t_jgu'])issues.push({t:'info',x:'기존 지구단위계획구역 내 — 지침상 높이·전면공지·공공보행통로 등 선결 조건 확인 필요'});
+  if(['t_hotel','t_zeb','t_design','t_openspace'].filter(k=>state.toggles[k]).length>=2)issues.push({t:'warn',x:'추가 인센티브 2개 이상 중첩 — 지원 자문단 자문으로 적정성 인정 필요 (운영기준 3-2-2)'});
+  if(['t_pre','t_zone','t_regen'].some(k=>state.toggles[k]))issues.push({t:'danger',x:'제외 대상 해당 — 예외 규정 적용 가능 여부 별도 검토 필요'});
+  issues.push({t:'ok',x:'역세권 활성화사업 선정 후 착공까지 약 32개월 소요 예상'});
+  document.getElementById('issueList').innerHTML=issues.map(i=>`<div class="issue issue-${i.t}"><div class="issue-dot"></div><div>${i.x}</div></div>`).join('');
+}
+
+calcAll();
+</script>
+</body>
+</html>
