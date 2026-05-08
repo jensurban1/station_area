@@ -568,7 +568,7 @@
 <header>
   <span class="header-logo">HAEAHN ARCHITECTURE</span>
   <span class="header-title">역세권 활성화사업 검토 툴</span>
-  <span class="header-version">v1.0 · 2025.10 기준</span>
+  <span class="header-version">v2.0 · 2026.04 기준</span>
 </header>
 
 <div class="container">
@@ -577,7 +577,7 @@
     <h1>역세권 활성화사업 검토 툴</h1>
     <p>입지요건 판단 → 용도지역 변경 범위 → 공공기여 자동 산정까지 단계별로 검토합니다.</p>
     <div class="badge-row">
-      <span class="badge">역세권 활성화사업 운영기준 2025.10.31 반영</span>
+      <span class="badge">역세권 활성화사업 운영기준 2026.04.30 반영</span>
       <span class="badge">서울시 도시공간전략과 역세권 범위 2025.08 기준</span>
       <span class="badge">해안건축 도시건축본부</span>
     </div>
@@ -724,6 +724,37 @@
       </div>
     </div>
 
+    <div id="nonCenterSpecialPanel" style="display:none;margin-bottom:1rem">
+      <div style="background:var(--yellow-bg);border:1px solid #E8D080;border-radius:var(--radius-lg);padding:12px 16px;">
+        <div style="font-size:11px;font-weight:600;color:var(--yellow);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:10px">비중심지 일반상업 특례 (3-1-2 라목) — 신설 2026.04.30</div>
+        <p style="font-size:12px;color:var(--text-secondary);margin-bottom:10px">아래 조건을 모두 충족하면 비중심지에서도 최대 일반상업지역까지 상향 가능</p>
+        <div class="field-row">
+          <div class="field">
+            <label>20m 이상 도로 접면 여부</label>
+            <select id="special20m" onchange="calcAll()">
+              <option value="N" selected>미해당</option>
+              <option value="Y">해당 (1면 이상 폭 20m↑)</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>6m 이상 도로 추가 접면 여부</label>
+            <select id="special6m" onchange="calcAll()">
+              <option value="N" selected>미해당</option>
+              <option value="Y">해당 (1면 이상 폭 6m↑, 예정도로 포함)</option>
+            </select>
+          </div>
+        </div>
+        <div class="field" style="margin-bottom:4px">
+          <label>복합용도 도입 비율 (연면적 기준)</label>
+          <select id="special30pct" onchange="calcAll()">
+            <option value="N" selected>30% 미만</option>
+            <option value="Y">30% 이상 — 특례 적용 가능</option>
+          </select>
+        </div>
+        <div id="specialResult" style="margin-top:8px"></div>
+      </div>
+    </div>
+
     <div class="card" style="margin-bottom:1rem">
       <div class="card-label">최대 변경 가능 용도지역</div>
       <div class="card-value" id="maxZoneVal" style="font-family:var(--sans);font-size:18px">-</div>
@@ -742,7 +773,7 @@
 
     <div class="divider"></div>
     <p style="font-size:12px;font-weight:500;color:var(--text-secondary);margin-bottom:12px">추가 인센티브 (선택)</p>
-    <div class="toggle-row"><label>관광숙박시설 도입 — 상한용적률 × 1.2배 이내</label><button class="toggle" id="t_hotel" onclick="tog('t_hotel')"></button></div>
+    <div class="toggle-row"><label>관광숙박시설 도입 — 상한용적률 × 1.3배 이내 <span style="font-size:10px;color:var(--text-tertiary)">(관광호텔·전통호텔·가족호텔·호스텔업, 한시적 적용)</span></label><button class="toggle" id="t_hotel" onclick="tog('t_hotel')"></button></div>
     <div class="toggle-row"><label>ZEB·녹색건축 인증 — 기준용적률 × 최대 15%</label><button class="toggle" id="t_zeb" onclick="tog('t_zeb')"></button></div>
     <div class="toggle-row"><label>창의혁신 디자인 — 상업지역 최대 110%p</label><button class="toggle" id="t_design" onclick="tog('t_design')"></button></div>
     <div class="toggle-row"><label>공개공지 의무면적 초과 설치</label><button class="toggle" id="t_openspace" onclick="tog('t_openspace')"></button></div>
@@ -776,6 +807,13 @@
         <option value="30">30% 도입 — 증가용적률의 40% 적용</option>
         <option value="50">50% 이상 도입 — 증가용적률의 30% 적용</option>
       </select>
+    </div>
+    <div class="toggle-row" style="margin-bottom:1rem">
+      <label>지역별 공공기여 완화 적용 <span style="font-size:10px;color:var(--text-tertiary)">(3개년 연속 자치구 표준지 공시지가 평균이 서울시 전체 평균의 60% 이하인 자치구)</span></label>
+      <button class="toggle" id="t_regional" onclick="tog('t_regional')"></button>
+    </div>
+    <div id="regionalNote" style="display:none;margin-bottom:1rem">
+      <div class="issue issue-warn"><div class="issue-dot"></div><div style="font-size:12px">지역별 완화 적용 시 최대 20% 범위 내 감면. 관광숙박·노인복지 완화와 중복 시 지역별 완화는 <strong>1/2만 적용</strong> (운영기준 4-1-1 나, 2026.04.30 신설)</div></div>
     </div>
     <div class="divider"></div>
     <div class="metrics-grid">
@@ -816,7 +854,7 @@
 
 </div>
 
-<footer>HAEAHN ARCHITECTURE 도시건축본부 · 역세권 활성화사업 운영기준 2025.10.31 기준 · 본 툴은 참고용이며 실제 사업 적용 시 관련 법령 및 지침을 직접 확인하시기 바랍니다.</footer>
+<footer>HAEAHN ARCHITECTURE 도시건축본부 · 역세권 활성화사업 운영기준 2026.04.30 기준 · 본 툴은 참고용이며 실제 사업 적용 시 관련 법령 및 지침을 직접 확인하시기 바랍니다.</footer>
 
 <script>
 const TRANSFER_STATIONS = new Set(['신도림','동대문역사문화공원','고속터미널','왕십리','서울역','사당','종로3가','충무로','교대','잠실','군자','건대입구','천호','공덕','선릉','합정','가산디지털단지','영등포구청','홍대입구','창동','대림','복정','을지로3가','당산','총신대입구','강남','온수','여의도','강남구청','약수','동대문','시청','삼각지','김포공항','동묘앞','태릉입구','논현','신길','석촌','상봉','동작','신당','신사','도봉산','가락시장','디지털미디어시티','신설동','노원','청구','까치산','연신내','종합운동장','신림','도곡','오금','옥수','이촌','성수','성신여대입구','청량리','을지로4가','올림픽공원','석계','불광','보라매','수서','양재','모란','보문','충정로','신내','효창공원앞','강동']);
@@ -827,7 +865,7 @@ const ZONES=['2종일반주거지역','3종일반주거지역','준주거지역'
 const ZONE_FAR=[200,250,400,600,800,1000];
 const ZONE_KEYS=['2종','3종','준주거','근린상업','일반상업','중심상업'];
 
-const state={toggles:{t_pre:0,t_zone:0,t_regen:0,t_special:0,t_facility:0,t_jgu:0,t_hotel:0,t_zeb:0,t_design:0,t_openspace:0},station:null};
+const state={toggles:{t_pre:0,t_zone:0,t_regen:0,t_special:0,t_facility:0,t_jgu:0,t_hotel:0,t_zeb:0,t_design:0,t_openspace:0,t_regional:0},station:null};
 
 function getSI(n){const t=TRANSFER_STATIONS.has(n),c=STATION_TO_CENTER[n]||null,u=c==='도심'||c==='광역중심'||c==='지역중심';return{name:n,isT:t,center:c,isU:u,radius:(u||t)?350:250};}
 
@@ -871,14 +909,31 @@ document.addEventListener('click',e=>{if(!e.target.closest('.station-wrap'))docu
 function getR(){const m=parseInt(document.getElementById('manualRadius')?.value||'0');if(m>0)return m;if(state.station)return getSI(state.station).radius;return null;}
 function getC(){if(state.station)return getSI(state.station).center||'비중심지';return '비중심지';}
 
-function tog(id){state.toggles[id]=state.toggles[id]?0:1;document.getElementById(id).classList.toggle('on',!!state.toggles[id]);if(id==='t_jgu')document.getElementById('jguFarPanel').style.display=state.toggles[id]?'block':'none';if(id==='t_openspace')document.getElementById('openspacePanel').style.display=state.toggles[id]?'block':'none';calcAll();}
+function tog(id){state.toggles[id]=state.toggles[id]?0:1;document.getElementById(id).classList.toggle('on',!!state.toggles[id]);if(id==='t_jgu')document.getElementById('jguFarPanel').style.display=state.toggles[id]?'block':'none';if(id==='t_openspace')document.getElementById('openspacePanel').style.display=state.toggles[id]?'block':'none';if(id==='t_regional')document.getElementById('regionalNote').style.display=state.toggles[id]?'block':'none';calcAll();}
 
 function goStep(n){document.querySelectorAll('.panel').forEach((p,i)=>p.classList.toggle('active',i===n));document.querySelectorAll('.step-btn').forEach((b,i)=>{b.classList.remove('active');if(i===n)b.classList.add('active');});calcAll();}
 
 function gv(id){return document.getElementById(id)?.value||'';}
 function gn(id){return parseFloat(document.getElementById(id)?.value)||0;}
 
-function getMaxZ(c,loc,mix){const sp=loc!=='일반',hm=mix==='Y';if(c==='도심'||c==='광역중심')return(sp&&hm)?5:4;if(c==='지역중심')return 4;if(c==='지구중심')return sp?4:3;return sp?3:2;}
+function getMaxZ(c,loc,mix){
+  const sp=loc!=='일반',hm=mix==='Y';
+  const ncp=document.getElementById('nonCenterSpecialPanel');
+  if(ncp) ncp.style.display=(c==='비중심지')?'block':'none';
+  if(c==='도심'||c==='광역중심') return(sp&&hm)?5:4;
+  if(c==='지역중심') return 4;
+  if(c==='지구중심') return sp?4:3;
+  // 비중심지 특례 (3-1-2 라목, 신설 2026.04.30)
+  const s20=gv('special20m')==='Y', s6=gv('special6m')==='Y', s30=gv('special30pct')==='Y';
+  const sEl=document.getElementById('specialResult');
+  if(s20&&s6&&s30){
+    if(sEl) sEl.innerHTML='<span style="color:var(--green);font-size:12px;font-weight:500">✓ 특례 조건 충족 — 최대 일반상업지역까지 상향 가능</span>';
+    return 4;
+  } else {
+    if(sEl){const m=[];if(!s20)m.push('20m↑ 도로 1면');if(!s6)m.push('6m↑ 도로 1면');if(!s30)m.push('복합용도 30%↑');sEl.innerHTML=`<span style="color:var(--text-tertiary);font-size:12px">미충족: ${m.join(', ')}</span>`;}
+  }
+  return sp?3:2;
+}
 function getCurZ(z){if(z==='2종7층'||z==='2종')return 0;if(z==='3종')return 1;if(z==='준주거')return 2;if(z==='근린상업')return 3;if(z==='일반상업')return 4;return 0;}
 
 function getOblig(area,tfa,bt){
@@ -944,7 +999,7 @@ function calcAll(){
   document.getElementById('stepCount').textContent=(tIdx-cIdx)+'단계';
 
   const tZN=ZONES[tIdx]||'';let exFar=0;
-  if(state.toggles['t_hotel'])exFar+=Math.round(mFar*0.2);
+  if(state.toggles['t_hotel'])exFar+=Math.round(mFar*0.3); // 1.3배 (2026.04.30 개정)
   if(state.toggles['t_zeb'])exFar+=Math.round(bFar*0.15);
   if(state.toggles['t_design']&&tZN.includes('상업'))exFar+=110;
 
@@ -962,7 +1017,7 @@ function calcAll(){
   const iEl=document.getElementById('incentiveResult');
   if(allInc.length>0){
     const lines=[];
-    if(state.toggles['t_hotel'])lines.push('관광숙박 ＋'+Math.round(mFar*0.2)+'%p');
+    if(state.toggles['t_hotel'])lines.push('관광숙박 ＋'+Math.round(mFar*0.3)+'%p (×1.3배, 한시적)');
     if(state.toggles['t_zeb'])lines.push('ZEB·녹색건축 ＋'+Math.round(bFar*0.15)+'%p');
     if(state.toggles['t_design']&&tZN.includes('상업'))lines.push('창의혁신 ＋110%p');
     if(state.toggles['t_openspace']&&osExtra>0)lines.push('공개공지 ＋'+osExtra.toFixed(2)+'%p');
@@ -973,13 +1028,22 @@ function calcAll(){
   } else iEl.innerHTML='';
 
   const hr=parseInt(gv('hotelRatio'));let mf=0.5;if(hr===30)mf=0.4;if(hr===50)mf=0.3;
-  const plp=gn('publicLandPrice'),cr=iFar>0?iFar*mf/mFar:0,crp=cr*100,cab=area*cr*plp*2/1e8;
+  // 지역별 공공기여 완화 (2026.04.30 신설): 관광숙박 감면과 중복 시 지역별 완화는 1/2만 적용
+  let regionalDiscount=0;
+  if(state.toggles['t_regional']){
+    const baseDiscount=0.2; // 최대 20% 감면
+    regionalDiscount = hr>0 ? baseDiscount*0.5 : baseDiscount; // 중복 시 1/2
+  }
+  const plp=gn('publicLandPrice'),cr=iFar>0?Math.max(0,(iFar*mf/mFar)-regionalDiscount):0,crp=cr*100,cab=area*cr*plp*2/1e8;
   document.getElementById('contribRate').textContent=crp.toFixed(2)+'%';
-  document.getElementById('contribRateFormula').textContent=`(${mFar}−${bFar}) × ${(mf*100).toFixed(0)}% ÷ ${mFar}`;
+  document.getElementById('contribRateFormula').textContent=`(${mFar}−${bFar}) × ${(mf*100).toFixed(0)}% ÷ ${mFar}${regionalDiscount>0?' − 지역완화 '+(regionalDiscount*100).toFixed(0)+'%p':''}`;
   document.getElementById('contribArea').textContent=(area*cr).toFixed(2)+'㎡';
   document.getElementById('contribAreaSub').textContent=`${area.toLocaleString()}㎡ × ${crp.toFixed(2)}%`;
   document.getElementById('contribAmt').textContent=cab.toFixed(2)+'억원';
-  document.getElementById('contribGuide').innerHTML=hr>0?`<div class="issue issue-info"><div class="issue-dot"></div><div>관광숙박·노인복지 ${hr}% 도입 — 증가용적률의 ${(mf*100).toFixed(0)}% 기준 적용 (운영기준 4-1-1 나)</div></div>`:'';
+  const guideLines=[];
+  if(hr>0) guideLines.push(`관광숙박·노인복지 ${hr}% 도입 — 증가용적률의 ${(mf*100).toFixed(0)}% 기준 적용 (운영기준 4-1-1 나)`);
+  if(state.toggles['t_regional']) guideLines.push(`지역별 공공기여 완화 적용 — 최대 20%p 감면${hr>0?' (관광숙박 감면과 중복으로 1/2 적용)':''} (운영기준 4-1-1 나, 2026.04.30 신설)`);
+  document.getElementById('contribGuide').innerHTML=guideLines.map(g=>`<div class="issue issue-info"><div class="issue-dot"></div><div>${g}</div></div>`).join('');
 
   buildSummary(dist,R,area,bFar,mFar,iFar,crp,cIdx,tIdx,roadOk);
 }
