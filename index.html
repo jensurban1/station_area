@@ -609,8 +609,20 @@
       <div class="station-card-row"><span class="sc-label">분류</span><span id="src-type">-</span></div>
       <div class="station-card-row"><span class="sc-label">중심지 체계</span><span id="src-center" style="font-weight:500">-</span></div>
       <div class="station-card-row"><span class="sc-label">역세권 반경</span><span><span class="radius-display" id="src-radius">-</span></span></div>
+      <div class="station-card-row" id="pdfLinkRow" style="display:none">
+        <span class="sc-label">역세권 범위 지도</span>
+        <a id="pdfPageLink" href="#" target="_blank" rel="noopener"
+          style="display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:500;padding:5px 12px;border-radius:var(--radius);background:var(--accent);color:white;text-decoration:none">
+          <svg width="11" height="13" viewBox="0 0 11 13" fill="none"><rect x="1" y="1" width="9" height="11" rx="1" stroke="white" stroke-width="1.3"/><line x1="3" y1="4.5" x2="8" y2="4.5" stroke="white" stroke-width="1.1"/><line x1="3" y1="6.5" x2="8" y2="6.5" stroke="white" stroke-width="1.1"/><line x1="3" y1="8.5" x2="6" y2="8.5" stroke="white" stroke-width="1.1"/></svg>
+          역세권 범위 지도 보기
+        </a>
+      </div>
     </div>
 
+    <div style="margin-top:10px;padding:10px 14px;background:var(--surface2);border-radius:var(--radius);border:1px solid var(--border-light);display:flex;align-items:center;justify-content:space-between;gap:12px">
+      <span style="font-size:12px;color:var(--text-secondary)">위 분류는 참고용입니다. 서울도시공간포털에서 실제 중심지 범역을 직접 확인하세요.</span>
+      <a href="https://urban.seoul.go.kr/view/map/main.html" target="_blank" rel="noopener" style="flex-shrink:0;font-size:11px;font-family:var(--mono);padding:5px 10px;border-radius:4px;background:var(--text);color:white;text-decoration:none;white-space:nowrap">서울도시공간포털 →</a>
+    </div>
     <span class="manual-link" id="manualLink" style="display:none" onclick="toggleManual()">▸ 반경을 직접 지정하려면 클릭</span>
     <div id="manualPanel" style="display:none;margin-top:8px">
       <div class="field"><label>역세권 반경 직접 지정</label>
@@ -628,6 +640,20 @@
       <input type="number" id="distToStation" value="150" min="0" oninput="calcAll()">
     </div>
     <div id="stationCheck" class="inline-result"></div>
+
+    <div class="divider"></div>
+    <div class="field">
+      <label>현재 용도지역</label>
+      <select id="currentZone" onchange="calcAll()">
+        <option value="2종7층">제2종일반주거지역 (7층이하 포함)</option>
+        <option value="2종">제2종일반주거지역</option>
+        <option value="3종">제3종일반주거지역</option>
+        <option value="준주거" selected>준주거지역</option>
+        <option value="근린상업" class="opt-commercial">근린상업지역</option>
+        <option value="일반상업" class="opt-commercial">일반상업지역</option>
+      </select>
+      <p class="hint" id="zoneHint" style="display:none;color:var(--yellow)">비중심지는 주거지역·준주거지역만 사업 대상입니다 (운영기준 2-1-3)</p>
+    </div>
 
     <div class="divider"></div>
     <p class="section-title">제외 대상 여부 확인</p>
@@ -676,26 +702,15 @@
       </div>
     </div>
     <div id="jbiPanel" style="display:none">
-      <div class="field-row3">
-        <div class="field"><label>노후건축물 비율 (%)</label><input type="number" id="oldRatio" value="60" oninput="calcAll()"></div>
-        <div class="field"><label>150㎡ 미만 필지비율 (%)</label><input type="number" id="smallLot" value="40" oninput="calcAll()"></div>
-        <div class="field"><label>2층 이하 건축물비율 (%)</label><input type="number" id="lowBldg" value="50" oninput="calcAll()"></div>
+      <div class="toggle-row" style="margin-top:4px">
+        <label>동수의 60% 이상 노후도 요건 충족 <span style="font-size:11px;color:var(--text-tertiary)">(「2030 서울시 도시·주거환경정비기본계획」 정비구역 지정 요건 기준)</span></label>
+        <button class="toggle" id="t_jbi_aging" onclick="tog('t_jbi_aging')"></button>
       </div>
     </div>
     <div id="agingCheck" class="inline-result" style="margin-bottom:1rem"></div>
 
     <div class="divider"></div>
-    <div class="field"><label>현재 용도지역</label>
-      <select id="currentZone" onchange="calcAll()">
-        <option value="2종7층">2종일반주거지역 (7층이하)</option>
-        <option value="2종">2종일반주거지역</option>
-        <option value="3종">3종일반주거지역</option>
-        <option value="준주거" selected>준주거지역</option>
-        <option value="근린상업">근린상업지역</option>
-        <option value="일반상업">일반상업지역</option>
-      </select>
-    </div>
-    <div class="toggle-row" style="margin-top:12px"><label>기존 지구단위계획구역 내 대상지</label><button class="toggle" id="t_jgu" onclick="tog('t_jgu')"></button></div>
+    <div class="toggle-row"><label>기존 지구단위계획구역 내 대상지</label><button class="toggle" id="t_jgu" onclick="tog('t_jgu')"></button></div>
     <div id="jguFarPanel" style="display:none;margin-top:8px">
       <div class="field"><label>지구단위계획 허용용적률 (%)</label><input type="number" id="jguFar" value="350" min="0" oninput="calcAll()"></div>
       <p class="hint">운영기준 1-3-5: 기존 지구단위계획구역 내 상향지역은 지구단위계획으로 결정된 허용용적률 적용</p>
@@ -707,51 +722,45 @@
   <!-- ── STEP 3 ── -->
   <div id="panel2" class="panel">
     <p class="section-title">03 용도지역 변경 및 용적률 체계</p>
-    <div class="field-row">
-      <div class="field"><label>사업 대상지 입지 특성</label>
-        <select id="locChar" onchange="calcAll()">
-          <option value="일반">일반 (해당없음)</option>
-          <option value="역인접부">역 인접부 (승강장 경계에 1m 이상 접함)</option>
-          <option value="간선가로연접부" selected>간선가로 연접부 (폭 20m 이상 도로)</option>
-          <option value="역인접+간선">역인접부 + 간선가로 연접부</option>
-        </select>
-      </div>
-      <div class="field"><label>복합용도 도입 여부</label>
-        <select id="mixedUse" onchange="calcAll()">
-          <option value="N" selected>미도입</option>
-          <option value="Y">도입 (전체 용적률의 50% 이상 업무·관광숙박)</option>
-        </select>
-      </div>
+
+    <!-- Step 1에서 선택한 현재 용도지역 표시 -->
+    <div style="display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--surface2);border:1px solid var(--border-light);border-radius:var(--radius-lg);margin-bottom:1rem">
+      <span style="font-size:12px;color:var(--text-secondary);flex-shrink:0">현재 용도지역 (Step 1 선택)</span>
+      <span id="currentZoneDisplay" style="font-size:13px;font-weight:500;color:var(--text-primary)">-</span>
+      <button onclick="goStep(0)" style="margin-left:auto;font-size:11px;padding:3px 10px;border-radius:4px;border:1px solid var(--border);background:var(--surface);color:var(--text-secondary);cursor:pointer;white-space:nowrap">← 변경</button>
     </div>
 
+    <div class="field"><label>사업 대상지 입지 특성</label>
+      <select id="locChar" onchange="calcAll()">
+        <option value="일반">일반 (해당없음)</option>
+        <option value="역인접부">역 인접부 (승강장 경계에 1m 이상 접함)</option>
+        <option value="간선가로연접부" selected>간선가로 연접부 (폭 20m 이상 도로)</option>
+      </select>
+    </div>
+
+    <div id="step4Notice" style="display:none;margin-bottom:12px">
+      <div class="issue issue-warn"><div class="issue-dot"></div><div style="font-size:12px">역 인접부 또는 간선가로 연접부 해당 — <strong>최대 4단계 상향 시 복합용도 50% 이상 도입 의무</strong> (운영기준 3-1-2 다). 복합용도 미도입 시 최대 3단계까지만 가능합니다.</div></div>
+    </div>
+
+    <!-- 복합용도: 비중심지 시 의무 표시, 그 외 선택 -->
+    <div class="field">
+      <label id="mixedUseLabel">복합용도 도입 여부</label>
+      <select id="mixedUse" onchange="calcAll()">
+        <option value="N" selected>미도입</option>
+        <option value="Y">도입 (전체 용적률의 50% 이상 업무·관광숙박)</option>
+      </select>
+      <p class="hint" id="mixedUseHint" style="display:none;color:var(--yellow)">비중심지에서 근린상업 초과 상향 시 복합용도 도입이 필요합니다.</p>
+    </div>
+
+    <!-- 비중심지 특례 패널 (JS로 제어) -->
     <div id="nonCenterSpecialPanel" style="display:none;margin-bottom:1rem">
-      <div style="background:var(--yellow-bg);border:1px solid #E8D080;border-radius:var(--radius-lg);padding:12px 16px;">
-        <div style="font-size:11px;font-weight:600;color:var(--yellow);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:10px">비중심지 일반상업 특례 (3-1-2 라목) — 신설 2026.04.30</div>
-        <p style="font-size:12px;color:var(--text-secondary);margin-bottom:10px">아래 조건을 모두 충족하면 비중심지에서도 최대 일반상업지역까지 상향 가능</p>
-        <div class="field-row">
-          <div class="field">
-            <label>20m 이상 도로 접면 여부</label>
-            <select id="special20m" onchange="calcAll()">
-              <option value="N" selected>미해당</option>
-              <option value="Y">해당 (1면 이상 폭 20m↑)</option>
-            </select>
-          </div>
-          <div class="field">
-            <label>6m 이상 도로 추가 접면 여부</label>
-            <select id="special6m" onchange="calcAll()">
-              <option value="N" selected>미해당</option>
-              <option value="Y">해당 (1면 이상 폭 6m↑, 예정도로 포함)</option>
-            </select>
-          </div>
-        </div>
-        <div class="field" style="margin-bottom:4px">
-          <label>복합용도 도입 비율 (연면적 기준)</label>
-          <select id="special30pct" onchange="calcAll()">
-            <option value="N" selected>30% 미만</option>
-            <option value="Y">30% 이상 — 특례 적용 가능</option>
-          </select>
-        </div>
-        <div id="specialResult" style="margin-top:8px"></div>
+      <div style="background:var(--yellow-bg);border:1px solid #E8D080;border-radius:var(--radius-lg);padding:14px 16px;">
+        <div style="font-size:11px;font-weight:600;color:var(--yellow);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:8px">비중심지 일반상업 상향 특례 조건 (3-1-2 라목, 2026.04.30 신설)</div>
+        <p style="font-size:12px;color:var(--text-secondary);margin-bottom:12px">아래 3가지를 모두 충족하면 최대 <strong>일반상업지역</strong>까지 상향 가능</p>
+        <div class="toggle-row"><label>20m 이상 도로 1면 접면 (사업으로 설치 예정 도로 포함)</label><button class="toggle" id="special20m" onclick="togSpecial('special20m')"></button></div>
+        <div class="toggle-row"><label>6m 이상 도로 1면 접면 (사업으로 설치 예정 도로 포함)</label><button class="toggle" id="special6m" onclick="togSpecial('special6m')"></button></div>
+        <div class="toggle-row" style="border-bottom:none"><label>연면적 30% 이상 복합용도 도입</label><button class="toggle" id="special30pct" onclick="togSpecial('special30pct')"></button></div>
+        <div id="specialResult" style="margin-top:10px"></div>
       </div>
     </div>
 
@@ -775,7 +784,7 @@
     <p style="font-size:12px;font-weight:500;color:var(--text-secondary);margin-bottom:12px">추가 인센티브 (선택)</p>
     <div class="toggle-row"><label>관광숙박시설 도입 — 상한용적률 × 1.3배 이내 <span style="font-size:10px;color:var(--text-tertiary)">(관광호텔·전통호텔·가족호텔·호스텔업, 한시적 적용)</span></label><button class="toggle" id="t_hotel" onclick="tog('t_hotel')"></button></div>
     <div class="toggle-row"><label>ZEB·녹색건축 인증 — 기준용적률 × 최대 15%</label><button class="toggle" id="t_zeb" onclick="tog('t_zeb')"></button></div>
-    <div class="toggle-row"><label>창의혁신 디자인 — 상업지역 최대 110%p</label><button class="toggle" id="t_design" onclick="tog('t_design')"></button></div>
+    <div class="toggle-row"><label>창의혁신 디자인 — 상업지역 최대 110%p <span style="font-size:10px;color:var(--red)">※ 미적용 원칙 (도시공간본부·주관부서 모두 인정 시 예외)</span></label><button class="toggle" id="t_design" onclick="tog('t_design')"></button></div>
     <div class="toggle-row"><label>공개공지 의무면적 초과 설치</label><button class="toggle" id="t_openspace" onclick="tog('t_openspace')"></button></div>
 
     <div id="openspacePanel" style="display:none;margin-top:14px;margin-bottom:4px">
@@ -800,7 +809,14 @@
   <div id="panel3" class="panel">
     <p class="section-title">04 공공기여 산정</p>
     <div class="field"><label>공시지가 (원/㎡)</label><input type="number" id="publicLandPrice" value="14890000" min="0" oninput="calcAll()"></div>
-    <p class="hint" style="margin-top:-8px;margin-bottom:1rem">부지가액 = 공시지가 × 2 적용 (도시계획조례 제21조)</p>
+    <div style="margin-top:-6px;margin-bottom:1.2rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">
+      <p class="hint">부지가액 = 공시지가 × 2 적용 (도시계획조례 제21조)</p>
+      <a href="https://www.realtyprice.kr/notice/gsindividual/search.htm" target="_blank" rel="noopener"
+        style="display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:500;padding:7px 14px;border-radius:var(--radius);background:var(--accent);color:white;text-decoration:none;white-space:nowrap;box-shadow:var(--shadow)">
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="5" cy="5" r="4" stroke="white" stroke-width="1.5"/><line x1="8.5" y1="8.5" x2="11" y2="11" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg>
+        공시지가 조회
+      </a>
+    </div>
     <div class="field"><label>관광숙박·노인복지주택 도입 비율 (공공기여율 감면)</label>
       <select id="hotelRatio" onchange="calcAll()">
         <option value="0">미도입 (0%) — 증가용적률의 50% 기준</option>
@@ -843,12 +859,34 @@
     <div id="issueList"></div>
     <div class="divider"></div>
     <p style="font-size:12px;font-weight:500;color:var(--text-secondary);margin-bottom:12px">예상 사업 일정</p>
-    <div class="schedule-grid">
-      <div class="card"><div class="card-label">대상지선정~지원자문단</div><div class="card-value" style="font-size:16px">약 10개월</div></div>
-      <div class="card"><div class="card-label">지구단위계획 변경</div><div class="card-value" style="font-size:16px">약 8개월</div></div>
-      <div class="card"><div class="card-label">건축설계</div><div class="card-value" style="font-size:16px">약 12개월</div></div>
-      <div class="card"><div class="card-label">착공까지 총 소요</div><div class="card-value" style="font-size:16px;color:var(--accent)">약 32개월</div></div>
+    <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:1rem">
+      <div class="card" style="text-align:center">
+        <div class="card-label" style="text-align:center">대상지 선정</div>
+        <div class="card-value" style="font-size:14px;text-align:center">약 2개월</div>
+        <div class="card-sub" style="text-align:center">신청 → 선정위원회</div>
+      </div>
+      <div class="card" style="text-align:center">
+        <div class="card-label" style="text-align:center">지원자문단</div>
+        <div class="card-value" style="font-size:14px;text-align:center">약 8개월</div>
+        <div class="card-sub" style="text-align:center">자문 → 주민제안</div>
+      </div>
+      <div class="card" style="text-align:center">
+        <div class="card-label" style="text-align:center">지구단위계획 변경</div>
+        <div class="card-value" style="font-size:14px;text-align:center">약 8개월</div>
+        <div class="card-sub" style="text-align:center">결정 요청 → 고시</div>
+      </div>
+      <div class="card" style="text-align:center">
+        <div class="card-label" style="text-align:center">건축설계</div>
+        <div class="card-value" style="font-size:14px;text-align:center">약 12개월</div>
+        <div class="card-sub" style="text-align:center">심의 → 허가</div>
+      </div>
+      <div class="card" style="text-align:center;border-color:var(--accent);border-width:1.5px">
+        <div class="card-label" style="text-align:center">착공까지 총 소요</div>
+        <div class="card-value" style="font-size:16px;color:var(--accent);text-align:center">약 32개월</div>
+        <div class="card-sub" style="text-align:center">착공 준비</div>
+      </div>
     </div>
+    <div class="issue issue-info" style="margin-bottom:0"><div class="issue-dot"></div><div style="font-size:12px">상기 일정은 향후 추진 상황·여건에 따라 달라질 수 있습니다.</div></div>
     <div class="nav-btns"><button class="btn" onclick="goStep(3)">← 이전</button><button class="btn btn-primary" onclick="window.print()">🖨 인쇄 / PDF 저장</button></div>
   </div>
 
@@ -857,7 +895,61 @@
 <footer>HAEAHN ARCHITECTURE 도시건축본부 · 역세권 활성화사업 운영기준 2026.04.30 기준 · 본 툴은 참고용이며 실제 사업 적용 시 관련 법령 및 지침을 직접 확인하시기 바랍니다.</footer>
 
 <script>
-// 역 데이터 기준: 역세권 활성화사업 운영기준 2026.04.30, 서울시 도시공간전략과 2025.08
+// 역세권 범위 참고 PDF 페이지 매핑 (서울시 도시공간전략과, 2025.08 기준)
+// PDF 파일은 저장소 루트에 'station_map.pdf' 로 업로드 필요
+const PDF_FILENAME = 'station_map.pdf';
+const PDF_PAGE_MAP = {
+  "가락시장":25,"가산디지털단지":26,"가양":27,"가오리":28,"가좌":29,"강남구청":30,
+  "경찰병원":44,"고덕":45,"고려대":46,"고속버스터미널":47,"공덕":48,"공릉":49,
+  "공항시장":50,"관악산":51,"광나루":52,"광운대":53,"광화문":54,"광흥창":55,
+  "교대":56,"구로디지털단지":57,"구로":58,"구룡":59,"구반포":60,"구산":61,
+  "구의":62,"구일":63,"구파발":64,"국회의사당":65,"군자":66,"굽은다리":67,
+  "금천구청":68,"금호":69,"길동":70,"길음":71,"김포공항":72,"까치산":73,
+  "낙성대":74,"남구로":75,"남부터미널":76,"남성":77,"남영":78,"남태령":79,
+  "내방":80,"노들":81,"노량진":82,"노원":83,"녹번":84,"녹사평":85,"녹천":86,"논현":87,
+  "답십리":88,"당고개":89,"당곡":90,"당산":91,"대림삼거리":92,"대림":93,
+  "대모산입구":94,"대방":95,"대청":96,"대치":97,"대흥":98,"도곡":99,
+  "도림사거리":100,"도림천":101,"도봉산":102,"도봉":103,"독립문":104,"독바위":105,
+  "독산":106,"돌곶이":107,"동대문":108,"동대문역사문화공원":109,"동대입구":110,
+  "동묘앞":111,"동작":112,"둔촌동":113,"둔촌오륜":114,"등촌":115,
+  "디지털미디어시티":116,"뚝섬":117,"마곡나루":118,"마곡":119,"마들":120,
+  "마장":121,"마천":122,"마포구청":123,"마포":124,"망우":125,"망원":126,
+  "매봉":127,"먹골":128,"면목":129,"명동":130,"명일":131,"목동":132,
+  "몽촌토성":133,"무악재":134,"문래":135,"문정":136,"미아사거리":137,"미아":138,
+  "반포":139,"발산":140,"방배":141,"방이":142,"방학":143,"방화":144,
+  "버티고개":145,"보라매공원":146,"보라매병원":147,"보라매":148,"보문":149,
+  "복정":150,"봉은사":151,"봉천":152,"봉화산":153,"북한산보국문":154,"북한산우이":155,
+  "불광":156,"사가정":157,"사당":158,"사평":159,"삼각지":160,"삼성":161,
+  "삼성중앙":162,"삼양사거리":163,"삼양":164,"삼전":165,"상계":166,"상도":167,
+  "상봉":168,"상수":169,"상왕십리":170,"상월곡":171,"상일동":172,"새절":173,
+  "샛강":174,"서강대":175,"서대문":176,"서울":12,"서원":183,"서초":184,
+  "석계":185,"석수":186,"석촌고분":187,"석촌":188,"선릉":189,"선유도":190,
+  "선정릉":191,"성수":192,"성신여대입구":193,"솔밭공원":194,"수서":195,
+  "수색":196,"수진":197,"수락산":198,"수유":202,"숙대입구":203,"숭실대입구":204,
+  "시청":205,"시흥사거리":206,"신금호":207,"신길":208,"신내":209,"신논현":210,
+  "신답":211,"신당":212,"신대방삼거리":213,"신대방":214,"신도림":215,"신독산":216,
+  "신림":217,"신목동":218,"신반포":219,"신방화":220,"신사":221,"신설동":222,
+  "신용산":223,"신이문":224,"신정네거리":225,"신정":226,"신촌":227,"신풍":229,
+  "쌍문":230,"아차산":231,"아현":232,"안국":233,"안암":234,"암사":235,
+  "암사역사공원":236,"압구정로데오":237,"압구정":238,"애오개":239,"약수":240,
+  "양원":241,"양재시민의숲":242,"양재":243,"양천구청":244,"양천향교":245,
+  "양평":246,"어린이대공원":247,"언주":248,"여의나루":249,"여의도":250,
+  "역삼":251,"역촌":252,"연신내":253,"염창":254,"영등포구청":255,"영등포시장":256,
+  "영등포":257,"오금":258,"오류":259,"오목교":260,"옥수":261,"온수":262,
+  "올림픽공원":263,"왕십리":264,"외대앞":265,"용답":266,"용두":267,"용마산":268,
+  "용산":269,"우장산":270,"월계":271,"월곡":272,"월드컵경기장":273,"을지로3가":274,
+  "을지로4가":275,"을지로입구":276,"응봉":277,"응암":278,"이대":279,"이수":280,
+  "이촌":281,"이태원":282,"일원":283,"자양":284,"잠실나루":285,"잠실새내":286,
+  "잠실":287,"잠원":288,"장승배기":289,"장지":290,"장한평":291,"정릉":292,
+  "제기동":293,"종각":294,"종로3가":295,"종로5가":296,"종합운동장":297,
+  "중계":298,"중곡":299,"중랑":300,"중앙보훈병원":301,"중화":302,"증미":303,
+  "증산":304,"창동":305,"창신":306,"천왕":307,"천호":308,"청계산입구":309,
+  "청구":310,"청담":311,"청량리":312,"충무로":313,"충정로":314,"태릉입구":315,
+  "하계":316,"학동":317,"학여울":318,"한강진":319,"한남":320,"한성대입구":321,
+  "한성백제":322,"한양대":323,"한티":324,"합정":325,"행당":326,"혜화":327,
+  "홍대입구":328,"홍제":329,"화계":330,"화곡":331,"화랑대":332,"회기":333,
+  "회현":334,"효창공원앞":335,"흑석":336
+};
 // 환승역(27개): 중심지 미분류 환승역 → 350m
 const TRANSFER_STATIONS = new Set(["가락시장","고속터미널","김포공항","까치산","당산","대림","도곡","도봉산","동작","모란","복정","석계","성신여대입구","신내","신당","신림","약수","오금","올림픽공원","옥수","온수","이촌","청구","충정로","태릉입구","합정","효창공원앞"]);
 // 중심지별 역 분류 (도심44+광역중심21+지역중심25+지구중심18+비중심지112 = 220개)
@@ -869,7 +961,7 @@ const ZONES=['2종일반주거지역','3종일반주거지역','준주거지역'
 const ZONE_FAR=[200,250,400,600,800,1000];
 const ZONE_KEYS=['2종','3종','준주거','근린상업','일반상업','중심상업'];
 
-const state={toggles:{t_pre:0,t_zone:0,t_regen:0,t_special:0,t_facility:0,t_jgu:0,t_hotel:0,t_zeb:0,t_design:0,t_openspace:0,t_regional:0},station:null};
+const state={toggles:{t_pre:0,t_zone:0,t_regen:0,t_special:0,t_facility:0,t_jgu:0,t_hotel:0,t_zeb:0,t_design:0,t_openspace:0,t_regional:0,t_jbi_aging:0},specials:{special20m:0,special6m:0,special30pct:0},station:null};
 
 function getSI(n){
   const isT=TRANSFER_STATIONS.has(n),c=STATION_TO_CENTER[n]||null;
@@ -906,10 +998,40 @@ function selectStation(n){
   document.getElementById('src-type').innerHTML=`<span class="dd-badge ${cc}">${cl}</span>${i.isT?' <span class="dd-badge db-환승">환승역</span>':''}`;
   document.getElementById('src-center').textContent=i.center?(i.center+(i.isT?' + 환승역':'')):(i.isT?'비중심지 + 환승역':'분류없음');
   document.getElementById('src-radius').textContent=i.radius+'m';
+  // PDF 역세권 범위 지도 링크
+  const pg=PDF_PAGE_MAP[n];
+  const pdfRow=document.getElementById('pdfLinkRow');
+  const pdfLink=document.getElementById('pdfPageLink');
+  if(pg&&pdfRow&&pdfLink){
+    pdfLink.href=PDF_FILENAME+'#page='+pg;
+    pdfLink.textContent='';
+    pdfLink.innerHTML='<svg width="11" height="13" viewBox="0 0 11 13" fill="none"><rect x="1" y="1" width="9" height="11" rx="1" stroke="white" stroke-width="1.3"/><line x1="3" y1="4.5" x2="8" y2="4.5" stroke="white" stroke-width="1.1"/><line x1="3" y1="6.5" x2="8" y2="6.5" stroke="white" stroke-width="1.1"/><line x1="3" y1="8.5" x2="6" y2="8.5" stroke="white" stroke-width="1.1"/></svg> '+n+'역 범위 지도 (p.'+pg+')';
+    pdfRow.style.display='flex';
+  } else if(pdfRow){ pdfRow.style.display='none'; }
+  updateZoneOptions();
   calcAll();
 }
 
-function clearStation(){state.station=null;document.getElementById('stationInput').value='';document.getElementById('dropdown').style.display='none';document.getElementById('stationResultCard').style.display='none';document.getElementById('manualLink').style.display='none';calcAll();}
+function clearStation(){state.station=null;document.getElementById('stationInput').value='';document.getElementById('dropdown').style.display='none';document.getElementById('stationResultCard').style.display='none';document.getElementById('manualLink').style.display='none';updateZoneOptions();calcAll();}
+
+// 비중심지 선택 시 현재 용도지역 상업지역 옵션 비활성화
+function updateZoneOptions(){
+  const ct=getC();
+  const isNonCenter=ct==='비중심지';
+  const sel=document.getElementById('currentZone');
+  const hint=document.getElementById('zoneHint');
+  if(!sel) return;
+  [...sel.options].forEach(o=>{
+    const isCommercial=o.value==='근린상업'||o.value==='일반상업';
+    o.disabled=isNonCenter&&isCommercial;
+    o.style.color=isNonCenter&&isCommercial?'var(--text-tertiary)':'';
+  });
+  // 비중심지인데 상업지역 선택돼 있으면 준주거로 초기화
+  if(isNonCenter&&(sel.value==='근린상업'||sel.value==='일반상업')){
+    sel.value='준주거';
+  }
+  if(hint) hint.style.display=isNonCenter?'block':'none';
+}
 
 function toggleManual(){const p=document.getElementById('manualPanel'),v=p.style.display==='none';p.style.display=v?'block':'none';document.querySelector('.manual-link').textContent=v?'▾ 반경을 직접 지정하려면 클릭':'▸ 반경을 직접 지정하려면 클릭';}
 
@@ -919,6 +1041,7 @@ function getR(){const m=parseInt(document.getElementById('manualRadius')?.value|
 function getC(){if(state.station)return getSI(state.station).center||'비중심지';return '비중심지';}
 
 function tog(id){state.toggles[id]=state.toggles[id]?0:1;document.getElementById(id).classList.toggle('on',!!state.toggles[id]);if(id==='t_jgu')document.getElementById('jguFarPanel').style.display=state.toggles[id]?'block':'none';if(id==='t_openspace')document.getElementById('openspacePanel').style.display=state.toggles[id]?'block':'none';if(id==='t_regional')document.getElementById('regionalNote').style.display=state.toggles[id]?'block':'none';calcAll();}
+function togSpecial(id){state.specials[id]=state.specials[id]?0:1;document.getElementById(id).classList.toggle('on',!!state.specials[id]);calcAll();}
 
 function goStep(n){document.querySelectorAll('.panel').forEach((p,i)=>p.classList.toggle('active',i===n));document.querySelectorAll('.step-btn').forEach((b,i)=>{b.classList.remove('active');if(i===n)b.classList.add('active');});calcAll();}
 
@@ -926,22 +1049,42 @@ function gv(id){return document.getElementById(id)?.value||'';}
 function gn(id){return parseFloat(document.getElementById(id)?.value)||0;}
 
 function getMaxZ(c,loc,mix){
-  const sp=loc!=='일반',hm=mix==='Y';
+  const sp=loc!=='일반', hm=mix==='Y';
+  const n4=document.getElementById('step4Notice');
+  if(n4) n4.style.display=sp?'block':'none';
   const ncp=document.getElementById('nonCenterSpecialPanel');
-  if(ncp) ncp.style.display=(c==='비중심지')?'block':'none';
+  const muHint=document.getElementById('mixedUseHint');
+  const muLabel=document.getElementById('mixedUseLabel');
+  const isNonCenter=c==='비중심지';
+  if(ncp) ncp.style.display=isNonCenter?'block':'none';
+  if(muHint) muHint.style.display=isNonCenter?'block':'none';
+  if(muLabel) muLabel.textContent=isNonCenter?'복합용도 도입 여부 (비중심지 근린상업 초과 상향 시 필요)':'복합용도 도입 여부';
+
   if(c==='도심'||c==='광역중심') return(sp&&hm)?5:4;
   if(c==='지역중심') return 4;
   if(c==='지구중심') return sp?4:3;
-  // 비중심지 특례 (3-1-2 라목, 신설 2026.04.30)
-  const s20=gv('special20m')==='Y', s6=gv('special6m')==='Y', s30=gv('special30pct')==='Y';
+
+  // ── 비중심지 ──
+  const curZ=gv('currentZone');
   const sEl=document.getElementById('specialResult');
-  if(s20&&s6&&s30){
-    if(sEl) sEl.innerHTML='<span style="color:var(--green);font-size:12px;font-weight:500">✓ 특례 조건 충족 — 최대 일반상업지역까지 상향 가능</span>';
-    return 4;
+  const s20=!!state.specials.special20m, s6=!!state.specials.special6m, s30=!!state.specials.special30pct;
+
+  if(sp){
+    // 역인접부 또는 간선가로연접부 해당: 특례 조건 충족 시 일반상업까지 가능
+    if(s20&&s6&&s30){
+      if(sEl) sEl.innerHTML='<div class="issue issue-ok" style="margin:0"><div class="issue-dot"></div><div style="font-size:12px">특례 조건 충족 — 최대 일반상업지역까지 상향 가능</div></div>';
+      return 4;
+    } else {
+      if(sEl){const m=[];if(!s20)m.push('20m↑ 도로');if(!s6)m.push('6m↑ 도로');if(!s30)m.push('복합용도 30%↑');sEl.innerHTML=m.length?`<div style="font-size:12px;color:var(--text-tertiary)">미충족 항목: ${m.join(', ')}</div>`:''; }
+      // 입지특성 해당 + 특례 미충족: 기본 상향 적용
+      return (curZ==='준주거') ? 3 : 2;
+    }
   } else {
-    if(sEl){const m=[];if(!s20)m.push('20m↑ 도로 1면');if(!s6)m.push('6m↑ 도로 1면');if(!s30)m.push('복합용도 30%↑');sEl.innerHTML=`<span style="color:var(--text-tertiary);font-size:12px">미충족: ${m.join(', ')}</span>`;}
+    // 일반(해당없음): 현재 용도지역에 따라 상향 한도 제한
+    // 준주거 → 근린상업까지 / 2종·3종 → 준주거까지
+    if(sEl) sEl.innerHTML='<div style="font-size:12px;color:var(--text-tertiary)">입지특성 미해당 시 일반상업 특례 불가</div>';
+    return (curZ==='준주거') ? 3 : 2;
   }
-  return sp?3:2;
 }
 function getCurZ(z){if(z==='2종7층'||z==='2종')return 0;if(z==='3종')return 1;if(z==='준주거')return 2;if(z==='근린상업')return 3;if(z==='일반상업')return 4;return 0;}
 
@@ -963,6 +1106,18 @@ function calcOS(bFar,legalFar,siteArea,obligArea,actualArea){
 }
 
 function calcAll(){
+  updateZoneOptions();
+  // Step 3에 현재 용도지역 표시 동기화
+  const zoneNames={
+    '2종7층':'제2종일반주거지역 (7층이하 포함)',
+    '2종':'제2종일반주거지역',
+    '3종':'제3종일반주거지역',
+    '준주거':'준주거지역',
+    '근린상업':'근린상업지역',
+    '일반상업':'일반상업지역'
+  };
+  const zd=document.getElementById('currentZoneDisplay');
+  if(zd) zd.textContent=zoneNames[gv('currentZone')]||'-';
   const biz=gv('bizType');
   document.getElementById('agingPanel').style.display=biz==='jgu'?'block':'none';
   document.getElementById('jbiPanel').style.display=biz==='jbi'?'block':'none';
@@ -989,7 +1144,7 @@ function calcAll(){
 
   const agEl=document.getElementById('agingCheck');
   if(biz==='jgu'){const tot=gn('totalBuildings'),old=gn('oldBuildings'),r=tot>0?old/tot:0,p=(r*100).toFixed(1),bw=Math.min(r*100,100).toFixed(1);agEl.innerHTML=`<div style="width:100%"><div style="display:flex;align-items:center;gap:8px"><span style="color:${r>=2/3?'var(--green)':'var(--red)'}">${old}/${tot}동 (${p}%) — 2/3 이상 ${r>=2/3?'충족':'미달'}</span><span class="tag ${r>=2/3?'tag-ok':'tag-fail'}">${r>=2/3?'적합':'부적합'}</span></div><div class="fap-bar"><div class="fap-fill" style="width:${bw}%;background:${r>=2/3?'var(--green)':'var(--red)'}"></div></div></div>`;}
-  else{const ol=gn('oldRatio'),sl=gn('smallLot'),lb=gn('lowBldg'),ok=ol>=60&&(sl>=40||lb>=50);agEl.innerHTML=ok?'<span style="color:var(--green)">도시정비형 노후도 요건 충족</span><span class="tag tag-ok">적합</span>':'<span style="color:var(--red)">도시정비형 노후도 요건 미달</span><span class="tag tag-fail">부적합</span>';}
+  else{const ok=!!state.toggles.t_jbi_aging;agEl.innerHTML=ok?'<span style="color:var(--green)">노후도 요건 충족 (동수의 60% 이상)</span><span class="tag tag-ok">적합</span>':'<span style="color:var(--red)">노후도 요건 미확인 — 토글로 충족 여부를 선택하세요</span><span class="tag tag-warn">확인필요</span>';}
 
   const ct=getC(),lc=gv('locChar'),mu=gv('mixedUse'),maxIdx=getMaxZ(ct,lc,mu),cz=gv('currentZone'),cIdx=getCurZ(cz);
   document.getElementById('maxZoneVal').textContent=ZONES[maxIdx];
@@ -997,7 +1152,9 @@ function calcAll(){
 
   const tzEl=document.getElementById('targetZone'),pv=tzEl.value;tzEl.innerHTML='';
   for(let i=cIdx+1;i<=maxIdx;i++){const o=document.createElement('option');o.value=ZONE_KEYS[i];o.textContent=ZONES[i];tzEl.appendChild(o);}
-  if([...tzEl.options].some(o=>o.value===pv))tzEl.value=pv;
+  // 기존 선택값이 유효하면 유지, 아니면 최대(마지막) 옵션으로 자동 선택
+  if([...tzEl.options].some(o=>o.value===pv)) tzEl.value=pv;
+  else tzEl.value=ZONE_KEYS[maxIdx]; // 최대 용도지역 자동 선택
 
   const tk=tzEl.value||ZONE_KEYS[Math.min(cIdx+1,maxIdx)],tIdx=ZONE_KEYS.indexOf(tk);
   const isJgu=state.toggles['t_jgu'],bFar=isJgu?gn('jguFar'):ZONE_FAR[cIdx],mFar=ZONE_FAR[tIdx]||bFar,iFar=mFar-bFar,legalFar=ZONE_FAR[cIdx];
@@ -1025,15 +1182,30 @@ function calcAll(){
   const allInc=['t_hotel','t_zeb','t_design','t_openspace'].filter(k=>state.toggles[k]);
   const iEl=document.getElementById('incentiveResult');
   if(allInc.length>0){
-    const lines=[];
-    if(state.toggles['t_hotel'])lines.push('관광숙박 ＋'+Math.round(mFar*0.3)+'%p (×1.3배, 한시적)');
-    if(state.toggles['t_zeb'])lines.push('ZEB·녹색건축 ＋'+Math.round(bFar*0.15)+'%p');
-    if(state.toggles['t_design']&&tZN.includes('상업'))lines.push('창의혁신 ＋110%p');
-    if(state.toggles['t_openspace']&&osExtra>0)lines.push('공개공지 ＋'+osExtra.toFixed(2)+'%p');
-    else if(state.toggles['t_openspace'])lines.push('공개공지: 의무면적 초과 시 산정');
+    const items=[];
+    if(state.toggles['t_hotel']) items.push({label:'관광숙박시설',val:'+'+Math.round(mFar*0.3)+'%p',sub:'상한용적률 × 1.3배 (한시적)',color:'var(--accent)'});
+    if(state.toggles['t_zeb']) items.push({label:'ZEB·녹색건축 인증',val:'+'+Math.round(bFar*0.15)+'%p',sub:'기준용적률 × 15%',color:'var(--green)'});
+    if(state.toggles['t_design']&&tZN.includes('상업')) items.push({label:'창의혁신 디자인',val:'+110%p',sub:'미적용 원칙 — 예외 인정 시',color:'var(--text-secondary)'});
+    if(state.toggles['t_openspace']&&osExtra>0) items.push({label:'공개공지 초과설치',val:'+'+osExtra.toFixed(2)+'%p',sub:'의무면적 초과분 산정',color:'var(--green)'});
+    else if(state.toggles['t_openspace']) items.push({label:'공개공지 초과설치',val:'산정중',sub:'계획 공개공지 면적 입력 필요',color:'var(--text-tertiary)'});
     const total=mFar+exFar+(osExtra>0?osExtra:0);
-    const ov=allInc.length>=2?'<div class="issue issue-warn"><div class="issue-dot"></div><div>2개 이상 인센티브 중첩 — 지원 자문단 자문 필요 (운영기준 3-2-2)</div></div>':'';
-    iEl.innerHTML=`<div class="card"><div class="card-label">인센티브 포함 최대 용적률</div><div class="card-value">${total.toFixed(1)}%</div><div class="card-sub">${lines.join(' · ')}</div></div>${ov}`;
+    const ov=allInc.length>=2?'<div class="issue issue-warn" style="margin-top:10px"><div class="issue-dot"></div><div>2개 이상 인센티브 중첩 — 지원 자문단 자문 필요 (운영기준 3-2-2)</div></div>':'';
+    iEl.innerHTML=`
+      <div style="background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:14px 16px;margin-top:10px">
+        <div style="font-size:11px;font-weight:600;color:var(--text-tertiary);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:12px">추가 인센티브 적용 내역</div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px;margin-bottom:12px">
+          ${items.map(it=>`
+            <div style="background:var(--surface);border:1px solid var(--border-light);border-radius:var(--radius);padding:10px 12px">
+              <div style="font-size:11px;color:var(--text-secondary);margin-bottom:4px">${it.label}</div>
+              <div style="font-size:20px;font-weight:700;font-family:var(--mono);color:${it.color};letter-spacing:-0.02em">${it.val}</div>
+              <div style="font-size:10px;color:var(--text-tertiary);margin-top:3px">${it.sub}</div>
+            </div>`).join('')}
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;padding-top:10px;border-top:1px solid var(--border-light)">
+          <span style="font-size:12px;color:var(--text-secondary)">인센티브 포함 최대 용적률</span>
+          <span style="font-size:22px;font-weight:700;font-family:var(--mono);color:var(--accent)">${total.toFixed(0)}%</span>
+        </div>
+      </div>${ov}`;
   } else iEl.innerHTML='';
 
   const hr=parseInt(gv('hotelRatio'));let mf=0.5;if(hr===30)mf=0.4;if(hr===50)mf=0.3;
@@ -1070,8 +1242,13 @@ function buildSummary(dist,R,area,bFar,mFar,iFar,cRate,cIdx,tIdx,roadOk){
   sg.innerHTML=scs.map(s=>`<div class="sc-card ${s.rec?'rec':''}"><div class="sc-title">${s.name}${s.rec?'<span class="rec-badge">우선 검토</span>':''}</div><div class="sc-data-row"><span>상한용적률</span><span>${s.mf}%</span></div><div class="sc-data-row"><span>공공기여율</span><span>${s.r}%</span></div><div class="sc-data-row"><span>공공기여 면적</span><span>${s.a}㎡</span></div></div>`).join('');
 
   const issues=[];
+  const lc=gv('locChar'), mu=gv('mixedUse');
+  const isSpecial=lc!=='일반';
   if(!roadOk)issues.push({t:'danger',x:'도로 요건 미충족 — 2면 이상 4m 접도 + 최소 1면 8m 이상 필요'});
-  if(tIdx-cIdx>=3)issues.push({t:'warn',x:'3단계 이상 상향 — 역세권 활성화 기능 확보 당위성 별도 제시 필요 (운영기준 3-1-2 나)'});
+  // 4단계 상향 + 복합용도 미도입 경고
+  if(tIdx-cIdx>=4 && mu!=='Y') issues.push({t:'danger',x:'4단계 상향 시 복합용도(업무·관광숙박) 50% 이상 도입 의무 — 복합용도 미도입 상태 (운영기준 3-1-2 다)'});
+  if(tIdx-cIdx===4 && !isSpecial) issues.push({t:'danger',x:'4단계 상향은 역 인접부 또는 간선가로 연접부 해당 시에만 가능 (운영기준 3-1-2 다)'});
+  if(tIdx-cIdx>=3 && tIdx-cIdx<4)issues.push({t:'warn',x:'3단계 이상 상향 — 역세권 활성화 기능 확보 당위성 별도 제시 필요 (운영기준 3-1-2 나)'});
   if(tIdx>=3)issues.push({t:'warn',x:'인접 저층 주거지역 있을 경우 완충공간·용도관리 계획 필요 (지구단위계획 수립기준)'});
   if(state.toggles['t_jgu'])issues.push({t:'info',x:'기존 지구단위계획구역 내 — 지침상 높이·전면공지·공공보행통로 등 선결 조건 확인 필요'});
   if(['t_hotel','t_zeb','t_design','t_openspace'].filter(k=>state.toggles[k]).length>=2)issues.push({t:'warn',x:'추가 인센티브 2개 이상 중첩 — 지원 자문단 자문으로 적정성 인정 필요 (운영기준 3-2-2)'});
