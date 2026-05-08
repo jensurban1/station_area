@@ -561,9 +561,14 @@
       header { padding: 0 1rem; }
       .header-version { display: none; }
     }
+    /* 지도 이미지 줌 */
+    #mapOverlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:9999;cursor:zoom-out;justify-content:center;align-items:center;padding:20px}
+    #mapOverlay.open{display:flex}
+    #mapOverlay img{max-width:95vw;max-height:92vh;border-radius:var(--radius-lg);object-fit:contain;box-shadow:0 8px 40px rgba(0,0,0,0.5)}
   </style>
 </head>
 <body>
+<div id="mapOverlay" onclick="toggleMapZoom(null)"><img id="mapOverlayImg" src="" alt="역세권 범위 지도 확대"></div>
 
 <header>
   <span class="header-logo">HAEAHN ARCHITECTURE</span>
@@ -609,13 +614,15 @@
       <div class="station-card-row"><span class="sc-label">분류</span><span id="src-type">-</span></div>
       <div class="station-card-row"><span class="sc-label">중심지 체계</span><span id="src-center" style="font-weight:500">-</span></div>
       <div class="station-card-row"><span class="sc-label">역세권 반경</span><span><span class="radius-display" id="src-radius">-</span></span></div>
-      <div class="station-card-row" id="pdfLinkRow" style="display:none">
+      <div class="station-card-row" id="pdfLinkRow" style="display:none;flex-direction:column;align-items:stretch;gap:8px">
         <span class="sc-label">역세권 범위 지도</span>
-        <a id="pdfPageLink" href="#" target="_blank" rel="noopener"
-          style="display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:500;padding:5px 12px;border-radius:var(--radius);background:var(--accent);color:white;text-decoration:none">
-          <svg width="11" height="13" viewBox="0 0 11 13" fill="none"><rect x="1" y="1" width="9" height="11" rx="1" stroke="white" stroke-width="1.3"/><line x1="3" y1="4.5" x2="8" y2="4.5" stroke="white" stroke-width="1.1"/><line x1="3" y1="6.5" x2="8" y2="6.5" stroke="white" stroke-width="1.1"/><line x1="3" y1="8.5" x2="6" y2="8.5" stroke="white" stroke-width="1.1"/></svg>
-          역세권 범위 지도 보기
-        </a>
+        <div id="mapImgWrap" style="position:relative">
+          <img id="stationMapImg" src="" alt="" loading="lazy"
+            style="width:100%;border-radius:var(--radius);border:1px solid var(--border-light);cursor:zoom-in;display:block"
+            onclick="toggleMapZoom(this)">
+          <span style="position:absolute;bottom:6px;right:8px;font-size:10px;background:rgba(0,0,0,0.45);color:white;padding:2px 6px;border-radius:3px;pointer-events:none">클릭하면 확대</span>
+        </div>
+        <p style="font-size:10px;color:var(--text-tertiary);margin:0">※ 서울시 도시공간전략과 2025.08 기준 단순 참고용</p>
       </div>
     </div>
 
@@ -998,15 +1005,14 @@ function selectStation(n){
   document.getElementById('src-type').innerHTML=`<span class="dd-badge ${cc}">${cl}</span>${i.isT?' <span class="dd-badge db-환승">환승역</span>':''}`;
   document.getElementById('src-center').textContent=i.center?(i.center+(i.isT?' + 환승역':'')):(i.isT?'비중심지 + 환승역':'분류없음');
   document.getElementById('src-radius').textContent=i.radius+'m';
-  // PDF 역세권 범위 지도 링크
-  const pg=PDF_PAGE_MAP[n];
+  // 역세권 범위 지도 이미지 표시
   const pdfRow=document.getElementById('pdfLinkRow');
-  const pdfLink=document.getElementById('pdfPageLink');
-  if(pg&&pdfRow&&pdfLink){
-    pdfLink.href=PDF_FILENAME;
-    pdfLink.innerHTML='<svg width="11" height="13" viewBox="0 0 11 13" fill="none"><rect x="1" y="1" width="9" height="11" rx="1" stroke="white" stroke-width="1.3"/><line x1="3" y1="4.5" x2="8" y2="4.5" stroke="white" stroke-width="1.1"/><line x1="3" y1="6.5" x2="8" y2="6.5" stroke="white" stroke-width="1.1"/><line x1="3" y1="8.5" x2="6" y2="8.5" stroke="white" stroke-width="1.1"/></svg> 역세권 범위 지도 열기 <span style="font-size:10px;opacity:0.8">(→ p.'+pg+' 참고)</span>';
+  const mapImg=document.getElementById('stationMapImg');
+  if(pdfRow&&mapImg){
+    mapImg.src='images/'+n+'.jpg';
+    mapImg.alt=n+'역 역세권 범위';
     pdfRow.style.display='flex';
-  } else if(pdfRow){ pdfRow.style.display='none'; }
+  }
   updateZoneOptions();
   calcAll();
 }
@@ -1255,6 +1261,18 @@ function buildSummary(dist,R,area,bFar,mFar,iFar,cRate,cIdx,tIdx,roadOk){
   issues.push({t:'ok',x:'역세권 활성화사업 선정 후 착공까지 약 32개월 소요 예상'});
   document.getElementById('issueList').innerHTML=issues.map(i=>`<div class="issue issue-${i.t}"><div class="issue-dot"></div><div>${i.x}</div></div>`).join('');
 }
+
+function toggleMapZoom(img){
+  const overlay=document.getElementById('mapOverlay');
+  const oImg=document.getElementById('mapOverlayImg');
+  if(img){
+    oImg.src=img.src; oImg.alt=img.alt;
+    overlay.classList.add('open');
+  } else {
+    overlay.classList.remove('open');
+  }
+}
+document.addEventListener('keydown',e=>{if(e.key==='Escape') document.getElementById('mapOverlay').classList.remove('open');});
 
 calcAll();
 </script>
