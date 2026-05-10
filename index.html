@@ -10,30 +10,38 @@
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #F5F4F0;
+      --bg: #F2F1ED;
       --surface: #FFFFFF;
-      --surface2: #EDECE8;
-      --border: #D8D6CF;
-      --border-light: #E8E6E0;
-      --text: #1A1916;
-      --text-secondary: #6B6960;
-      --text-tertiary: #9B9890;
-      --accent: #1A5276;
-      --accent-light: #EBF2F8;
-      --green: #1A6B4A;
-      --green-bg: #EBF5F0;
-      --red: #8B1A1A;
-      --red-bg: #FDF0F0;
-      --yellow: #7A5C00;
-      --yellow-bg: #FDF8EC;
-      --blue: #1A3F6B;
-      --blue-bg: #EBF0F8;
+      --surface2: #ECEAE5;
+      --surface3: #E4E2DC;
+      --border: #D4D2CB;
+      --border-light: #E4E2DC;
+      --text: #181714;
+      --text-secondary: #635F56;
+      --text-tertiary: #98948A;
+      --accent: #1B4F72;
+      --accent-light: #E8F0F7;
+      --green: #1A5C3A;
+      --green-bg: #E8F5EE;
+      --green-border: #A8D5BA;
+      --red: #7A1818;
+      --red-bg: #FDF0EF;
+      --red-border: #E8AFAF;
+      --yellow: #6B4F00;
+      --yellow-bg: #FDF7E8;
+      --yellow-border: #E0C870;
+      --blue: #18386B;
+      --blue-bg: #E8EFF8;
+      --blue-border: #A8C0E0;
       --mono: 'DM Mono', monospace;
       --sans: 'Noto Sans KR', sans-serif;
-      --radius: 6px;
-      --radius-lg: 10px;
-      --shadow: 0 1px 4px rgba(26,25,22,0.08);
-      --shadow-md: 0 4px 16px rgba(26,25,22,0.10);
+      --radius-sm: 4px;
+      --radius: 7px;
+      --radius-lg: 11px;
+      --radius-xl: 16px;
+      --shadow-sm: 0 1px 3px rgba(24,23,20,0.07);
+      --shadow: 0 2px 8px rgba(24,23,20,0.09);
+      --shadow-md: 0 4px 20px rgba(24,23,20,0.12);
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -146,6 +154,7 @@
       color: white;
       font-weight: 500;
     }
+    .step-btn:not(.active):hover { background: var(--surface3); color: var(--text-secondary); }
     .step-btn .step-num {
       display: block;
       font-family: var(--mono);
@@ -212,19 +221,28 @@
     .hint { font-size: 11px; color: var(--text-tertiary); margin-top: 4px; }
 
     /* ── TOGGLE ── */
+    .toggle-group {
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      margin-bottom: 12px;
+      box-shadow: var(--shadow-sm);
+    }
     .toggle-row {
       display: flex;
       align-items: center;
       gap: 12px;
-      padding: 8px 0;
+      padding: 10px 14px;
       border-bottom: 1px solid var(--border-light);
+      background: var(--surface);
+      transition: background 0.1s;
     }
     .toggle-row:last-of-type { border-bottom: none; }
-    .toggle-row label { font-size: 13px; flex: 1; }
+    .toggle-row:hover { background: var(--surface2); }
+    .toggle-row label { font-size: 13px; flex: 1; cursor: pointer; }
     .toggle {
-      width: 38px;
-      height: 22px;
-      border-radius: 11px;
+      width: 36px; height: 20px;
+      border-radius: 10px;
       background: var(--border);
       border: none;
       cursor: pointer;
@@ -236,12 +254,12 @@
     .toggle::after {
       content: '';
       position: absolute;
-      width: 16px; height: 16px;
+      width: 14px; height: 14px;
       border-radius: 50%;
       background: white;
       top: 3px; left: 3px;
       transition: left 0.2s;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.18);
     }
     .toggle.on::after { left: 19px; }
 
@@ -302,14 +320,14 @@
       line-height: 1.5;
     }
     .issue-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; margin-top: 5px; }
-    .issue-warn { background: var(--yellow-bg); border-color: #E8D080; color: var(--yellow); }
-    .issue-warn .issue-dot { background: var(--yellow); }
-    .issue-danger { background: var(--red-bg); border-color: #E8B0B0; color: var(--red); }
+    .issue-warn   { background: var(--yellow-bg); border-color: var(--yellow-border); color: var(--yellow); }
+    .issue-warn   .issue-dot { background: var(--yellow); }
+    .issue-danger { background: var(--red-bg); border-color: var(--red-border); color: var(--red); }
     .issue-danger .issue-dot { background: var(--red); }
-    .issue-ok { background: var(--green-bg); border-color: #A0D8B8; color: var(--green); }
-    .issue-ok .issue-dot { background: var(--green); }
-    .issue-info { background: var(--blue-bg); border-color: #A0C0E0; color: var(--blue); }
-    .issue-info .issue-dot { background: var(--blue); }
+    .issue-ok     { background: var(--green-bg); border-color: var(--green-border); color: var(--green); }
+    .issue-ok     .issue-dot { background: var(--green); }
+    .issue-info   { background: var(--blue-bg); border-color: var(--blue-border); color: var(--blue); }
+    .issue-info   .issue-dot { background: var(--blue); }
 
     /* ── DIVIDER ── */
     .divider { height: 1px; background: var(--border-light); margin: 1.4rem 0; }
@@ -562,9 +580,9 @@
       .header-version { display: none; }
     }
     /* 지도 이미지 줌 */
-    #mapOverlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:9999;cursor:zoom-out;justify-content:center;align-items:center;padding:20px}
+    #mapOverlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.88);z-index:9999;cursor:zoom-out;justify-content:center;align-items:center;padding:20px}
     #mapOverlay.open{display:flex}
-    #mapOverlay img{max-width:95vw;max-height:92vh;border-radius:var(--radius-lg);object-fit:contain;box-shadow:0 8px 40px rgba(0,0,0,0.5)}
+    #mapOverlay img{max-width:95vw;max-height:92vh;border-radius:var(--radius-lg);object-fit:contain;box-shadow:0 8px 48px rgba(0,0,0,0.6)}
   </style>
 </head>
 <body>
@@ -902,7 +920,75 @@
 <footer>HAEAHN ARCHITECTURE 도시건축본부 · 역세권 활성화사업 운영기준 2026.04.30 기준 · 본 툴은 참고용이며 실제 사업 적용 시 관련 법령 및 지침을 직접 확인하시기 바랍니다.</footer>
 
 <script>
-// 역세권 범위 참고 PDF 페이지 매핑 (서울시 도시공간전략과, 2025.08 기준)
+// 역명 → 영문 이미지 파일명 매핑 (GitHub Pages URL 인코딩 문제 방지)
+const IMG_NAME = {
+  "가락시장":"garak_market","가산디지털단지":"gasan_digital","가양":"gayang","가오리":"gaori","가좌":"gajwa",
+  "강남구청":"gangnam_gu","경찰병원":"police_hosp","고덕":"godeok","고려대":"korea_univ","고속버스터미널":"express_bus",
+  "공덕":"gongdeok","공릉":"gongneung","공항시장":"airport_market","관악산":"gwanaksan","광나루":"gwangnaru",
+  "광운대":"kwangwoon","광화문":"gwanghwamun","광흥창":"gwangheungchang","교대":"gyodae","구로디지털단지":"guro_digital",
+  "구로":"guro","구룡":"guryong","구반포":"gubanpo","구산":"gusan","구의":"guui","구일":"guil",
+  "구파발":"gupabal","국회의사당":"assembly","군자":"gunja","굽은다리":"gupundari","금천구청":"geumcheon_gu",
+  "금호":"geumho","길동":"gildong","길음":"gireum","김포공항":"gimpo","까치산":"kkachisan",
+  "낙성대":"nakseongdae","남구로":"namguro","남부터미널":"nambu_term","남성":"namseong","남영":"namyeong",
+  "남태령":"namtaeryeong","내방":"naebang","노들":"nodeul","노량진":"noryangjin","노원":"nowon",
+  "녹번":"nokbeon","녹사평":"noksapyeong","녹천":"nokcheon","논현":"nonhyeon",
+  "답십리":"dapsimni","당고개":"danggogae","당곡":"danggok","당산":"dangsan","대림삼거리":"daelim3",
+  "대림":"daelim","대모산입구":"daemosan","대방":"daebang","대청":"daecheong","대치":"daechi",
+  "대흥":"daeheung","도곡":"dogok","도림사거리":"dorim3","도림천":"dorimcheon","도봉산":"dobongsan",
+  "도봉":"dobong","독립문":"dongnimmun","독바위":"dokbawi","독산":"doksan","돌곶이":"dolgoji",
+  "동대문":"dongdaemun","동대문역사문화공원":"ddp","동대입구":"dongdae_ipgu","동묘앞":"dongmyo",
+  "동작":"dongjak","둔촌동":"dunchon","둔촌오륜":"dunchon_oryun","등촌":"deungchon",
+  "디지털미디어시티":"dmc","뚝섬":"ttukseom",
+  "마곡나루":"magok_naru","마곡":"magok","마들":"madeul","마장":"majang","마천":"macheon",
+  "마포구청":"mapo_gu","마포":"mapo","망우":"mangwu","망원":"mangwon","매봉":"maebong",
+  "먹골":"meokgol","면목":"myeonmok","명동":"myeongdong","명일":"myeongil","목동":"mokdong",
+  "몽촌토성":"mongchon","무악재":"muakjae","문래":"mullae","문정":"munjeong","미아사거리":"mia3","미아":"mia",
+  "반포":"banpo","발산":"balsan","방배":"bangbae","방이":"bangi","방학":"banghak","방화":"banghwa",
+  "버티고개":"beoti","보라매공원":"boramae_park","보라매병원":"boramae_hosp","보라매":"boramae",
+  "보문":"bomun","복정":"bokjeong","봉은사":"bongeunsa","봉천":"bongcheon","봉화산":"bonghwasan",
+  "북한산보국문":"bukhansan_b","북한산우이":"bukhansan_u","불광":"bulgwang",
+  "사가정":"sagajeong","사당":"sadang","사평":"sapyeong","삼각지":"samgakji","삼성":"samseong",
+  "삼성중앙":"samseong_c","삼양사거리":"samyang3","삼양":"samyang","삼전":"samjeon",
+  "상계":"sanggye","상도":"sangdo","상봉":"sangbong","상수":"sangsu","상왕십리":"sangwangsimni",
+  "상월곡":"sangwolgok","상일동":"sangil","새절":"saejeol","샛강":"saetgang",
+  "서강대":"sogang","서대문":"seodaemun","서울":"seoul","서원":"seowon","서초":"seocho",
+  "석계":"seokgye","석수":"seoksu","석촌고분":"seokchon_g","석촌":"seokchon",
+  "선릉":"seolleung","선유도":"seonyudo","선정릉":"seonjeongneung","성수":"seongsu",
+  "성신여대입구":"sungshin","솔밭공원":"solbat","수서":"suseo","수색":"susaek","수진":"sujin",
+  "수락산":"suraksan","수유":"suyu","숙대입구":"sookmyung","숭실대입구":"soongsil",
+  "시청":"cityhall","시흥사거리":"siheung3","신금호":"singumho","신길":"singil","신내":"sinnae",
+  "신논현":"sinnonhyeon","신답":"sindap","신당":"sindang","신대방삼거리":"sindaebang3",
+  "신대방":"sindaebang","신도림":"sindorim","신독산":"sindoksan","신림":"sillim",
+  "신목동":"sinmokdong","신반포":"sinbanpo","신방화":"sinbanghwa","신사":"sinsa",
+  "신설동":"sinseoldong","신용산":"sinyongsan","신이문":"sinimun","신정네거리":"sinjeong3",
+  "신정":"sinjeong","신촌":"sinchon","신풍":"sinpung","쌍문":"ssangmun",
+  "아차산":"achasan","아현":"ahyeon","안국":"anguk","안암":"anam","암사":"amsa",
+  "암사역사공원":"amsa_park","압구정로데오":"apgujeong_r","압구정":"apgujeong","애오개":"aeoagae",
+  "약수":"yaksu","양원":"yangwon","양재시민의숲":"yangjae_forest","양재":"yangjae",
+  "양천구청":"yangcheon_gu","양천향교":"yangcheon_h","양평":"yangpyeong",
+  "어린이대공원":"childrens_park","언주":"eonju","여의나루":"yeouinaru","여의도":"yeouido",
+  "역삼":"yeoksam","역촌":"yeokchon","연신내":"yeonsinnae","염창":"yeomchang",
+  "영등포구청":"yeongdeungpo_gu","영등포시장":"yeongdeungpo_m","영등포":"yeongdeungpo",
+  "오금":"ogeum","오류":"oryu","오목교":"omokgyo","옥수":"oksu","온수":"onsu",
+  "올림픽공원":"olympic","왕십리":"wangsimni","외대앞":"hankuk_univ","용답":"yongdap",
+  "용두":"yongdu","용마산":"yongmasan","용산":"yongsan","우장산":"ujangsan",
+  "월계":"wolge","월곡":"wolgok","월드컵경기장":"worldcup","을지로3가":"euljiro3",
+  "을지로4가":"euljiro4","을지로입구":"euljiro_ipgu","응봉":"eungbong","응암":"eungam",
+  "이대":"ewha","이수":"isu","이촌":"ichon","이태원":"itaewon","일원":"irwon",
+  "자양":"jayang","잠실나루":"jamsil_naru","잠실새내":"jamsil_saenae","잠실":"jamsil",
+  "잠원":"jamwon","장승배기":"jangseungbaegi","장지":"jangji","장한평":"janghanpyeong",
+  "정릉":"jeongneung","제기동":"jegi","종각":"jonggak","종로3가":"jongno3","종로5가":"jongno5",
+  "종합운동장":"stadium","중계":"junggye","중곡":"junggok","중랑":"jungnang",
+  "중앙보훈병원":"veterans_hosp","중화":"junghwa","증미":"jeungmi","증산":"jeungsan",
+  "창동":"changdong","창신":"changsin","천왕":"cheonwang","천호":"cheonho",
+  "청계산입구":"cheonggyesan","청구":"cheonggu","청담":"cheongdam","청량리":"cheongnyangni",
+  "충무로":"chungmuro","충정로":"chungjeongno","태릉입구":"taereung",
+  "하계":"hagye","학동":"hakdong","학여울":"hakyeoul","한강진":"hangangjin",
+  "한남":"hannam","한성대입구":"hansung","한성백제":"hansungbaekje","한양대":"hanyang",
+  "한티":"hanti","합정":"hapjeong","행당":"haengdang","혜화":"hyehwa",
+  "홍대입구":"hongdae","홍제":"hongje","화계":"hwagye","화곡":"hwagok",
+  "화랑대":"hwarangdae","회기":"hoegi","회현":"hoehyeon","효창공원앞":"hyochang","흑석":"heukseok"
+};
 // PDF 파일은 저장소 루트에 'station_map.pdf' 로 업로드 필요
 const PDF_FILENAME = 'station_map.pdf';
 const PDF_PAGE_MAP = {
@@ -1005,13 +1091,18 @@ function selectStation(n){
   document.getElementById('src-type').innerHTML=`<span class="dd-badge ${cc}">${cl}</span>${i.isT?' <span class="dd-badge db-환승">환승역</span>':''}`;
   document.getElementById('src-center').textContent=i.center?(i.center+(i.isT?' + 환승역':'')):(i.isT?'비중심지 + 환승역':'분류없음');
   document.getElementById('src-radius').textContent=i.radius+'m';
-  // 역세권 범위 지도 이미지 표시
+  // 역세권 범위 지도 이미지 표시 (영문 파일명 사용)
   const pdfRow=document.getElementById('pdfLinkRow');
   const mapImg=document.getElementById('stationMapImg');
   if(pdfRow&&mapImg){
-    mapImg.src='images/'+n+'.jpg';
-    mapImg.alt=n+'역 역세권 범위';
-    pdfRow.style.display='flex';
+    const enName=IMG_NAME[n];
+    if(enName){
+      mapImg.src='images/'+enName+'.jpg';
+      mapImg.alt=n+'역 역세권 범위';
+      pdfRow.style.display='flex';
+    } else {
+      pdfRow.style.display='none';
+    }
   }
   updateZoneOptions();
   calcAll();
@@ -1065,8 +1156,11 @@ function getMaxZ(c,loc,mix){
   if(muHint) muHint.style.display=isNonCenter?'block':'none';
   if(muLabel) muLabel.textContent=isNonCenter?'복합용도 도입 여부 (비중심지 근린상업 초과 상향 시 필요)':'복합용도 도입 여부';
 
+  // 도심·광역중심: 최대 일반상업(4), 역인접/간선+복합50% → 심의 통해 중심상업(5)
   if(c==='도심'||c==='광역중심') return(sp&&hm)?5:4;
+  // 지역중심: 최대 일반상업(4), 역인접/간선 해당해도 중심상업 불가 (운영기준 3-1-2 표)
   if(c==='지역중심') return 4;
+  // 지구중심: 기본 근린상업(3), 역인접/간선 해당 시 심의 통해 일반상업(4)
   if(c==='지구중심') return sp?4:3;
 
   // ── 비중심지 ──
@@ -1074,22 +1168,17 @@ function getMaxZ(c,loc,mix){
   const sEl=document.getElementById('specialResult');
   const s20=!!state.specials.special20m, s6=!!state.specials.special6m, s30=!!state.specials.special30pct;
 
-  if(sp){
-    // 역인접부 또는 간선가로연접부 해당: 특례 조건 충족 시 일반상업까지 가능
-    if(s20&&s6&&s30){
-      if(sEl) sEl.innerHTML='<div class="issue issue-ok" style="margin:0"><div class="issue-dot"></div><div style="font-size:12px">특례 조건 충족 — 최대 일반상업지역까지 상향 가능</div></div>';
-      return 4;
-    } else {
-      if(sEl){const m=[];if(!s20)m.push('20m↑ 도로');if(!s6)m.push('6m↑ 도로');if(!s30)m.push('복합용도 30%↑');sEl.innerHTML=m.length?`<div style="font-size:12px;color:var(--text-tertiary)">미충족 항목: ${m.join(', ')}</div>`:''; }
-      // 입지특성 해당 + 특례 미충족: 기본 상향 적용
-      return (curZ==='준주거') ? 3 : 2;
-    }
+  // 비중심지 특례 (3-1-2 라목): 입지특성과 별개 독립 조항
+  // 조건: 2면 이상 도로 + 1면 20m 이상 + 1면 6m 이상 + 복합용도 30% → 일반상업까지
+  if(s20&&s6&&s30){
+    if(sEl) sEl.innerHTML='<div class="issue issue-ok" style="margin:0"><div class="issue-dot"></div><div style="font-size:12px">특례 조건 충족 (3-1-2 라목) — 최대 일반상업지역까지 상향 가능</div></div>';
+    return 4;
   } else {
-    // 일반(해당없음): 현재 용도지역에 따라 상향 한도 제한
-    // 준주거 → 근린상업까지 / 2종·3종 → 준주거까지
-    if(sEl) sEl.innerHTML='<div style="font-size:12px;color:var(--text-tertiary)">입지특성 미해당 시 일반상업 특례 불가</div>';
-    return (curZ==='준주거') ? 3 : 2;
+    if(sEl){const m=[];if(!s20)m.push('20m↑ 도로');if(!s6)m.push('6m↑ 도로');if(!s30)m.push('복합용도 30%↑');sEl.innerHTML=m.length?`<div style="font-size:12px;color:var(--text-tertiary)">특례 미충족 항목: ${m.join(', ')}</div>`:''; }
   }
+  // 기본 비중심지 상향 범위 (입지특성 무관)
+  // 준주거 → 근린상업(3), 2·3종 → 준주거(2)
+  return (curZ==='준주거') ? 3 : 2;
 }
 function getCurZ(z){if(z==='2종7층'||z==='2종')return 0;if(z==='3종')return 1;if(z==='준주거')return 2;if(z==='근린상업')return 3;if(z==='일반상업')return 4;return 0;}
 
@@ -1213,14 +1302,18 @@ function calcAll(){
       </div>${ov}`;
   } else iEl.innerHTML='';
 
+  const plp=gn('publicLandPrice');
   const hr=parseInt(gv('hotelRatio'));let mf=0.5;if(hr===30)mf=0.4;if(hr===50)mf=0.3;
-  // 지역별 공공기여 완화 (2026.04.30 신설): 관광숙박 감면과 중복 시 지역별 완화는 1/2만 적용
+  // 기본 공공기여율 계산
+  const baseCr=iFar>0?(iFar*mf/mFar):0;
+  // 지역별 공공기여 완화 (2026.04.30 신설): 공공기여율에서 최대 20%p 차감
+  // 관광숙박·노인복지 완화와 중복 시 지역별 완화는 1/2(=최대 10%p) 적용
   let regionalDiscount=0;
   if(state.toggles['t_regional']){
-    const baseDiscount=0.2; // 최대 20% 감면
-    regionalDiscount = hr>0 ? baseDiscount*0.5 : baseDiscount; // 중복 시 1/2
+    const maxDiscount=0.20; // 최대 20%p
+    regionalDiscount = hr>0 ? maxDiscount*0.5 : maxDiscount; // 중복 시 1/2
   }
-  const plp=gn('publicLandPrice'),cr=iFar>0?Math.max(0,(iFar*mf/mFar)-regionalDiscount):0,crp=cr*100,cab=area*cr*plp*2/1e8;
+  const cr=Math.max(0,baseCr-regionalDiscount),crp=cr*100,cab=area*cr*plp*2/1e8;
   document.getElementById('contribRate').textContent=crp.toFixed(2)+'%';
   document.getElementById('contribRateFormula').textContent=`(${mFar}−${bFar}) × ${(mf*100).toFixed(0)}% ÷ ${mFar}${regionalDiscount>0?' − 지역완화 '+(regionalDiscount*100).toFixed(0)+'%p':''}`;
   document.getElementById('contribArea').textContent=(area*cr).toFixed(2)+'㎡';
