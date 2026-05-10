@@ -51,8 +51,8 @@
       font-family: var(--sans);
       background: var(--bg);
       color: var(--text);
-      font-size: 14px;
-      line-height: 1.65;
+      font-size: 15px;
+      line-height: 1.75;
       min-height: 100vh;
       -webkit-font-smoothing: antialiased;
     }
@@ -72,19 +72,19 @@
     }
     .header-logo {
       font-family: var(--mono);
-      font-size: 10.5px;
+      font-size: 12px;
       letter-spacing: 0.12em;
       color: rgba(255,255,255,0.38);
       text-transform: uppercase;
     }
     .header-title {
-      font-size: 13px;
+      font-size: 14px;
       font-weight: 600;
       letter-spacing: -0.01em;
     }
     .header-version {
       font-family: var(--mono);
-      font-size: 10px;
+      font-size: 11px;
       color: rgba(255,255,255,0.30);
       letter-spacing: 0.04em;
     }
@@ -93,12 +93,12 @@
     .container {
       max-width: 860px;
       margin: 0 auto;
-      padding: 2rem 1.5rem 5rem;
+      padding: 2.2rem 1.5rem 5rem;
     }
 
     .page-intro {
-      margin-bottom: 1.8rem;
-      padding-bottom: 1.4rem;
+      margin-bottom: 2rem;
+      padding-bottom: 1.6rem;
       border-bottom: 1px solid var(--border);
     }
     .page-intro h1 {
@@ -108,7 +108,7 @@
       margin-bottom: 5px;
       color: var(--text);
     }
-    .page-intro p { font-size: 13px; color: var(--text-secondary); font-weight: 400; }
+    .page-intro p { font-size: 14.5px; color: var(--text-secondary); font-weight: 400; }
     .badge-row { display: flex; gap: 6px; margin-top: 10px; flex-wrap: wrap; }
     .badge {
       font-family: var(--mono);
@@ -124,7 +124,7 @@
     /* ── STEP NAV ── */
     .step-nav {
       display: flex;
-      margin-bottom: 1.8rem;
+      margin-bottom: 2rem;
       border: 1px solid var(--border);
       border-radius: var(--radius-lg);
       overflow: hidden;
@@ -133,9 +133,9 @@
     }
     .step-btn {
       flex: 1;
-      padding: 11px 4px;
+      padding: 12px 4px;
       font-family: var(--sans);
-      font-size: 11.5px;
+      font-size: 12px;
       font-weight: 400;
       background: transparent;
       color: var(--text-tertiary);
@@ -176,7 +176,7 @@
 
     /* ── SECTION TITLE ── */
     .section-title {
-      font-size: 10px;
+      font-size: 11px;
       font-weight: 700;
       color: var(--text-tertiary);
       letter-spacing: 0.14em;
@@ -199,10 +199,10 @@
     }
 
     /* ── FIELDS ── */
-    .field { margin-bottom: 1rem; }
+    .field { margin-bottom: 1.1rem; }
     .field label {
       display: block;
-      font-size: 11.5px;
+      font-size: 13px;
       color: var(--text-secondary);
       margin-bottom: 5px;
       font-weight: 600;
@@ -212,8 +212,8 @@
     .field input[type="number"],
     .field select {
       width: 100%;
-      padding: 8px 11px;
-      font-size: 13px;
+      padding: 9px 12px;
+      font-size: 14px;
       font-family: var(--sans);
       border: 1px solid var(--border);
       border-radius: var(--radius);
@@ -237,28 +237,28 @@
     }
     .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
     .field-row3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
-    .hint { font-size: 11px; color: var(--text-tertiary); margin-top: 5px; line-height: 1.5; }
+    .hint { font-size: 12px; color: var(--text-secondary); margin-top: 5px; line-height: 1.6; }
 
     /* ── TOGGLE ── */
     .toggle-group {
-      border: 1px solid var(--border-light);
+      border: 1px solid var(--border);
       border-radius: var(--radius-lg);
       overflow: hidden;
-      margin-bottom: 12px;
-      box-shadow: var(--shadow-sm);
+      margin-bottom: 14px;
+      box-shadow: var(--shadow);
     }
     .toggle-row {
       display: flex;
       align-items: center;
       gap: 12px;
-      padding: 10px 14px;
+      padding: 12px 16px;
       border-bottom: 1px solid var(--border-light);
       background: var(--surface);
       transition: background 0.1s;
     }
     .toggle-row:last-of-type { border-bottom: none; }
     .toggle-row:hover { background: #F2F0EB; }
-    .toggle-row label { font-size: 13px; flex: 1; cursor: pointer; font-weight: 400; }
+    .toggle-row label { font-size: 14.5px; flex: 1; cursor: pointer; font-weight: 400; }
     .toggle {
       width: 34px; height: 19px;
       border-radius: 10px;
@@ -287,7 +287,7 @@
       display: inline-block;
       padding: 2px 7px;
       border-radius: var(--radius-sm);
-      font-size: 10.5px;
+      font-size: 12px;
       font-weight: 700;
       font-family: var(--mono);
       letter-spacing: 0.02em;
@@ -302,12 +302,12 @@
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: var(--radius-lg);
-      padding: 14px 16px;
+      padding: 16px 18px;
       margin-bottom: 10px;
       box-shadow: var(--shadow-sm);
     }
     .card-label {
-      font-size: 10.5px;
+      font-size: 12px;
       color: var(--text-tertiary);
       margin-bottom: 5px;
       letter-spacing: 0.05em;
@@ -315,14 +315,14 @@
       text-transform: uppercase;
     }
     .card-value {
-      font-size: 22px;
+      font-size: 24px;
       font-weight: 700;
       font-family: var(--mono);
       color: var(--text);
       letter-spacing: -0.02em;
       line-height: 1.2;
     }
-    .card-sub { font-size: 11px; color: var(--text-secondary); margin-top: 4px; line-height: 1.5; }
+    .card-sub { font-size: 12px; color: var(--text-secondary); margin-top: 5px; line-height: 1.55; }
 
     .metrics-grid  { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; }
     .metrics-grid4 { display: grid; grid-template-columns: repeat(4,1fr); gap: 10px; margin-bottom: 12px; }
@@ -332,13 +332,14 @@
       display: flex;
       align-items: center;
       gap: 8px;
-      padding: 9px 13px;
+      padding: 10px 14px;
       background: var(--surface2);
       border-radius: var(--radius);
       margin-top: 6px;
-      font-size: 13px;
+      font-size: 14px;
       flex-wrap: wrap;
-      border: 1px solid var(--border-light);
+      border: 1px solid var(--border);
+      color: var(--text);
     }
 
     /* ── ISSUE ITEMS ── */
@@ -346,12 +347,12 @@
       display: flex;
       gap: 10px;
       align-items: flex-start;
-      padding: 10px 14px;
+      padding: 11px 15px;
       border-radius: var(--radius);
-      margin-bottom: 7px;
+      margin-bottom: 8px;
       border: 1px solid;
-      font-size: 12px;
-      line-height: 1.55;
+      font-size: 13.5px;
+      line-height: 1.6;
     }
     .issue-dot { width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0; margin-top: 5px; }
     .issue-warn   { background: var(--yellow-bg); border-color: var(--yellow-border); color: var(--yellow); }
@@ -364,7 +365,7 @@
     .issue-info   .issue-dot { background: var(--blue); }
 
     /* ── DIVIDER ── */
-    .divider { height: 1px; background: var(--border-light); margin: 1.3rem 0; }
+    .divider { height: 1px; background: var(--border); margin: 1.5rem 0; }
 
     /* ── BUTTONS ── */
     .nav-btns {
@@ -377,7 +378,7 @@
     .btn {
       padding: 9px 20px;
       border-radius: var(--radius);
-      font-size: 13px;
+      font-size: 14px;
       font-family: var(--sans);
       cursor: pointer;
       border: 1px solid var(--border);
@@ -423,11 +424,11 @@
       position: sticky;
       top: 0;
       text-transform: uppercase;
-      border-bottom: 1px solid var(--border-light);
+      border-bottom: 1.5px solid var(--border);
     }
     .dd-item {
-      padding: 9px 14px;
-      font-size: 13px;
+      padding: 10px 14px;
+      font-size: 14px;
       cursor: pointer;
       display: flex;
       align-items: center;
@@ -437,7 +438,7 @@
     }
     .dd-item:last-child { border-bottom: none; }
     .dd-item:hover { background: var(--surface2); }
-    .dd-item .radius-hint { margin-left: auto; font-family: var(--mono); font-size: 10.5px; color: var(--text-tertiary); }
+    .dd-item .radius-hint { margin-left: auto; font-family: var(--mono); font-size: 11.5px; color: var(--text-tertiary); }
 
     .dd-badge { font-size: 9.5px; padding: 2px 6px; border-radius: 3px; white-space: nowrap; font-family: var(--mono); font-weight: 700; letter-spacing: 0.02em; }
     .db-도심  { background: var(--red-bg); color: var(--red); }
@@ -458,12 +459,12 @@
       justify-content: space-between;
       align-items: center;
       padding: 9px 14px;
-      font-size: 13px;
+      font-size: 14px;
       border-bottom: 1px solid var(--border-light);
       background: var(--surface);
     }
     .station-card-row:last-child { border-bottom: none; }
-    .sc-label { color: var(--text-secondary); font-size: 11px; font-weight: 600; letter-spacing: 0.02em; }
+    .sc-label { color: var(--text-secondary); font-size: 12.5px; font-weight: 600; letter-spacing: 0.02em; }
     .radius-display {
       font-family: var(--mono);
       font-size: 26px;
@@ -472,7 +473,7 @@
       letter-spacing: -0.03em;
     }
     .manual-link {
-      font-size: 11px;
+      font-size: 11.5px;
       color: var(--text-tertiary);
       cursor: pointer;
       text-decoration: underline;
@@ -496,12 +497,12 @@
       justify-content: space-between;
       align-items: center;
       padding: 10px 14px;
-      font-size: 13px;
+      font-size: 14px;
       border-bottom: 1px solid var(--border-light);
       background: var(--surface);
     }
     .road-row:last-child { border-bottom: none; background: var(--surface2); font-weight: 600; }
-    .road-label { color: var(--text-secondary); font-size: 12px; }
+    .road-label { color: var(--text-secondary); font-size: 13.5px; }
 
     /* ── PROGRESS BAR ── */
     .fap-bar { height: 4px; border-radius: 2px; background: var(--border); margin: 7px 0 3px; overflow: hidden; }
@@ -509,12 +510,12 @@
 
     /* ── OPEN SPACE BOX ── */
     .os-box { border: 1px solid var(--blue-border); border-radius: var(--radius-lg); overflow: hidden; margin-top: 12px; }
-    .os-header { background: var(--blue-bg); padding: 8px 14px; font-size: 10px; font-weight: 700; color: var(--blue); letter-spacing: 0.08em; text-transform: uppercase; }
+    .os-header { background: var(--blue-bg); padding: 8px 14px; font-size: 11px; font-weight: 700; color: var(--blue); letter-spacing: 0.08em; text-transform: uppercase; }
     .os-row { display: flex; justify-content: space-between; padding: 8px 14px; font-size: 12px; border-bottom: 1px solid var(--blue-border); background: var(--surface); }
     .os-row:last-child { border-bottom: none; }
     .os-label { color: var(--text-secondary); }
     .os-val { font-weight: 600; }
-    .os-formula { font-family: var(--mono); font-size: 10.5px; background: var(--surface2); padding: 10px 14px; border-top: 1px solid var(--border-light); line-height: 1.9; color: var(--text-secondary); }
+    .os-formula { font-family: var(--mono); font-size: 11.5px; background: var(--surface2); padding: 10px 14px; border-top: 1px solid var(--border-light); line-height: 1.9; color: var(--text-secondary); }
     .os-result-val { font-family: var(--mono); font-size: 14px; font-weight: 700; color: var(--blue); }
 
     /* ── VERDICT ── */
@@ -539,9 +540,9 @@
       box-shadow: var(--shadow-sm);
     }
     .sc-card.rec { border-color: var(--green); border-width: 1.5px; }
-    .sc-title { font-size: 13px; font-weight: 700; margin-bottom: 11px; display: flex; align-items: center; gap: 7px; letter-spacing: -0.01em; }
+    .sc-title { font-size: 14.5px; font-weight: 700; margin-bottom: 11px; display: flex; align-items: center; gap: 7px; letter-spacing: -0.01em; }
     .rec-badge { font-size: 9px; font-family: var(--mono); padding: 2px 6px; border-radius: 3px; background: var(--green-bg); color: var(--green); text-transform: uppercase; letter-spacing: 0.06em; font-weight: 700; }
-    .sc-data-row { display: flex; justify-content: space-between; padding: 5px 0; border-bottom: 1px solid var(--border-light); font-size: 12px; }
+    .sc-data-row { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid var(--border-light); font-size: 13.5px; }
     .sc-data-row:last-child { border-bottom: none; }
     .sc-data-row span:first-child { color: var(--text-secondary); }
     .sc-data-row span:last-child { font-family: var(--mono); font-weight: 700; font-size: 12px; }
@@ -552,7 +553,7 @@
     #mapOverlay img { max-width:95vw;max-height:92vh;border-radius:var(--radius-lg);object-fit:contain;box-shadow:0 16px 64px rgba(0,0,0,0.6); }
 
     /* ── FOOTER ── */
-    footer { margin-top: 4rem; padding: 1.5rem; text-align: center; font-size: 10.5px; color: var(--text-tertiary); border-top: 1px solid var(--border); font-family: var(--mono); letter-spacing: 0.04em; }
+    footer { margin-top: 4rem; padding: 1.5rem; text-align: center; font-size: 11.5px; color: var(--text-tertiary); border-top: 1px solid var(--border); font-family: var(--mono); letter-spacing: 0.04em; }
 
     @media (max-width: 600px) {
       .container { padding: 1rem 1rem 4rem; }
@@ -1222,10 +1223,11 @@ function calcAll(){
   document.getElementById('maxZoneSub').textContent=cIdx>=maxIdx?'현재 용도지역이 이미 최대 수준':'현재에서 최대 '+(maxIdx-cIdx)+'단계 상향 가능';
 
   const tzEl=document.getElementById('targetZone'),pv=tzEl.value;tzEl.innerHTML='';
-  for(let i=cIdx+1;i<=maxIdx;i++){const o=document.createElement('option');o.value=ZONE_KEYS[i];o.textContent=ZONES[i];tzEl.appendChild(o);}
-  // 기존 선택값이 유효하면 유지, 아니면 최대(마지막) 옵션으로 자동 선택
+  // 최대 → 최소 순서로 옵션 추가 (최대값이 맨 위에 보이도록)
+  for(let i=maxIdx;i>=cIdx+1;i--){const o=document.createElement('option');o.value=ZONE_KEYS[i];o.textContent=ZONES[i];tzEl.appendChild(o);}
+  // 기존 선택값이 유효하면 유지, 아니면 최대(첫 번째) 옵션으로 자동 선택
   if([...tzEl.options].some(o=>o.value===pv)) tzEl.value=pv;
-  else tzEl.value=ZONE_KEYS[maxIdx]; // 최대 용도지역 자동 선택
+  else tzEl.value=ZONE_KEYS[maxIdx];
 
   const tk=tzEl.value||ZONE_KEYS[Math.min(cIdx+1,maxIdx)],tIdx=ZONE_KEYS.indexOf(tk);
   const isJgu=state.toggles['t_jgu'],bFar=isJgu?gn('jguFar'):ZONE_FAR[cIdx],mFar=ZONE_FAR[tIdx]||bFar,iFar=mFar-bFar,legalFar=ZONE_FAR[cIdx];
