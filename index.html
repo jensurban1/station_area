@@ -7,41 +7,42 @@
   <meta name="description" content="서울시 역세권 활성화사업 입지요건, 용적률, 공공기여 자동 산정 툴">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
   <style>
     :root {
-      --bg: #F2F1ED;
-      --surface: #FFFFFF;
-      --surface2: #ECEAE5;
-      --surface3: #E4E2DC;
-      --border: #D4D2CB;
-      --border-light: #E4E2DC;
-      --text: #181714;
-      --text-secondary: #635F56;
-      --text-tertiary: #98948A;
-      --accent: #1B4F72;
-      --accent-light: #E8F0F7;
-      --green: #1A5C3A;
-      --green-bg: #E8F5EE;
-      --green-border: #A8D5BA;
-      --red: #7A1818;
-      --red-bg: #FDF0EF;
-      --red-border: #E8AFAF;
-      --yellow: #6B4F00;
-      --yellow-bg: #FDF7E8;
-      --yellow-border: #E0C870;
-      --blue: #18386B;
-      --blue-bg: #E8EFF8;
-      --blue-border: #A8C0E0;
+      --bg: #EEECE7;
+      --surface: #FAFAF8;
+      --surface2: #E8E6E0;
+      --surface3: #DDDAD3;
+      --border: #CCCAC2;
+      --border-light: #E0DDD6;
+      --text: #16140F;
+      --text-secondary: #5C5850;
+      --text-tertiary: #96928A;
+      --accent: #1C4E78;
+      --accent-light: #E6EEF5;
+      --green: #1A5738;
+      --green-bg: #E6F2EC;
+      --green-border: #9ECFB4;
+      --red: #7C1A1A;
+      --red-bg: #FAEEEE;
+      --red-border: #E0AAAA;
+      --yellow: #6B4C00;
+      --yellow-bg: #FAF5E6;
+      --yellow-border: #DCBF60;
+      --blue: #183870;
+      --blue-bg: #E6EDF8;
+      --blue-border: #9AB4DC;
       --mono: 'DM Mono', monospace;
-      --sans: 'Noto Sans KR', sans-serif;
+      --sans: 'Pretendard', -apple-system, sans-serif;
       --radius-sm: 4px;
-      --radius: 7px;
-      --radius-lg: 11px;
-      --radius-xl: 16px;
-      --shadow-sm: 0 1px 3px rgba(24,23,20,0.07);
-      --shadow: 0 2px 8px rgba(24,23,20,0.09);
-      --shadow-md: 0 4px 20px rgba(24,23,20,0.12);
+      --radius: 8px;
+      --radius-lg: 12px;
+      --radius-xl: 18px;
+      --shadow-sm: 0 1px 2px rgba(22,20,15,0.06), 0 1px 4px rgba(22,20,15,0.04);
+      --shadow: 0 2px 8px rgba(22,20,15,0.08), 0 1px 3px rgba(22,20,15,0.05);
+      --shadow-md: 0 8px 24px rgba(22,20,15,0.10), 0 2px 6px rgba(22,20,15,0.06);
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -51,8 +52,9 @@
       background: var(--bg);
       color: var(--text);
       font-size: 14px;
-      line-height: 1.6;
+      line-height: 1.65;
       min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
     }
 
     /* ── HEADER ── */
@@ -70,81 +72,77 @@
     }
     .header-logo {
       font-family: var(--mono);
-      font-size: 12px;
-      letter-spacing: 0.08em;
-      color: rgba(255,255,255,0.6);
+      font-size: 10.5px;
+      letter-spacing: 0.12em;
+      color: rgba(255,255,255,0.38);
+      text-transform: uppercase;
     }
     .header-title {
       font-size: 13px;
-      font-weight: 500;
+      font-weight: 600;
       letter-spacing: -0.01em;
     }
     .header-version {
       font-family: var(--mono);
-      font-size: 11px;
-      color: rgba(255,255,255,0.4);
+      font-size: 10px;
+      color: rgba(255,255,255,0.30);
+      letter-spacing: 0.04em;
     }
 
     /* ── LAYOUT ── */
     .container {
-      max-width: 900px;
+      max-width: 860px;
       margin: 0 auto;
-      padding: 2rem 1.5rem 4rem;
+      padding: 2rem 1.5rem 5rem;
     }
 
     .page-intro {
-      margin-bottom: 2rem;
-      padding-bottom: 1.5rem;
+      margin-bottom: 1.8rem;
+      padding-bottom: 1.4rem;
       border-bottom: 1px solid var(--border);
     }
     .page-intro h1 {
-      font-size: 22px;
+      font-size: 20px;
       font-weight: 700;
-      letter-spacing: -0.03em;
-      margin-bottom: 6px;
+      letter-spacing: -0.04em;
+      margin-bottom: 5px;
+      color: var(--text);
     }
-    .page-intro p {
-      font-size: 13px;
-      color: var(--text-secondary);
-    }
-    .badge-row {
-      display: flex;
-      gap: 8px;
-      margin-top: 10px;
-      flex-wrap: wrap;
-    }
+    .page-intro p { font-size: 13px; color: var(--text-secondary); font-weight: 400; }
+    .badge-row { display: flex; gap: 6px; margin-top: 10px; flex-wrap: wrap; }
     .badge {
       font-family: var(--mono);
-      font-size: 10px;
+      font-size: 9.5px;
       padding: 3px 8px;
-      border-radius: 4px;
+      border-radius: var(--radius-sm);
       border: 1px solid var(--border);
-      color: var(--text-secondary);
+      color: var(--text-tertiary);
       background: var(--surface);
+      letter-spacing: 0.02em;
     }
 
     /* ── STEP NAV ── */
     .step-nav {
       display: flex;
-      gap: 0;
-      margin-bottom: 2rem;
+      margin-bottom: 1.8rem;
       border: 1px solid var(--border);
       border-radius: var(--radius-lg);
       overflow: hidden;
-      box-shadow: var(--shadow);
+      box-shadow: var(--shadow-sm);
+      background: var(--surface2);
     }
     .step-btn {
       flex: 1;
-      padding: 12px 6px;
+      padding: 11px 4px;
       font-family: var(--sans);
-      font-size: 12px;
+      font-size: 11.5px;
       font-weight: 400;
-      background: var(--surface2);
-      color: var(--text-secondary);
+      background: transparent;
+      color: var(--text-tertiary);
       border: none;
       border-right: 1px solid var(--border);
       cursor: pointer;
-      transition: all 0.15s;
+      transition: background 0.12s, color 0.12s;
       text-align: center;
       line-height: 1.4;
     }
@@ -152,73 +150,94 @@
     .step-btn.active {
       background: var(--text);
       color: white;
-      font-weight: 500;
+      font-weight: 600;
     }
     .step-btn:not(.active):hover { background: var(--surface3); color: var(--text-secondary); }
     .step-btn .step-num {
       display: block;
       font-family: var(--mono);
-      font-size: 9px;
-      opacity: 0.5;
+      font-size: 8.5px;
+      opacity: 0.45;
       margin-bottom: 3px;
-      letter-spacing: 0.05em;
+      letter-spacing: 0.07em;
     }
-    .step-btn.active .step-num { opacity: 0.6; }
+    .step-btn.active .step-num { opacity: 0.5; }
 
     /* ── PANELS ── */
     .panel { display: none; }
-    .panel.active { display: block; }
+    .panel.active {
+      display: block;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      padding: 2rem;
+      box-shadow: var(--shadow-sm);
+    }
 
     /* ── SECTION TITLE ── */
     .section-title {
-      font-size: 11px;
-      font-weight: 500;
+      font-size: 10px;
+      font-weight: 700;
       color: var(--text-tertiary);
-      letter-spacing: 0.08em;
+      letter-spacing: 0.14em;
       text-transform: uppercase;
-      margin-bottom: 1rem;
-      padding-bottom: 8px;
+      margin-bottom: 1.2rem;
+      padding-bottom: 10px;
       border-bottom: 1px solid var(--border-light);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .section-title::before {
+      content: '';
+      display: inline-block;
+      width: 3px;
+      height: 12px;
+      background: var(--accent);
+      border-radius: 2px;
+      flex-shrink: 0;
     }
 
     /* ── FIELDS ── */
     .field { margin-bottom: 1rem; }
     .field label {
       display: block;
-      font-size: 12px;
+      font-size: 11.5px;
       color: var(--text-secondary);
       margin-bottom: 5px;
-      font-weight: 500;
+      font-weight: 600;
+      letter-spacing: 0.01em;
     }
     .field input[type="text"],
     .field input[type="number"],
     .field select {
       width: 100%;
-      padding: 9px 11px;
+      padding: 8px 11px;
       font-size: 13px;
       font-family: var(--sans);
       border: 1px solid var(--border);
       border-radius: var(--radius);
       background: var(--surface);
       color: var(--text);
-      transition: border-color 0.15s, box-shadow 0.15s;
+      transition: border-color 0.12s, box-shadow 0.12s;
       -webkit-appearance: none;
       appearance: none;
+      font-weight: 400;
     }
     .field input:focus, .field select:focus {
       outline: none;
       border-color: var(--accent);
-      box-shadow: 0 0 0 3px rgba(26,82,118,0.08);
+      box-shadow: 0 0 0 3px rgba(28,78,120,0.10);
     }
     .field select {
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%236B6960' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath fill='%2396928A' d='M0 0l5 6 5-6z'/%3E%3C/svg%3E");
       background-repeat: no-repeat;
-      background-position: right 10px center;
-      padding-right: 28px;
+      background-position: right 11px center;
+      padding-right: 30px;
     }
-    .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-    .field-row3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
-    .hint { font-size: 11px; color: var(--text-tertiary); margin-top: 4px; }
+    .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .field-row3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+    .hint { font-size: 11px; color: var(--text-tertiary); margin-top: 5px; line-height: 1.5; }
 
     /* ── TOGGLE ── */
     .toggle-group {
@@ -238,44 +257,45 @@
       transition: background 0.1s;
     }
     .toggle-row:last-of-type { border-bottom: none; }
-    .toggle-row:hover { background: var(--surface2); }
-    .toggle-row label { font-size: 13px; flex: 1; cursor: pointer; }
+    .toggle-row:hover { background: #F2F0EB; }
+    .toggle-row label { font-size: 13px; flex: 1; cursor: pointer; font-weight: 400; }
     .toggle {
-      width: 36px; height: 20px;
+      width: 34px; height: 19px;
       border-radius: 10px;
       background: var(--border);
       border: none;
       cursor: pointer;
       position: relative;
-      transition: background 0.2s;
+      transition: background 0.18s;
       flex-shrink: 0;
     }
     .toggle.on { background: var(--green); }
     .toggle::after {
       content: '';
       position: absolute;
-      width: 14px; height: 14px;
+      width: 13px; height: 13px;
       border-radius: 50%;
       background: white;
       top: 3px; left: 3px;
-      transition: left 0.2s;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.18);
+      transition: left 0.18s;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.16);
     }
-    .toggle.on::after { left: 19px; }
+    .toggle.on::after { left: 18px; }
 
     /* ── TAGS ── */
     .tag {
       display: inline-block;
-      padding: 2px 8px;
-      border-radius: 4px;
-      font-size: 11px;
-      font-weight: 500;
+      padding: 2px 7px;
+      border-radius: var(--radius-sm);
+      font-size: 10.5px;
+      font-weight: 700;
       font-family: var(--mono);
+      letter-spacing: 0.02em;
     }
-    .tag-ok  { background: var(--green-bg); color: var(--green); }
-    .tag-warn{ background: var(--yellow-bg); color: var(--yellow); }
-    .tag-fail{ background: var(--red-bg); color: var(--red); }
-    .tag-info{ background: var(--blue-bg); color: var(--blue); }
+    .tag-ok   { background: var(--green-bg); color: var(--green); }
+    .tag-warn { background: var(--yellow-bg); color: var(--yellow); }
+    .tag-fail { background: var(--red-bg); color: var(--red); }
+    .tag-info { background: var(--blue-bg); color: var(--blue); }
 
     /* ── CARDS ── */
     .card {
@@ -283,22 +303,36 @@
       border: 1px solid var(--border);
       border-radius: var(--radius-lg);
       padding: 14px 16px;
-      margin-bottom: 12px;
-      box-shadow: var(--shadow);
+      margin-bottom: 10px;
+      box-shadow: var(--shadow-sm);
     }
-    .card-label { font-size: 11px; color: var(--text-tertiary); margin-bottom: 4px; letter-spacing: 0.04em; }
-    .card-value { font-size: 22px; font-weight: 700; font-family: var(--mono); color: var(--text); letter-spacing: -0.02em; }
-    .card-sub { font-size: 11px; color: var(--text-secondary); margin-top: 3px; }
+    .card-label {
+      font-size: 10.5px;
+      color: var(--text-tertiary);
+      margin-bottom: 5px;
+      letter-spacing: 0.05em;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+    .card-value {
+      font-size: 22px;
+      font-weight: 700;
+      font-family: var(--mono);
+      color: var(--text);
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+    }
+    .card-sub { font-size: 11px; color: var(--text-secondary); margin-top: 4px; line-height: 1.5; }
 
-    .metrics-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
-    .metrics-grid4 { display: grid; grid-template-columns: repeat(4,1fr); gap: 10px; margin-bottom: 14px; }
+    .metrics-grid  { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; }
+    .metrics-grid4 { display: grid; grid-template-columns: repeat(4,1fr); gap: 10px; margin-bottom: 12px; }
 
     /* ── INLINE RESULT ── */
     .inline-result {
       display: flex;
       align-items: center;
       gap: 8px;
-      padding: 9px 12px;
+      padding: 9px 13px;
       background: var(--surface2);
       border-radius: var(--radius);
       margin-top: 6px;
@@ -314,12 +348,12 @@
       align-items: flex-start;
       padding: 10px 14px;
       border-radius: var(--radius);
-      margin-bottom: 8px;
+      margin-bottom: 7px;
       border: 1px solid;
       font-size: 12px;
-      line-height: 1.5;
+      line-height: 1.55;
     }
-    .issue-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; margin-top: 5px; }
+    .issue-dot { width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0; margin-top: 5px; }
     .issue-warn   { background: var(--yellow-bg); border-color: var(--yellow-border); color: var(--yellow); }
     .issue-warn   .issue-dot { background: var(--yellow); }
     .issue-danger { background: var(--red-bg); border-color: var(--red-border); color: var(--red); }
@@ -330,7 +364,7 @@
     .issue-info   .issue-dot { background: var(--blue); }
 
     /* ── DIVIDER ── */
-    .divider { height: 1px; background: var(--border-light); margin: 1.4rem 0; }
+    .divider { height: 1px; background: var(--border-light); margin: 1.3rem 0; }
 
     /* ── BUTTONS ── */
     .nav-btns {
@@ -341,25 +375,27 @@
       border-top: 1px solid var(--border-light);
     }
     .btn {
-      padding: 9px 22px;
+      padding: 9px 20px;
       border-radius: var(--radius);
       font-size: 13px;
       font-family: var(--sans);
       cursor: pointer;
       border: 1px solid var(--border);
       background: var(--surface);
-      color: var(--text);
-      transition: all 0.15s;
-      font-weight: 400;
+      color: var(--text-secondary);
+      transition: all 0.12s;
+      font-weight: 500;
+      letter-spacing: -0.01em;
     }
-    .btn:hover { background: var(--surface2); border-color: var(--text-secondary); }
+    .btn:hover { background: var(--surface2); color: var(--text); border-color: var(--border); }
     .btn-primary {
       background: var(--text);
       color: white;
       border-color: var(--text);
-      font-weight: 500;
+      font-weight: 600;
+      padding: 9px 24px;
     }
-    .btn-primary:hover { opacity: 0.85; }
+    .btn-primary:hover { background: #2A2820; border-color: #2A2820; }
 
     /* ── STATION SEARCH ── */
     .station-wrap { position: relative; }
@@ -373,20 +409,21 @@
       border: 1px solid var(--border);
       border-radius: var(--radius-lg);
       z-index: 300;
-      max-height: 280px;
+      max-height: 300px;
       overflow-y: auto;
       box-shadow: var(--shadow-md);
     }
     .dd-group {
-      font-size: 10px;
-      font-weight: 600;
-      letter-spacing: 0.08em;
+      font-size: 9.5px;
+      font-weight: 700;
+      letter-spacing: 0.10em;
       color: var(--text-tertiary);
       padding: 8px 14px 4px;
       background: var(--surface2);
       position: sticky;
       top: 0;
       text-transform: uppercase;
+      border-bottom: 1px solid var(--border-light);
     }
     .dd-item {
       padding: 9px 14px;
@@ -396,13 +433,13 @@
       align-items: center;
       gap: 8px;
       border-bottom: 1px solid var(--border-light);
-      transition: background 0.1s;
+      transition: background 0.08s;
     }
     .dd-item:last-child { border-bottom: none; }
     .dd-item:hover { background: var(--surface2); }
-    .dd-item .radius-hint { margin-left: auto; font-family: var(--mono); font-size: 11px; color: var(--text-tertiary); }
+    .dd-item .radius-hint { margin-left: auto; font-family: var(--mono); font-size: 10.5px; color: var(--text-tertiary); }
 
-    .dd-badge { font-size: 10px; padding: 2px 7px; border-radius: 4px; white-space: nowrap; font-family: var(--mono); }
+    .dd-badge { font-size: 9.5px; padding: 2px 6px; border-radius: 3px; white-space: nowrap; font-family: var(--mono); font-weight: 700; letter-spacing: 0.02em; }
     .db-도심  { background: var(--red-bg); color: var(--red); }
     .db-광역  { background: var(--yellow-bg); color: var(--yellow); }
     .db-지역  { background: var(--blue-bg); color: var(--blue); }
@@ -414,7 +451,7 @@
       border-radius: var(--radius-lg);
       overflow: hidden;
       margin-top: 12px;
-      box-shadow: var(--shadow);
+      box-shadow: var(--shadow-sm);
     }
     .station-card-row {
       display: flex;
@@ -423,25 +460,28 @@
       padding: 9px 14px;
       font-size: 13px;
       border-bottom: 1px solid var(--border-light);
+      background: var(--surface);
     }
     .station-card-row:last-child { border-bottom: none; }
-    .sc-label { color: var(--text-secondary); font-size: 12px; }
+    .sc-label { color: var(--text-secondary); font-size: 11px; font-weight: 600; letter-spacing: 0.02em; }
     .radius-display {
       font-family: var(--mono);
-      font-size: 28px;
-      font-weight: 500;
+      font-size: 26px;
+      font-weight: 700;
       color: var(--text);
-      letter-spacing: -0.02em;
+      letter-spacing: -0.03em;
     }
     .manual-link {
-      font-size: 12px;
+      font-size: 11px;
       color: var(--text-tertiary);
       cursor: pointer;
       text-decoration: underline;
       text-underline-offset: 2px;
       margin-top: 8px;
       display: inline-block;
+      font-weight: 500;
     }
+    .manual-link:hover { color: var(--text-secondary); }
 
     /* ── ROAD CHECK ── */
     .road-box {
@@ -449,6 +489,7 @@
       border-radius: var(--radius-lg);
       overflow: hidden;
       margin-bottom: 12px;
+      box-shadow: var(--shadow-sm);
     }
     .road-row {
       display: flex;
@@ -459,62 +500,34 @@
       border-bottom: 1px solid var(--border-light);
       background: var(--surface);
     }
-    .road-row:last-child { border-bottom: none; background: var(--surface2); }
+    .road-row:last-child { border-bottom: none; background: var(--surface2); font-weight: 600; }
     .road-label { color: var(--text-secondary); font-size: 12px; }
 
     /* ── PROGRESS BAR ── */
-    .fap-bar { height: 6px; border-radius: 3px; background: var(--border); margin: 6px 0 2px; overflow: hidden; }
-    .fap-fill { height: 100%; border-radius: 3px; transition: width 0.4s ease; }
+    .fap-bar { height: 4px; border-radius: 2px; background: var(--border); margin: 7px 0 3px; overflow: hidden; }
+    .fap-fill { height: 100%; border-radius: 2px; transition: width 0.4s ease; }
 
     /* ── OPEN SPACE BOX ── */
-    .os-box {
-      border: 1px solid #A0C0E0;
-      border-radius: var(--radius-lg);
-      overflow: hidden;
-      margin-top: 12px;
-    }
-    .os-header {
-      background: var(--blue-bg);
-      padding: 8px 14px;
-      font-size: 11px;
-      font-weight: 600;
-      color: var(--blue);
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
-    }
-    .os-row {
-      display: flex;
-      justify-content: space-between;
-      padding: 8px 14px;
-      font-size: 12px;
-      border-bottom: 1px solid #D0E4F0;
-      background: var(--surface);
-    }
+    .os-box { border: 1px solid var(--blue-border); border-radius: var(--radius-lg); overflow: hidden; margin-top: 12px; }
+    .os-header { background: var(--blue-bg); padding: 8px 14px; font-size: 10px; font-weight: 700; color: var(--blue); letter-spacing: 0.08em; text-transform: uppercase; }
+    .os-row { display: flex; justify-content: space-between; padding: 8px 14px; font-size: 12px; border-bottom: 1px solid var(--blue-border); background: var(--surface); }
     .os-row:last-child { border-bottom: none; }
     .os-label { color: var(--text-secondary); }
-    .os-val { font-weight: 500; }
-    .os-formula {
-      font-family: var(--mono);
-      font-size: 11px;
-      background: var(--surface2);
-      padding: 10px 14px;
-      border-top: 1px solid var(--border-light);
-      line-height: 1.8;
-      color: var(--text-secondary);
-    }
-    .os-result-val { font-family: var(--mono); font-size: 15px; font-weight: 500; color: var(--blue); }
+    .os-val { font-weight: 600; }
+    .os-formula { font-family: var(--mono); font-size: 10.5px; background: var(--surface2); padding: 10px 14px; border-top: 1px solid var(--border-light); line-height: 1.9; color: var(--text-secondary); }
+    .os-result-val { font-family: var(--mono); font-size: 14px; font-weight: 700; color: var(--blue); }
 
     /* ── VERDICT ── */
     .verdict {
       text-align: center;
-      padding: 24px 20px;
-      border-radius: var(--radius-lg);
-      border: 1px solid;
+      padding: 28px 20px;
+      border-radius: var(--radius-xl);
+      border: 1.5px solid;
       margin-bottom: 1.5rem;
     }
-    .verdict-icon { font-size: 32px; margin-bottom: 10px; font-family: var(--mono); }
-    .verdict-title { font-size: 20px; font-weight: 700; margin-bottom: 6px; letter-spacing: -0.02em; }
-    .verdict-sub { font-size: 13px; opacity: 0.7; }
+    .verdict-icon { font-size: 28px; margin-bottom: 10px; font-family: var(--mono); line-height: 1; }
+    .verdict-title { font-size: 18px; font-weight: 700; margin-bottom: 6px; letter-spacing: -0.02em; }
+    .verdict-sub { font-size: 12.5px; opacity: 0.6; }
 
     /* ── SCENARIO CARDS ── */
     .scenario-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 1.5rem; }
@@ -523,62 +536,33 @@
       border: 1px solid var(--border);
       border-radius: var(--radius-lg);
       padding: 16px;
-      box-shadow: var(--shadow);
+      box-shadow: var(--shadow-sm);
     }
     .sc-card.rec { border-color: var(--green); border-width: 1.5px; }
-    .sc-title {
-      font-size: 13px;
-      font-weight: 600;
-      margin-bottom: 12px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .rec-badge {
-      font-size: 9px;
-      font-family: var(--mono);
-      padding: 2px 6px;
-      border-radius: 3px;
-      background: var(--green-bg);
-      color: var(--green);
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-    }
-    .sc-data-row {
-      display: flex;
-      justify-content: space-between;
-      padding: 5px 0;
-      border-bottom: 1px solid var(--border-light);
-      font-size: 12px;
-    }
+    .sc-title { font-size: 13px; font-weight: 700; margin-bottom: 11px; display: flex; align-items: center; gap: 7px; letter-spacing: -0.01em; }
+    .rec-badge { font-size: 9px; font-family: var(--mono); padding: 2px 6px; border-radius: 3px; background: var(--green-bg); color: var(--green); text-transform: uppercase; letter-spacing: 0.06em; font-weight: 700; }
+    .sc-data-row { display: flex; justify-content: space-between; padding: 5px 0; border-bottom: 1px solid var(--border-light); font-size: 12px; }
     .sc-data-row:last-child { border-bottom: none; }
     .sc-data-row span:first-child { color: var(--text-secondary); }
-    .sc-data-row span:last-child { font-family: var(--mono); font-weight: 500; }
+    .sc-data-row span:last-child { font-family: var(--mono); font-weight: 700; font-size: 12px; }
 
-    /* ── SCHEDULE GRID ── */
-    .schedule-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 10px; }
+    /* ── 지도 이미지 ── */
+    #mapOverlay { display:none;position:fixed;inset:0;background:rgba(22,20,15,0.90);z-index:9999;cursor:zoom-out;justify-content:center;align-items:center;padding:20px; }
+    #mapOverlay.open { display:flex; }
+    #mapOverlay img { max-width:95vw;max-height:92vh;border-radius:var(--radius-lg);object-fit:contain;box-shadow:0 16px 64px rgba(0,0,0,0.6); }
 
     /* ── FOOTER ── */
-    footer {
-      margin-top: 4rem;
-      padding: 1.5rem;
-      text-align: center;
-      font-size: 11px;
-      color: var(--text-tertiary);
-      border-top: 1px solid var(--border);
-      font-family: var(--mono);
-      letter-spacing: 0.04em;
-    }
+    footer { margin-top: 4rem; padding: 1.5rem; text-align: center; font-size: 10.5px; color: var(--text-tertiary); border-top: 1px solid var(--border); font-family: var(--mono); letter-spacing: 0.04em; }
 
     @media (max-width: 600px) {
-      .container { padding: 1rem; }
+      .container { padding: 1rem 1rem 4rem; }
       .metrics-grid4 { grid-template-columns: 1fr 1fr; }
       .scenario-grid { grid-template-columns: 1fr; }
-      .schedule-grid { grid-template-columns: 1fr 1fr; }
       .field-row3 { grid-template-columns: 1fr; }
       header { padding: 0 1rem; }
       .header-version { display: none; }
     }
+
     /* 지도 이미지 줌 */
     #mapOverlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.88);z-index:9999;cursor:zoom-out;justify-content:center;align-items:center;padding:20px}
     #mapOverlay.open{display:flex}
@@ -589,26 +573,34 @@
 <div id="mapOverlay" onclick="toggleMapZoom(null)"><img id="mapOverlayImg" src="" alt="역세권 범위 지도 확대"></div>
 
 <header>
-  <span class="header-logo">HAEAHN ARCHITECTURE</span>
-  <span class="header-title">역세권 활성화사업 검토 툴</span>
-  <span class="header-version">v2.0 · 2026.04 기준</span>
+  <div style="display:flex;align-items:center;gap:16px">
+    <span class="header-logo">HAEAHN</span>
+    <span style="width:1px;height:16px;background:rgba(255,255,255,0.12);display:inline-block"></span>
+    <span class="header-title">역세권 활성화사업 검토 툴</span>
+  </div>
+  <span class="header-version">v2.0 · 2026.04.30</span>
 </header>
 
 <div class="container">
 
   <div class="page-intro">
-    <h1>역세권 활성화사업 검토 툴</h1>
-    <p>입지요건 판단 → 용도지역 변경 범위 → 공공기여 자동 산정까지 단계별로 검토합니다.</p>
-    <div class="badge-row">
-      <span class="badge">역세권 활성화사업 운영기준 2026.04.30 반영</span>
-      <span class="badge">서울시 도시공간전략과 역세권 범위 2025.08 기준</span>
-      <span class="badge">해안건축 도시건축본부</span>
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap">
+      <div>
+        <p style="font-size:10px;font-weight:600;color:var(--text-tertiary);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:10px">도시건축본부 내부 검토용</p>
+        <h1>역세권 활성화사업<br>검토 툴</h1>
+        <p style="margin-top:8px;color:var(--text-secondary)">입지요건 · 용도지역 변경 · 용적률 · 공공기여 자동 산정</p>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:4px;align-items:flex-end;flex-shrink:0;margin-top:4px">
+        <span class="badge">운영기준 2026.04.30</span>
+        <span class="badge">역세권 범위 2025.08</span>
+        <span class="badge">해안건축 도시건축본부</span>
+      </div>
     </div>
   </div>
 
   <div class="step-nav">
     <button class="step-btn active" onclick="goStep(0)"><span class="step-num">STEP 01</span>입지요건</button>
-    <button class="step-btn" onclick="goStep(1)"><span class="step-num">STEP 02</span>대상지요건</button>
+    <button class="step-btn" onclick="goStep(1)"><span class="step-num">STEP 02</span>대상지</button>
     <button class="step-btn" onclick="goStep(2)"><span class="step-num">STEP 03</span>용도·용적률</button>
     <button class="step-btn" onclick="goStep(3)"><span class="step-num">STEP 04</span>공공기여</button>
     <button class="step-btn" onclick="goStep(4)"><span class="step-num">STEP 05</span>종합결과</button>
@@ -682,12 +674,14 @@
 
     <div class="divider"></div>
     <p class="section-title">제외 대상 여부 확인</p>
-    <div class="toggle-row"><label>5,000㎡ 이상 도시계획변경 사전협상 대상지</label><button class="toggle" id="t_pre" onclick="tog('t_pre')"></button></div>
-    <div class="toggle-row"><label>정비구역·정비예정구역</label><button class="toggle" id="t_zone" onclick="tog('t_zone')"></button></div>
-    <div class="toggle-row"><label>재정비촉진지구</label><button class="toggle" id="t_regen" onclick="tog('t_regen')"></button></div>
-    <div class="toggle-row"><label>서울도심 기본계획 특성관리지구</label><button class="toggle" id="t_special" onclick="tog('t_special')"></button></div>
-    <div class="toggle-row"><label>도시·군계획시설 부지</label><button class="toggle" id="t_facility" onclick="tog('t_facility')"></button></div>
-    <div id="excludeResult" class="inline-result" style="margin-top:10px"></div>
+    <div class="toggle-group">
+      <div class="toggle-row"><label>5,000㎡ 이상 도시계획변경 사전협상 대상지</label><button class="toggle" id="t_pre" onclick="tog('t_pre')"></button></div>
+      <div class="toggle-row"><label>정비구역·정비예정구역</label><button class="toggle" id="t_zone" onclick="tog('t_zone')"></button></div>
+      <div class="toggle-row"><label>재정비촉진지구</label><button class="toggle" id="t_regen" onclick="tog('t_regen')"></button></div>
+      <div class="toggle-row"><label>서울도심 기본계획 특성관리지구</label><button class="toggle" id="t_special" onclick="tog('t_special')"></button></div>
+      <div class="toggle-row"><label>도시·군계획시설 부지</label><button class="toggle" id="t_facility" onclick="tog('t_facility')"></button></div>
+    </div>
+    <div id="excludeResult" class="inline-result" style="margin-top:4px"></div>
 
     <div class="nav-btns"><div></div><button class="btn btn-primary" onclick="goStep(1)">다음 단계 →</button></div>
   </div>
@@ -763,20 +757,6 @@
       </select>
     </div>
 
-    <div id="step4Notice" style="display:none;margin-bottom:12px">
-      <div class="issue issue-warn"><div class="issue-dot"></div><div style="font-size:12px">역 인접부 또는 간선가로 연접부 해당 — <strong>최대 4단계 상향 시 복합용도 50% 이상 도입 의무</strong> (운영기준 3-1-2 다). 복합용도 미도입 시 최대 3단계까지만 가능합니다.</div></div>
-    </div>
-
-    <!-- 복합용도: 비중심지 시 의무 표시, 그 외 선택 -->
-    <div class="field">
-      <label id="mixedUseLabel">복합용도 도입 여부</label>
-      <select id="mixedUse" onchange="calcAll()">
-        <option value="N" selected>미도입</option>
-        <option value="Y">도입 (전체 용적률의 50% 이상 업무·관광숙박)</option>
-      </select>
-      <p class="hint" id="mixedUseHint" style="display:none;color:var(--yellow)">비중심지에서 근린상업 초과 상향 시 복합용도 도입이 필요합니다.</p>
-    </div>
-
     <!-- 비중심지 특례 패널 (JS로 제어) -->
     <div id="nonCenterSpecialPanel" style="display:none;margin-bottom:1rem">
       <div style="background:var(--yellow-bg);border:1px solid #E8D080;border-radius:var(--radius-lg);padding:14px 16px;">
@@ -789,9 +769,9 @@
       </div>
     </div>
 
-    <div class="card" style="margin-bottom:1rem">
+    <div class="card" style="margin-bottom:1rem;border-left:3px solid var(--accent);background:var(--accent-light)">
       <div class="card-label">최대 변경 가능 용도지역</div>
-      <div class="card-value" id="maxZoneVal" style="font-family:var(--sans);font-size:18px">-</div>
+      <div class="card-value" id="maxZoneVal" style="font-family:var(--sans);font-size:20px;color:var(--accent)">-</div>
       <div class="card-sub" id="maxZoneSub"></div>
     </div>
 
@@ -799,18 +779,20 @@
     <div class="divider"></div>
 
     <div class="metrics-grid4">
-      <div class="card"><div class="card-label">기준(허용)용적률</div><div class="card-value" id="baseFar">-</div></div>
-      <div class="card"><div class="card-label">상한용적률</div><div class="card-value" id="maxFar">-</div></div>
-      <div class="card"><div class="card-label">증가용적률</div><div class="card-value" id="incFar">-</div></div>
-      <div class="card"><div class="card-label">상향 단계</div><div class="card-value" id="stepCount">-</div></div>
+      <div class="card" style="text-align:center"><div class="card-label">기준(허용)용적률</div><div class="card-value" id="baseFar" style="font-size:20px">-</div></div>
+      <div class="card" style="text-align:center;border-top:2px solid var(--accent)"><div class="card-label">상한용적률</div><div class="card-value" id="maxFar" style="font-size:20px;color:var(--accent)">-</div></div>
+      <div class="card" style="text-align:center"><div class="card-label">증가용적률</div><div class="card-value" id="incFar" style="font-size:20px;color:var(--green)">-</div></div>
+      <div class="card" style="text-align:center"><div class="card-label">상향 단계</div><div class="card-value" id="stepCount" style="font-size:20px">-</div></div>
     </div>
 
     <div class="divider"></div>
-    <p style="font-size:12px;font-weight:500;color:var(--text-secondary);margin-bottom:12px">추가 인센티브 (선택)</p>
-    <div class="toggle-row"><label>관광숙박시설 도입 — 상한용적률 × 1.3배 이내 <span style="font-size:10px;color:var(--text-tertiary)">(관광호텔·전통호텔·가족호텔·호스텔업, 한시적 적용)</span></label><button class="toggle" id="t_hotel" onclick="tog('t_hotel')"></button></div>
-    <div class="toggle-row"><label>ZEB·녹색건축 인증 — 기준용적률 × 최대 15%</label><button class="toggle" id="t_zeb" onclick="tog('t_zeb')"></button></div>
-    <div class="toggle-row"><label>창의혁신 디자인 — 상업지역 최대 110%p <span style="font-size:10px;color:var(--red)">※ 미적용 원칙 (도시공간본부·주관부서 모두 인정 시 예외)</span></label><button class="toggle" id="t_design" onclick="tog('t_design')"></button></div>
-    <div class="toggle-row"><label>공개공지 의무면적 초과 설치</label><button class="toggle" id="t_openspace" onclick="tog('t_openspace')"></button></div>
+    <p class="section-title">추가 인센티브 — 선택 적용</p>
+    <div class="toggle-group">
+      <div class="toggle-row"><label>관광숙박시설 도입 — 상한용적률 × 1.3배 이내 <span style="font-size:10px;color:var(--text-tertiary)">(관광호텔·전통호텔·가족호텔·호스텔업, 한시적 적용)</span></label><button class="toggle" id="t_hotel" onclick="tog('t_hotel')"></button></div>
+      <div class="toggle-row"><label>ZEB·녹색건축 인증 — 기준용적률 × 최대 15%</label><button class="toggle" id="t_zeb" onclick="tog('t_zeb')"></button></div>
+      <div class="toggle-row"><label>창의혁신 디자인 — 상업지역 최대 110%p <span style="font-size:10px;color:var(--red)">※ 미적용 원칙 (도시공간본부·주관부서 모두 인정 시 예외)</span></label><button class="toggle" id="t_design" onclick="tog('t_design')"></button></div>
+      <div class="toggle-row"><label>공개공지 의무면적 초과 설치</label><button class="toggle" id="t_openspace" onclick="tog('t_openspace')"></button></div>
+    </div>
 
     <div id="openspacePanel" style="display:none;margin-top:14px;margin-bottom:4px">
       <div class="field-row3">
@@ -849,21 +831,23 @@
         <option value="50">50% 이상 도입 — 증가용적률의 30% 적용</option>
       </select>
     </div>
-    <div class="toggle-row" style="margin-bottom:1rem">
-      <label>지역별 공공기여 완화 적용 <span style="font-size:10px;color:var(--text-tertiary)">(3개년 연속 자치구 표준지 공시지가 평균이 서울시 전체 평균의 60% 이하인 자치구)</span></label>
-      <button class="toggle" id="t_regional" onclick="tog('t_regional')"></button>
+    <div class="toggle-group" style="margin-bottom:1rem">
+      <div class="toggle-row">
+        <label>지역별 공공기여 완화 적용 <span style="font-size:10px;color:var(--text-tertiary)">(3개년 연속 자치구 표준지 공시지가 평균이 서울시 전체 평균의 60% 이하인 자치구)</span></label>
+        <button class="toggle" id="t_regional" onclick="tog('t_regional')"></button>
+      </div>
     </div>
     <div id="regionalNote" style="display:none;margin-bottom:1rem">
-      <div class="issue issue-warn"><div class="issue-dot"></div><div style="font-size:12px">지역별 완화 적용 시 최대 20% 범위 내 감면. 관광숙박·노인복지 완화와 중복 시 지역별 완화는 <strong>1/2만 적용</strong> (운영기준 4-1-1 나, 2026.04.30 신설)</div></div>
+      <div class="issue issue-warn"><div class="issue-dot"></div><div style="font-size:12px">지역별 완화 적용 시 최대 20%p 감면. 관광숙박·노인복지 완화와 중복 시 지역별 완화는 <strong>1/2만 적용</strong> (운영기준 4-1-1 나, 2026.04.30 신설)</div></div>
     </div>
     <div class="divider"></div>
     <div class="metrics-grid">
       <div class="card"><div class="card-label">공공기여율</div><div class="card-value" id="contribRate">-</div><div class="card-sub" id="contribRateFormula"></div></div>
       <div class="card"><div class="card-label">공공기여 면적</div><div class="card-value" id="contribArea" style="font-size:18px">-</div><div class="card-sub" id="contribAreaSub"></div></div>
     </div>
-    <div class="card">
+    <div class="card" style="border-left:3px solid var(--accent)">
       <div class="card-label">공공기여 개략 금액</div>
-      <div class="card-value" id="contribAmt">-</div>
+      <div class="card-value" id="contribAmt" style="color:var(--accent)">-</div>
       <div class="card-sub">대지면적 × 공공기여율 × 부지가액 (공시지가 × 2)</div>
     </div>
     <div id="contribGuide" style="margin-top:12px"></div>
@@ -917,7 +901,10 @@
 
 </div>
 
-<footer>HAEAHN ARCHITECTURE 도시건축본부 · 역세권 활성화사업 운영기준 2026.04.30 기준 · 본 툴은 참고용이며 실제 사업 적용 시 관련 법령 및 지침을 직접 확인하시기 바랍니다.</footer>
+<footer>
+  <div style="margin-bottom:6px;font-size:12px;color:var(--text-secondary);font-family:var(--sans);letter-spacing:0">HAEAHN ARCHITECTURE 도시건축본부</div>
+  <div>역세권 활성화사업 운영기준 2026.04.30 기준 · 본 툴은 참고용이며 실제 사업 적용 시 관련 법령 및 지침을 직접 확인하시기 바랍니다.</div>
+</footer>
 
 <script>
 // 역명 → 영문 이미지 파일명 매핑 (GitHub Pages URL 인코딩 문제 방지)
@@ -1144,41 +1131,31 @@ function goStep(n){document.querySelectorAll('.panel').forEach((p,i)=>p.classLis
 function gv(id){return document.getElementById(id)?.value||'';}
 function gn(id){return parseFloat(document.getElementById(id)?.value)||0;}
 
-function getMaxZ(c,loc,mix){
-  const sp=loc!=='일반', hm=mix==='Y';
-  const n4=document.getElementById('step4Notice');
-  if(n4) n4.style.display=sp?'block':'none';
+function getMaxZ(c,loc){
+  const sp=loc!=='일반';
   const ncp=document.getElementById('nonCenterSpecialPanel');
-  const muHint=document.getElementById('mixedUseHint');
-  const muLabel=document.getElementById('mixedUseLabel');
   const isNonCenter=c==='비중심지';
   if(ncp) ncp.style.display=isNonCenter?'block':'none';
-  if(muHint) muHint.style.display=isNonCenter?'block':'none';
-  if(muLabel) muLabel.textContent=isNonCenter?'복합용도 도입 여부 (비중심지 근린상업 초과 상향 시 필요)':'복합용도 도입 여부';
 
-  // 도심·광역중심: 최대 일반상업(4), 역인접/간선+복합50% → 심의 통해 중심상업(5)
-  if(c==='도심'||c==='광역중심') return(sp&&hm)?5:4;
-  // 지역중심: 최대 일반상업(4), 역인접/간선 해당해도 중심상업 불가 (운영기준 3-1-2 표)
+  // 도심·광역중심: 기본 일반상업(4), 역인접/간선 + 복합 50% → 심의 통해 중심상업(5)
+  // 복합용도 필드 제거 → 역인접/간선 해당 시 최대 중심상업(5) 심의 가능 안내만
+  if(c==='도심'||c==='광역중심') return sp?5:4;
+  // 지역중심: 최대 일반상업(4)
   if(c==='지역중심') return 4;
-  // 지구중심: 기본 근린상업(3), 역인접/간선 해당 시 심의 통해 일반상업(4)
+  // 지구중심: 기본 근린상업(3), 역인접/간선 → 심의 통해 일반상업(4)
   if(c==='지구중심') return sp?4:3;
 
-  // ── 비중심지 ──
+  // ── 비중심지 특례 (3-1-2 라목) ──
   const curZ=gv('currentZone');
   const sEl=document.getElementById('specialResult');
   const s20=!!state.specials.special20m, s6=!!state.specials.special6m, s30=!!state.specials.special30pct;
-
-  // 비중심지 특례 (3-1-2 라목): 입지특성과 별개 독립 조항
-  // 조건: 2면 이상 도로 + 1면 20m 이상 + 1면 6m 이상 + 복합용도 30% → 일반상업까지
   if(s20&&s6&&s30){
     if(sEl) sEl.innerHTML='<div class="issue issue-ok" style="margin:0"><div class="issue-dot"></div><div style="font-size:12px">특례 조건 충족 (3-1-2 라목) — 최대 일반상업지역까지 상향 가능</div></div>';
     return 4;
   } else {
-    if(sEl){const m=[];if(!s20)m.push('20m↑ 도로');if(!s6)m.push('6m↑ 도로');if(!s30)m.push('복합용도 30%↑');sEl.innerHTML=m.length?`<div style="font-size:12px;color:var(--text-tertiary)">특례 미충족 항목: ${m.join(', ')}</div>`:''; }
+    if(sEl){const m=[];if(!s20)m.push('20m↑ 도로');if(!s6)m.push('6m↑ 도로');if(!s30)m.push('복합용도 30%↑');sEl.innerHTML=m.length?`<div style="font-size:12px;color:var(--text-tertiary)">특례 미충족: ${m.join(', ')}</div>`:''; }
   }
-  // 기본 비중심지 상향 범위 (입지특성 무관)
-  // 준주거 → 근린상업(3), 2·3종 → 준주거(2)
-  return (curZ==='준주거') ? 3 : 2;
+  return (curZ==='준주거')?3:2;
 }
 function getCurZ(z){if(z==='2종7층'||z==='2종')return 0;if(z==='3종')return 1;if(z==='준주거')return 2;if(z==='근린상업')return 3;if(z==='일반상업')return 4;return 0;}
 
@@ -1240,7 +1217,7 @@ function calcAll(){
   if(biz==='jgu'){const tot=gn('totalBuildings'),old=gn('oldBuildings'),r=tot>0?old/tot:0,p=(r*100).toFixed(1),bw=Math.min(r*100,100).toFixed(1);agEl.innerHTML=`<div style="width:100%"><div style="display:flex;align-items:center;gap:8px"><span style="color:${r>=2/3?'var(--green)':'var(--red)'}">${old}/${tot}동 (${p}%) — 2/3 이상 ${r>=2/3?'충족':'미달'}</span><span class="tag ${r>=2/3?'tag-ok':'tag-fail'}">${r>=2/3?'적합':'부적합'}</span></div><div class="fap-bar"><div class="fap-fill" style="width:${bw}%;background:${r>=2/3?'var(--green)':'var(--red)'}"></div></div></div>`;}
   else{const ok=!!state.toggles.t_jbi_aging;agEl.innerHTML=ok?'<span style="color:var(--green)">노후도 요건 충족 (동수의 60% 이상)</span><span class="tag tag-ok">적합</span>':'<span style="color:var(--red)">노후도 요건 미확인 — 토글로 충족 여부를 선택하세요</span><span class="tag tag-warn">확인필요</span>';}
 
-  const ct=getC(),lc=gv('locChar'),mu=gv('mixedUse'),maxIdx=getMaxZ(ct,lc,mu),cz=gv('currentZone'),cIdx=getCurZ(cz);
+  const ct=getC(),lc=gv('locChar'),maxIdx=getMaxZ(ct,lc),cz=gv('currentZone'),cIdx=getCurZ(cz);
   document.getElementById('maxZoneVal').textContent=ZONES[maxIdx];
   document.getElementById('maxZoneSub').textContent=cIdx>=maxIdx?'현재 용도지역이 이미 최대 수준':'현재에서 최대 '+(maxIdx-cIdx)+'단계 상향 가능';
 
@@ -1340,11 +1317,9 @@ function buildSummary(dist,R,area,bFar,mFar,iFar,cRate,cIdx,tIdx,roadOk){
   sg.innerHTML=scs.map(s=>`<div class="sc-card ${s.rec?'rec':''}"><div class="sc-title">${s.name}${s.rec?'<span class="rec-badge">우선 검토</span>':''}</div><div class="sc-data-row"><span>상한용적률</span><span>${s.mf}%</span></div><div class="sc-data-row"><span>공공기여율</span><span>${s.r}%</span></div><div class="sc-data-row"><span>공공기여 면적</span><span>${s.a}㎡</span></div></div>`).join('');
 
   const issues=[];
-  const lc=gv('locChar'), mu=gv('mixedUse');
+  const lc=gv('locChar');
   const isSpecial=lc!=='일반';
   if(!roadOk)issues.push({t:'danger',x:'도로 요건 미충족 — 2면 이상 4m 접도 + 최소 1면 8m 이상 필요'});
-  // 4단계 상향 + 복합용도 미도입 경고
-  if(tIdx-cIdx>=4 && mu!=='Y') issues.push({t:'danger',x:'4단계 상향 시 복합용도(업무·관광숙박) 50% 이상 도입 의무 — 복합용도 미도입 상태 (운영기준 3-1-2 다)'});
   if(tIdx-cIdx===4 && !isSpecial) issues.push({t:'danger',x:'4단계 상향은 역 인접부 또는 간선가로 연접부 해당 시에만 가능 (운영기준 3-1-2 다)'});
   if(tIdx-cIdx>=3 && tIdx-cIdx<4)issues.push({t:'warn',x:'3단계 이상 상향 — 역세권 활성화 기능 확보 당위성 별도 제시 필요 (운영기준 3-1-2 나)'});
   if(tIdx>=3)issues.push({t:'warn',x:'인접 저층 주거지역 있을 경우 완충공간·용도관리 계획 필요 (지구단위계획 수립기준)'});
