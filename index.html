@@ -793,7 +793,6 @@
       <div class="toggle-row"><label>관광숙박시설 도입 — 상한용적률 × 1.3배 이내 <span style="font-size:10px;color:var(--text-tertiary)">(관광호텔·전통호텔·가족호텔·호스텔업, 한시적 적용)</span></label><button class="toggle" id="t_hotel" onclick="tog('t_hotel')"></button></div>
       <div class="toggle-row"><label>ZEB·녹색건축 인증 — 기준용적률 × 최대 15%</label><button class="toggle" id="t_zeb" onclick="tog('t_zeb')"></button></div>
       <div class="toggle-row"><label>창의혁신 디자인 — 상업지역 최대 110%p <span style="font-size:10px;color:var(--red)">※ 미적용 원칙 (도시공간본부·주관부서 모두 인정 시 예외)</span></label><button class="toggle" id="t_design" onclick="tog('t_design')"></button></div>
-      <div class="toggle-row"><label>공개공지 의무면적 초과 설치</label><button class="toggle" id="t_openspace" onclick="tog('t_openspace')"></button></div>
     </div>
 
     <div id="incentiveResult" style="margin-top:14px"></div>
@@ -1092,8 +1091,7 @@ function selectStation(n){
   }
   updateZoneOptions();
   // 자치구 확인 → 지역별 공공기여 완화 자동 토글
-  const gu = STATION_GU[n];
-  const isRegional = gu ? REGIONAL_GU.has(gu) : false;
+  const isRegional = gu!=='-' && REGIONAL_GU.has(gu);
   const tReg = document.getElementById('t_regional');
   const regNote = document.getElementById('regionalNote');
   if(tReg){
@@ -1132,7 +1130,7 @@ document.addEventListener('click',e=>{if(!e.target.closest('.station-wrap'))docu
 function getR(){const m=parseInt(document.getElementById('manualRadius')?.value||'0');if(m>0)return m;if(state.station)return getSI(state.station).radius;return null;}
 function getC(){if(state.station)return getSI(state.station).center||'비중심지';return '비중심지';}
 
-function tog(id){state.toggles[id]=state.toggles[id]?0:1;document.getElementById(id).classList.toggle('on',!!state.toggles[id]);if(id==='t_jgu')document.getElementById('jguFarPanel').style.display=state.toggles[id]?'block':'none';if(id==='t_openspace')document.getElementById('openspacePanel').style.display=state.toggles[id]?'block':'none';if(id==='t_regional')document.getElementById('regionalNote').style.display=state.toggles[id]?'block':'none';calcAll();}
+function tog(id){state.toggles[id]=state.toggles[id]?0:1;document.getElementById(id).classList.toggle('on',!!state.toggles[id]);if(id==='t_jgu')document.getElementById('jguFarPanel').style.display=state.toggles[id]?'block':'none';if(id==='t_regional')document.getElementById('regionalNote').style.display=state.toggles[id]?'block':'none';calcAll();}
 function togSpecial(id){state.specials[id]=state.specials[id]?0:1;document.getElementById(id).classList.toggle('on',!!state.specials[id]);calcAll();}
 
 function goStep(n){document.querySelectorAll('.panel').forEach((p,i)=>p.classList.toggle('active',i===n));document.querySelectorAll('.step-btn').forEach((b,i)=>{b.classList.remove('active');if(i===n)b.classList.add('active');});calcAll();}
@@ -1246,45 +1244,33 @@ function calcAll(){
   document.getElementById('stepCount').textContent=(tIdx-cIdx)+'단계';
 
   const tZN=ZONES[tIdx]||'';let exFar=0;
-  if(state.toggles['t_hotel'])exFar+=Math.round(mFar*0.3); // 1.3배 (2026.04.30 개정)
+  if(state.toggles['t_hotel'])exFar+=Math.round(mFar*0.3);
   if(state.toggles['t_zeb'])exFar+=Math.round(bFar*0.15);
   if(state.toggles['t_design']&&tZN.includes('상업'))exFar+=110;
 
-  let osExtra=0,osResultFar=0;
-  if(state.toggles['t_openspace']){
-    const tfa=gn('totalFloorArea'),bt=gv('bldgType'),aOS=gn('actualOpenSpace');
-    const ob=getOblig(area,tfa,bt),osc=calcOS(bFar,legalFar,area,ob.area,aOS);
-    osExtra=osc.far;osResultFar=osc.resultFar||0;
-    const osEl=document.getElementById('openspaceResult');
-    if(ob.pct===0){osEl.innerHTML=`<div class="os-box"><div class="os-header">공개공지 인센티브</div><div class="os-row"><span class="os-label">적용 기준</span><span class="os-val">${ob.label}</span></div></div>`;}
-    else{osEl.innerHTML=`<div class="os-box"><div class="os-header">공개공지 인센티브 산정 (지구단위계획 수립기준 Ⅱ.3-8-3)</div><div class="os-row"><span class="os-label">의무면적 기준</span><span class="os-val">${ob.label}</span></div><div class="os-row"><span class="os-label">의무 공개공지 면적</span><span class="os-val">${ob.area.toFixed(1)}㎡ (대지 × ${ob.pct}%)</span></div><div class="os-row"><span class="os-label">계획 공개공지 면적</span><span class="os-val">${aOS.toFixed(1)}㎡</span></div><div class="os-row"><span class="os-label">초과 면적 (의무면적 차감 후)</span><span class="os-val">${osc.excess>0?osc.excess.toFixed(2)+'㎡':'-'}</span></div><div class="os-formula">산정식: 허용용적률 + 법적용적률 × {(공개공지등 − 의무면적) / 대지면적}<br>= ${bFar}% + ${legalFar}% × {(${aOS.toFixed(1)} − ${ob.area.toFixed(1)}) / ${area}}<br>= ${bFar}% + ${osc.rawAdd.toFixed(2)}%p<br>완화 상한: 법적용적률 ${legalFar}% × 1.2배 = ${osc.cap}%</div><div class="os-row"><span class="os-label">공개공지 인센티브 가산</span><span class="os-result-val">+${osc.far.toFixed(2)}%p → 허용용적률 ${osResultFar.toFixed(2)}%</span></div><div class="os-row"><span class="os-label">비고</span><span class="os-val" style="font-size:11px">${osc.note}</span></div></div>`;}
-  }
-
-  const allInc=['t_hotel','t_zeb','t_design','t_openspace'].filter(k=>state.toggles[k]);
+  const allInc=['t_hotel','t_zeb','t_design'].filter(k=>state.toggles[k]);
   const iEl=document.getElementById('incentiveResult');
   if(allInc.length>0){
     const items=[];
     if(state.toggles['t_hotel']) items.push({label:'관광숙박시설',val:'+'+Math.round(mFar*0.3)+'%p',sub:'상한용적률 × 1.3배 (한시적)',color:'var(--accent)'});
     if(state.toggles['t_zeb']) items.push({label:'ZEB·녹색건축 인증',val:'+'+Math.round(bFar*0.15)+'%p',sub:'기준용적률 × 15%',color:'var(--green)'});
     if(state.toggles['t_design']&&tZN.includes('상업')) items.push({label:'창의혁신 디자인',val:'+110%p',sub:'미적용 원칙 — 예외 인정 시',color:'var(--text-secondary)'});
-    if(state.toggles['t_openspace']&&osExtra>0) items.push({label:'공개공지 초과설치',val:'+'+osExtra.toFixed(2)+'%p',sub:'의무면적 초과분 산정',color:'var(--green)'});
-    else if(state.toggles['t_openspace']) items.push({label:'공개공지 초과설치',val:'산정중',sub:'계획 공개공지 면적 입력 필요',color:'var(--text-tertiary)'});
-    const total=mFar+exFar+(osExtra>0?osExtra:0);
+    const total=mFar+exFar;
     const ov=allInc.length>=2?'<div class="issue issue-warn" style="margin-top:10px"><div class="issue-dot"></div><div>2개 이상 인센티브 중첩 — 지원 자문단 자문 필요 (운영기준 3-2-2)</div></div>':'';
     iEl.innerHTML=`
-      <div style="background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:14px 16px;margin-top:10px">
-        <div style="font-size:11px;font-weight:600;color:var(--text-tertiary);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:12px">추가 인센티브 적용 내역</div>
-        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px;margin-bottom:12px">
+      <div style="background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:16px 18px;margin-top:10px">
+        <div style="font-size:12px;font-weight:700;color:var(--text-secondary);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:12px">추가 인센티브 적용 내역</div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:14px">
           ${items.map(it=>`
-            <div style="background:var(--surface);border:1px solid var(--border-light);border-radius:var(--radius);padding:10px 12px">
-              <div style="font-size:11px;color:var(--text-secondary);margin-bottom:4px">${it.label}</div>
-              <div style="font-size:20px;font-weight:700;font-family:var(--mono);color:${it.color};letter-spacing:-0.02em">${it.val}</div>
-              <div style="font-size:10px;color:var(--text-tertiary);margin-top:3px">${it.sub}</div>
+            <div style="background:var(--surface);border:1px solid var(--border-light);border-radius:var(--radius);padding:12px 14px">
+              <div style="font-size:12px;color:var(--text-secondary);margin-bottom:5px;font-weight:500">${it.label}</div>
+              <div style="font-size:22px;font-weight:700;font-family:var(--mono);color:${it.color};letter-spacing:-0.02em">${it.val}</div>
+              <div style="font-size:11.5px;color:var(--text-tertiary);margin-top:4px">${it.sub}</div>
             </div>`).join('')}
         </div>
-        <div style="display:flex;align-items:center;justify-content:space-between;padding-top:10px;border-top:1px solid var(--border-light)">
-          <span style="font-size:12px;color:var(--text-secondary)">인센티브 포함 최대 용적률</span>
-          <span style="font-size:22px;font-weight:700;font-family:var(--mono);color:var(--accent)">${total.toFixed(0)}%</span>
+        <div style="display:flex;align-items:center;justify-content:space-between;padding-top:12px;border-top:1px solid var(--border)">
+          <span style="font-size:13px;color:var(--text-secondary);font-weight:500">인센티브 포함 최대 용적률</span>
+          <span style="font-size:24px;font-weight:700;font-family:var(--mono);color:var(--accent)">${total.toFixed(0)}%</span>
         </div>
       </div>${ov}`;
   } else iEl.innerHTML='';
@@ -1334,7 +1320,7 @@ function buildSummary(dist,R,area,bFar,mFar,iFar,cRate,cIdx,tIdx,roadOk){
   if(tIdx-cIdx>=3 && tIdx-cIdx<4)issues.push({t:'warn',x:'3단계 이상 상향 — 역세권 활성화 기능 확보 당위성 별도 제시 필요 (운영기준 3-1-2 나)'});
   if(tIdx>=3)issues.push({t:'warn',x:'인접 저층 주거지역 있을 경우 완충공간·용도관리 계획 필요 (지구단위계획 수립기준)'});
   if(state.toggles['t_jgu'])issues.push({t:'info',x:'기존 지구단위계획구역 내 — 지침상 높이·전면공지·공공보행통로 등 선결 조건 확인 필요'});
-  if(['t_hotel','t_zeb','t_design','t_openspace'].filter(k=>state.toggles[k]).length>=2)issues.push({t:'warn',x:'추가 인센티브 2개 이상 중첩 — 지원 자문단 자문으로 적정성 인정 필요 (운영기준 3-2-2)'});
+  if(['t_hotel','t_zeb','t_design'].filter(k=>state.toggles[k]).length>=2)issues.push({t:'warn',x:'추가 인센티브 2개 이상 중첩 — 지원 자문단 자문으로 적정성 인정 필요 (운영기준 3-2-2)'});
   if(['t_pre','t_zone','t_regen'].some(k=>state.toggles[k]))issues.push({t:'danger',x:'제외 대상 해당 — 예외 규정 적용 가능 여부 별도 검토 필요'});
   issues.push({t:'ok',x:'역세권 활성화사업 선정 후 착공까지 약 32개월 소요 예상'});
   document.getElementById('issueList').innerHTML=issues.map(i=>`<div class="issue issue-${i.t}"><div class="issue-dot"></div><div>${i.x}</div></div>`).join('');
