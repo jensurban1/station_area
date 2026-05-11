@@ -1250,8 +1250,8 @@ function calcAll(){
   document.getElementById('stepCount').textContent=(tIdx-cIdx)+'단계';
 
   const tZN=ZONES[tIdx]||'';let exFar=0;
-  if(state.toggles['t_hotel'])exFar+=Math.round(mFar*0.3);
-  if(state.toggles['t_zeb'])exFar+=Math.round(bFar*0.15);
+  if(state.toggles['t_hotel'])exFar+=parseFloat((mFar*0.3).toFixed(1));
+  if(state.toggles['t_zeb'])exFar+=parseFloat((bFar*0.15).toFixed(1));
   if(state.toggles['t_design']&&tZN.includes('상업'))exFar+=110;
   const openspaceFar=state.toggles['t_openspace']?Math.round(legalFar*0.2):0;
   if(state.toggles['t_openspace'])exFar+=openspaceFar;
@@ -1264,8 +1264,8 @@ function calcAll(){
   const iEl=document.getElementById('incentiveResult');
   if(allInc.length>0){
     const items=[];
-    if(state.toggles['t_hotel']) items.push({label:'관광숙박시설',val:'+'+Math.round(mFar*0.3)+'%p',sub:'상한용적률 × 1.3배 (한시적)',color:'var(--accent)'});
-    if(state.toggles['t_zeb']) items.push({label:'ZEB·녹색건축 인증',val:'+'+Math.round(bFar*0.15)+'%p',sub:'기준용적률 × 15%',color:'var(--green)'});
+    if(state.toggles['t_hotel']) items.push({label:'관광숙박시설',val:'+'+(mFar*0.3).toFixed(1)+'%p',sub:'상한용적률 × 1.3배 (한시적)',color:'var(--accent)'});
+    if(state.toggles['t_zeb']) items.push({label:'ZEB·녹색건축 인증',val:'+'+(bFar*0.15).toFixed(1)+'%p',sub:'기준용적률 × 15%',color:'var(--green)'});
     if(state.toggles['t_design']&&tZN.includes('상업')) items.push({label:'창의혁신 디자인',val:'+110%p',sub:'미적용 원칙 — 예외 인정 시',color:'var(--text-secondary)'});
     if(state.toggles['t_openspace']) items.push({label:'공개공지 의무면적 이상 설치',val:'+'+openspaceFar+'%p',sub:'법적용적률('+legalFar+'%) × 20% 이내, 상한 1.2배',color:'var(--blue)'});
     const total=mFar+exFar;
@@ -1283,7 +1283,7 @@ function calcAll(){
         </div>
         <div style="display:flex;align-items:center;justify-content:space-between;padding-top:12px;border-top:1px solid var(--border)">
           <span style="font-size:13px;color:var(--text-secondary);font-weight:500">인센티브 포함 최대 용적률</span>
-          <span style="font-size:24px;font-weight:700;font-family:var(--mono);color:var(--accent)">${total.toFixed(0)}%</span>
+          <span style="font-size:24px;font-weight:700;font-family:var(--mono);color:var(--accent)">${total.toFixed(1)}%</span>
         </div>
       </div>${ov}`;
   } else iEl.innerHTML='';
