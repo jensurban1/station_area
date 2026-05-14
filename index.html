@@ -9,7 +9,12 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
-  <style>
+  <!-- ★ API 키 설정 — GitHub 업로드 전 직접 교체하세요 -->
+  <script>
+    const KAKAO_API_KEY = 'YOUR_KAKAO_JS_API_KEY';   // 카카오 JavaScript 앱 키
+    const LAND_API_KEY  = 'YOUR_LAND_API_KEY';        // 국토교통부 공공데이터포털 API 키 (URL인코딩된 키)
+  </script>
+  <script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=YOUR_KAKAO_JS_API_KEY&libraries=services"></script>
     :root {
       --bg: #EEECE7;
       --surface: #FAFAF8;
@@ -611,6 +616,19 @@
   <div id="panel0" class="panel active">
     <p class="section-title">01 입지 적격성 판단</p>
 
+    <!-- 주소 → 역 자동 검색 -->
+    <div class="field">
+      <label>📍 주소로 가장 가까운 역 찾기 <span style="font-size:11px;color:var(--text-tertiary)">(카카오맵 API)</span></label>
+      <div style="display:flex;gap:8px">
+        <input type="text" id="addrInput" placeholder="예: 서울시 마포구 서교동 378-10" style="flex:1" onkeydown="if(event.key==='Enter')searchAddr()">
+        <button class="btn btn-primary" onclick="searchAddr()" style="white-space:nowrap;padding:9px 16px">검색</button>
+      </div>
+      <p class="hint">도로명 또는 지번 주소를 입력하면 반경 내 역과 거리를 자동으로 계산합니다.</p>
+    </div>
+    <div id="addrResult" style="display:none;margin-bottom:1rem"></div>
+
+    <div class="divider"></div>
+
     <div class="field station-wrap">
       <label>역 이름 검색</label>
       <div class="station-row">
@@ -781,9 +799,9 @@
     <div class="divider"></div>
 
     <div class="metrics-grid4">
-      <div class="card" style="text-align:center"><div class="card-label">기준(허용)용적률</div><div class="card-value" id="baseFar" style="font-size:20px">-</div></div>
-      <div class="card" style="text-align:center;border-top:2px solid var(--accent)"><div class="card-label">상한용적률</div><div class="card-value" id="maxFar" style="font-size:20px;color:var(--accent)">-</div></div>
-      <div class="card" style="text-align:center"><div class="card-label">증가용적률</div><div class="card-value" id="incFar" style="font-size:20px;color:var(--green)">-</div></div>
+      <div class="card" style="text-align:center"><div class="card-label" style="display:flex;align-items:center;justify-content:center;gap:4px">기준(허용)용적률<button onclick="showRef('기준허용용적률')" style="background:none;border:none;cursor:pointer;font-size:11px;color:var(--text-tertiary);padding:0;line-height:1">ⓘ</button></div><div class="card-value" id="baseFar" style="font-size:20px">-</div></div>
+      <div class="card" style="text-align:center;border-top:2px solid var(--accent)"><div class="card-label" style="display:flex;align-items:center;justify-content:center;gap:4px">상한용적률<button onclick="showRef('상한용적률')" style="background:none;border:none;cursor:pointer;font-size:11px;color:var(--text-tertiary);padding:0;line-height:1">ⓘ</button></div><div class="card-value" id="maxFar" style="font-size:20px;color:var(--accent)">-</div></div>
+      <div class="card" style="text-align:center"><div class="card-label" style="display:flex;align-items:center;justify-content:center;gap:4px">증가용적률<button onclick="showRef('증가용적률')" style="background:none;border:none;cursor:pointer;font-size:11px;color:var(--text-tertiary);padding:0;line-height:1">ⓘ</button></div><div class="card-value" id="incFar" style="font-size:20px;color:var(--green)">-</div></div>
       <div class="card" style="text-align:center"><div class="card-label">상향 단계</div><div class="card-value" id="stepCount" style="font-size:20px">-</div></div>
     </div>
 
@@ -808,14 +826,13 @@
   <!-- ── STEP 4 ── -->
   <div id="panel3" class="panel">
     <p class="section-title">04 공공기여 산정</p>
-    <div class="field"><label>공시지가 (원/㎡)</label><input type="number" id="publicLandPrice" value="14890000" min="0" oninput="calcAll()"></div>
-    <div style="margin-top:-6px;margin-bottom:1.2rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">
-      <p class="hint">부지가액 = 공시지가 × 2 적용 (도시계획조례 제21조)</p>
-      <a href="https://www.realtyprice.kr/notice/gsindividual/search.htm" target="_blank" rel="noopener"
-        style="display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:500;padding:7px 14px;border-radius:var(--radius);background:var(--accent);color:white;text-decoration:none;white-space:nowrap;box-shadow:var(--shadow)">
-        <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="5" cy="5" r="4" stroke="white" stroke-width="1.5"/><line x1="8.5" y1="8.5" x2="11" y2="11" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg>
-        공시지가 조회
-      </a>
+    <div class="field">
+      <label>공시지가 (원/㎡)</label>
+      <div style="display:flex;gap:8px;align-items:flex-start">
+        <input type="number" id="publicLandPrice" value="14890000" min="0" oninput="calcAll()" style="flex:1">
+        <button class="btn btn-primary" onclick="fetchLandPrice()" id="landPriceBtn" style="white-space:nowrap;padding:9px 16px;flex-shrink:0">자동조회</button>
+      </div>
+      <p class="hint" id="landPriceHint">부지가액 = 공시지가 × 2 적용 (도시계획조례 제21조) · Step 1에서 주소 검색 후 자동조회 가능</p>
     </div>
     <div class="field"><label>관광숙박·노인복지주택 도입 비율 (공공기여율 감면)</label>
       <select id="hotelRatio" onchange="calcAll()">
@@ -835,7 +852,7 @@
     </div>
     <div class="divider"></div>
     <div class="metrics-grid">
-      <div class="card"><div class="card-label">공공기여율</div><div class="card-value" id="contribRate">-</div><div class="card-sub" id="contribRateFormula"></div></div>
+      <div class="card"><div class="card-label" style="display:flex;align-items:center;gap:4px">공공기여율<button onclick="showRef('공공기여율')" style="background:none;border:none;cursor:pointer;font-size:11px;color:var(--text-tertiary);padding:0;line-height:1">ⓘ</button></div><div class="card-value" id="contribRate">-</div><div class="card-sub" id="contribRateFormula"></div></div>
       <div class="card"><div class="card-label">공공기여 면적</div><div class="card-value" id="contribArea" style="font-size:18px">-</div><div class="card-sub" id="contribAreaSub"></div></div>
     </div>
     <div class="card" style="border-left:3px solid var(--accent)">
@@ -852,6 +869,14 @@
   <!-- ── STEP 5 ── -->
   <div id="panel4" class="panel">
     <p class="section-title">05 종합 결과</p>
+
+    <!-- 저장/불러오기 툴바 -->
+    <div style="display:flex;gap:8px;margin-bottom:1.2rem;flex-wrap:wrap">
+      <button class="btn" onclick="saveCase()" style="font-size:12px;padding:7px 14px">💾 현재 검토 저장</button>
+      <button class="btn" onclick="showSavedCases()" style="font-size:12px;padding:7px 14px">📂 저장 목록</button>
+      <button class="btn" onclick="resetAll()" style="font-size:12px;padding:7px 14px;color:var(--red)">↺ 전체 초기화</button>
+    </div>
+    <div id="savedCasesPanel" style="display:none;margin-bottom:1rem"></div>
     <div id="verdictBox" class="verdict"></div>
     <div class="divider"></div>
     <p style="font-size:12px;font-weight:500;color:var(--text-secondary);margin-bottom:12px">시나리오별 비교</p>
@@ -889,7 +914,13 @@
       </div>
     </div>
     <div class="issue issue-info" style="margin-bottom:0"><div class="issue-dot"></div><div style="font-size:12px">상기 일정은 향후 추진 상황·여건에 따라 달라질 수 있습니다.</div></div>
-    <div class="nav-btns"><button class="btn" onclick="goStep(3)">← 이전</button><button class="btn btn-primary" onclick="window.print()">🖨 인쇄 / PDF 저장</button></div>
+    <div class="nav-btns">
+      <button class="btn" onclick="goStep(3)">← 이전</button>
+      <div style="display:flex;gap:8px">
+        <button class="btn" onclick="exportPDF()" style="font-size:13px">📄 PDF 저장</button>
+        <button class="btn btn-primary" onclick="window.print()">🖨 인쇄</button>
+      </div>
+    </div>
   </div>
 
 </div>
@@ -1311,6 +1342,7 @@ function calcAll(){
   document.getElementById('contribGuide').innerHTML=guideLines.map(g=>`<div class="issue issue-info"><div class="issue-dot"></div><div>${g}</div></div>`).join('');
 
   buildSummary(dist,R,area,bFar,mFar,iFar,crp,cIdx,tIdx,roadOk);
+  if(typeof updateStepProgress==='function') updateStepProgress();
 }
 
 function buildSummary(dist,R,area,bFar,mFar,iFar,cRate,cIdx,tIdx,roadOk){
@@ -1351,7 +1383,243 @@ function toggleMapZoom(img){
 }
 document.addEventListener('keydown',e=>{if(e.key==='Escape') document.getElementById('mapOverlay').classList.remove('open');});
 
+// ══════════════════════════════════════════════════
+// ① 주소 → 가까운 역 자동 추출 (카카오맵 API)
+// ══════════════════════════════════════════════════
+const STATION_COORDS = {
+  "가산디지털단지":[126.8826,37.4806],"강남":[127.0281,37.4979],"강남구청":[127.0449,37.5173],
+  "강동":[127.1258,37.5302],"강변":[127.0943,37.5315],"건대입구":[127.0702,37.5403],
+  "공덕":[126.9512,37.5445],"고속터미널":[127.0047,37.5047],"광화문":[126.9769,37.5716],
+  "교대":[127.0138,37.4939],"구로디지털단지":[126.9016,37.4850],"까치산":[126.8640,37.5265],
+  "김포공항":[126.8013,37.5616],"낙성대":[126.9628,37.4753],"노원":[127.0655,37.6554],
+  "논현":[127.0224,37.5116],"당산":[126.9017,37.5340],"대림":[126.8959,37.4918],
+  "도봉산":[127.0463,37.6892],"동대문역사문화공원":[127.0090,37.5648],"동묘앞":[127.0174,37.5755],
+  "동작":[126.9820,37.5029],"디지털미디어시티":[126.8965,37.5757],"뚝섬":[127.0476,37.5474],
+  "마포":[126.9465,37.5437],"망우":[127.0907,37.5965],"목동":[126.8748,37.5258],
+  "미아사거리":[127.0274,37.6131],"발산":[126.8385,37.5584],"방화":[126.8008,37.5705],
+  "복정":[127.1173,37.4835],"봉천":[126.9534,37.4790],"불광":[126.9322,37.6105],
+  "사당":[126.9808,37.4766],"삼각지":[126.9765,37.5376],"삼성":[127.0630,37.5086],
+  "상봉":[127.0851,37.5954],"서울":[126.9723,37.5547],"서울대입구":[126.9528,37.4813],
+  "선릉":[127.0490,37.5048],"성수":[127.0558,37.5446],"성신여대입구":[127.0168,37.5929],
+  "수서":[127.1026,37.4849],"수유":[127.0257,37.6381],"숙대입구":[126.9729,37.5448],
+  "신도림":[126.8909,37.5086],"신림":[126.9295,37.4847],"신사":[127.0225,37.5259],
+  "신설동":[127.0179,37.5784],"신용산":[126.9649,37.5341],"신촌":[126.9371,37.5550],
+  "역삼":[127.0366,37.5006],"연신내":[126.9205,37.6188],"영등포구청":[126.8968,37.5258],
+  "옥수":[127.0179,37.5387],"왕십리":[127.0374,37.5614],"용산":[126.9643,37.5296],
+  "이수":[126.9808,37.4851],"이촌":[126.9704,37.5218],"잠실":[127.1000,37.5133],
+  "천호":[127.1233,37.5386],"청량리":[127.0457,37.5796],"총신대입구":[126.9811,37.4921],
+  "충정로":[126.9614,37.5564],"태릉입구":[127.0736,37.6176],"합정":[126.9147,37.5497],
+  "홍대입구":[126.9237,37.5573],"회기":[127.0582,37.5897],"효창공원앞":[126.9604,37.5388],
+  "도곡":[127.0405,37.4887],"모란":[127.1295,37.4355],"석계":[127.0634,37.6155],
+  "신내":[127.1248,37.5967],"신당":[127.0177,37.5629],"약수":[127.0142,37.5543],
+  "오금":[127.1278,37.4962],"올림픽공원":[127.1114,37.5210],"온수":[126.8497,37.4935],
+  "청구":[127.0145,37.5661],"화곡":[126.8495,37.5355],"홍제":[126.9443,37.5901],
+  "강남구청":[127.0449,37.5173],"강동구청":[127.1528,37.5302]
+};
+let _searchedCoords=null;
+
+async function searchAddr(){
+  const addr=document.getElementById('addrInput').value.trim();
+  if(!addr){alert('주소를 입력해주세요.');return;}
+  const resEl=document.getElementById('addrResult');
+  if(typeof kakao==='undefined'||!kakao.maps){
+    resEl.style.display='block';
+    resEl.innerHTML='<div class="issue issue-warn"><div class="issue-dot"></div><div>카카오맵 API 키를 설정해야 합니다. index.html 상단의 <code>YOUR_KAKAO_JS_API_KEY</code>를 실제 키로 교체해주세요.</div></div>';
+    return;
+  }
+  resEl.style.display='block';
+  resEl.innerHTML='<div class="inline-result"><span style="color:var(--text-secondary)">검색 중...</span></div>';
+  const geocoder=new kakao.maps.services.Geocoder();
+  geocoder.addressSearch(addr,function(result,status){
+    if(status!==kakao.maps.services.Status.OK){
+      resEl.innerHTML='<div class="issue issue-warn"><div class="issue-dot"></div><div>주소를 찾을 수 없습니다.</div></div>';return;
+    }
+    const lat=parseFloat(result[0].y),lng=parseFloat(result[0].x);
+    _searchedCoords={lat,lng,addr:result[0].address_name};
+    const dists=Object.entries(STATION_COORDS).map(([name,[sLng,sLat]])=>{
+      const d=getDistM(lat,lng,sLat,sLng);
+      const si=getSI(name);
+      return{name,d:Math.round(d),radius:si.radius,within:d<=si.radius};
+    }).sort((a,b)=>a.d-b.d).slice(0,5);
+    let html=`<div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden">
+      <div style="padding:10px 14px;background:var(--surface2);border-bottom:1px solid var(--border);font-size:12px;color:var(--text-secondary)">
+        📍 <strong style="color:var(--text)">${result[0].address_name}</strong> 기준 가까운 역
+      </div>`;
+    dists.forEach(s=>{
+      const badge=s.within?`<span class="tag tag-ok">역세권 내 ${s.d}m</span>`:`<span class="tag tag-fail">역세권 외 ${s.d}m</span>`;
+      html+=`<div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border-bottom:1px solid var(--border-light);cursor:pointer" onmouseover="this.style.background='var(--surface2)'" onmouseout="this.style.background=''" onclick="applyStation('${s.name}',${s.d})">
+        <div style="display:flex;align-items:center;gap:10px">
+          <span style="font-size:13px;font-weight:500">${s.name}역</span>
+          <span style="font-size:11px;color:var(--text-tertiary)">반경 ${s.radius}m</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px">${badge}<span style="font-size:11px;color:var(--accent);font-weight:500">적용 →</span></div>
+      </div>`;
+    });
+    resEl.innerHTML=html+'</div>';
+  });
+}
+
+function applyStation(name,dist){
+  selectStation(name);
+  document.getElementById('distToStation').value=dist;
+  document.getElementById('addrResult').style.display='none';
+  calcAll();
+  document.getElementById('stationResultCard').scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+
+function getDistM(lat1,lng1,lat2,lng2){
+  const R=6371000,dLat=(lat2-lat1)*Math.PI/180,dLng=(lng2-lng1)*Math.PI/180;
+  const a=Math.sin(dLat/2)**2+Math.cos(lat1*Math.PI/180)*Math.cos(lat2*Math.PI/180)*Math.sin(dLng/2)**2;
+  return R*2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a));
+}
+
+// ══════════════════════════════════════════════════
+// ② 공시지가 자동 조회 (국토교통부 API)
+// ══════════════════════════════════════════════════
+async function fetchLandPrice(){
+  const btn=document.getElementById('landPriceBtn'),hint=document.getElementById('landPriceHint');
+  if(!_searchedCoords){hint.textContent='⚠️ 먼저 주소 검색을 해주세요.';hint.style.color='var(--red)';return;}
+  btn.textContent='조회 중...';btn.disabled=true;
+  hint.textContent='국토교통부 공시지가 조회 중...';
+  try{
+    const addr=_searchedCoords.addr;
+    const parts=addr.replace('서울특별시 ','').split(' ');
+    const bun=parts[2]?parts[2].split('-')[0].padStart(4,'0'):'0000';
+    const ji=parts[2]&&parts[2].includes('-')?parts[2].split('-')[1].padStart(4,'0'):'0000';
+    const url=`https://api.odcloud.kr/api/RealEstateLandStandardPriceInfoService/v1/getRealEstateLandStandardPriceInfo?serviceKey=${LAND_API_KEY}&bun=${bun}&ji=${ji}&numOfRows=1&pageNo=1&type=json`;
+    const res=await fetch(url);
+    const data=await res.json();
+    const item=data?.response?.body?.items?.item?.[0];
+    if(item&&(item.pblntfPclnd||item.stdrPclnd)){
+      const price=parseInt((item.pblntfPclnd||item.stdrPclnd).toString().replace(/,/g,''));
+      document.getElementById('publicLandPrice').value=price;
+      calcAll();
+      hint.textContent=`✅ 공시지가 자동 입력 완료 — ${price.toLocaleString()}원/㎡`;
+      hint.style.color='var(--green)';
+      btn.textContent='재조회';btn.disabled=false;return;
+    }
+    throw new Error('no data');
+  }catch(e){
+    hint.innerHTML=`조회 실패 — <a href="https://www.realtyprice.kr/notice/gsindividual/search.htm" target="_blank" style="color:var(--accent)">직접 조회 →</a>`;
+    hint.style.color='var(--text-secondary)';
+  }
+  btn.textContent='자동조회';btn.disabled=false;
+}
+
+// ══════════════════════════════════════════════════
+// ③ 사례 저장 / 불러오기
+// ══════════════════════════════════════════════════
+function saveCase(){
+  const name=prompt('저장할 이름을 입력하세요',state.station?state.station+'역 검토안':'검토안');
+  if(!name) return;
+  const cases=JSON.parse(localStorage.getItem('station_cases')||'{}');
+  cases['case_'+Date.now()]={name,savedAt:new Date().toLocaleString('ko-KR'),
+    station:state.station,dist:document.getElementById('distToStation').value,
+    currentZone:gv('currentZone'),siteArea:gv('siteArea'),bizType:gv('bizType'),
+    locChar:gv('locChar'),publicLandPrice:gv('publicLandPrice'),hotelRatio:gv('hotelRatio'),
+    toggles:{...state.toggles},specials:{...state.specials},
+    addrInput:document.getElementById('addrInput').value};
+  localStorage.setItem('station_cases',JSON.stringify(cases));
+  alert(`"${name}" 저장 완료!`);
+}
+
+function showSavedCases(){
+  const panel=document.getElementById('savedCasesPanel');
+  const cases=JSON.parse(localStorage.getItem('station_cases')||'{}');
+  const keys=Object.keys(cases).reverse();
+  panel.style.display=panel.style.display==='none'?'block':'none';
+  if(panel.style.display==='none') return;
+  if(!keys.length){panel.innerHTML='<div class="issue issue-info"><div class="issue-dot"></div><div>저장된 검토안이 없습니다.</div></div>';return;}
+  panel.innerHTML=`<div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;margin-bottom:8px">
+    <div style="padding:10px 14px;background:var(--surface2);border-bottom:1px solid var(--border);font-size:12px;font-weight:600;color:var(--text-secondary)">저장된 검토안 (${keys.length}개)</div>
+    ${keys.map(k=>{const c=cases[k];return`<div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border-bottom:1px solid var(--border-light)">
+      <div><div style="font-size:13px;font-weight:500">${c.name}</div><div style="font-size:11px;color:var(--text-tertiary)">${c.savedAt}</div></div>
+      <div style="display:flex;gap:6px">
+        <button class="btn" style="font-size:11px;padding:5px 10px" onclick="loadCase('${k}')">불러오기</button>
+        <button class="btn" style="font-size:11px;padding:5px 10px;color:var(--red)" onclick="deleteCase('${k}')">삭제</button>
+      </div></div>`;}).join('')}
+  </div>`;
+}
+
+function loadCase(key){
+  const c=JSON.parse(localStorage.getItem('station_cases')||'{}')[key];
+  if(!c) return;
+  if(c.station) selectStation(c.station);
+  if(c.addrInput) document.getElementById('addrInput').value=c.addrInput;
+  document.getElementById('distToStation').value=c.dist||150;
+  document.getElementById('siteArea').value=c.siteArea||2000;
+  document.getElementById('publicLandPrice').value=c.publicLandPrice||0;
+  document.getElementById('hotelRatio').value=c.hotelRatio||0;
+  ['bizType','locChar','currentZone'].forEach(id=>{const el=document.getElementById(id);if(el&&c[id])el.value=c[id];});
+  Object.entries(c.toggles||{}).forEach(([id,v])=>{state.toggles[id]=v;const el=document.getElementById(id);if(el)el.classList.toggle('on',!!v);});
+  Object.entries(c.specials||{}).forEach(([id,v])=>{state.specials[id]=v;const el=document.getElementById(id);if(el)el.classList.toggle('on',!!v);});
+  calcAll();
+  document.getElementById('savedCasesPanel').style.display='none';
+  alert(`"${c.name}" 불러오기 완료`);
+}
+
+function deleteCase(key){
+  if(!confirm('삭제하시겠습니까?')) return;
+  const cases=JSON.parse(localStorage.getItem('station_cases')||'{}');
+  delete cases[key];
+  localStorage.setItem('station_cases',JSON.stringify(cases));
+  showSavedCases();
+}
+
+// ══════════════════════════════════════════════════
+// ④ 전체 초기화
+// ══════════════════════════════════════════════════
+function resetAll(){
+  if(!confirm('모든 입력값을 초기화하시겠습니까?')) return;
+  clearStation();
+  document.getElementById('addrInput').value='';
+  document.getElementById('addrResult').style.display='none';
+  document.getElementById('distToStation').value=150;
+  document.getElementById('siteArea').value=2000;
+  document.getElementById('publicLandPrice').value=0;
+  ['bizType','locChar','currentZone','hotelRatio'].forEach(id=>{const el=document.getElementById(id);if(el)el.selectedIndex=0;});
+  Object.keys(state.toggles).forEach(id=>{state.toggles[id]=0;const el=document.getElementById(id);if(el)el.classList.remove('on');});
+  Object.keys(state.specials).forEach(id=>{state.specials[id]=0;const el=document.getElementById(id);if(el)el.classList.remove('on');});
+  calcAll();goStep(0);
+}
+
+// ══════════════════════════════════════════════════
+// ⑤ 진행률 표시
+// ══════════════════════════════════════════════════
+function updateStepProgress(){
+  const checks=[!!state.station,parseFloat(document.getElementById('siteArea')?.value||0)>=1500,!!document.getElementById('targetZone')?.value,parseFloat(document.getElementById('publicLandPrice')?.value||0)>0,true];
+  document.querySelectorAll('.step-btn').forEach((btn,i)=>{
+    const numEl=btn.querySelector('.step-num');
+    if(!numEl) return;
+    numEl.textContent=`STEP 0${i+1}${(checks[i]&&i!==state.currentStep)?' ✓':''}`;
+  });
+}
+
+// ══════════════════════════════════════════════════
+// ⑥ 계산 근거 팝업
+// ══════════════════════════════════════════════════
+const REFS={'역세권반경':'운영기준 1-3-1: 도심·광역·지역중심 범역 내 역 또는 환승역 350m, 지구중심·비중심지 250m','기준허용용적률':'운영기준 1-3-5: 변경 전 용도지역에 대한 도시계획조례 제48조에 따른 용적률','상한용적률':'운영기준 1-3-6: 공공기여 제공 시 적용되는 변경 후 용도지역의 용적률','증가용적률':'운영기준 4-1-1: 기준(허용)용적률과 상한용적률의 차이','공공기여율':'운영기준 4-1-1 가: 증가용적률의 50%에 해당하는 용적률을 부지면적으로 환산','관광숙박인센티브':'운영기준 3-2-2 나: 상한용적률의 1.3배 이하 (도시계획조례 부칙 제9948호, 한시적)','ZEB인센티브':'운영기준 3-2-2 다: ZEB·녹색건축 인증 기준 초과 획득 시 기준용적률의 15% 이내','공개공지인센티브':'운영기준 3-2-2 라 / 지구단위계획 수립기준 Ⅱ.3-8-3: 허용용적률 + 법적용적률 × (초과면적/대지면적), 법적용적률 1.2배 이내'};
+function showRef(key){
+  const e=document.getElementById('refPopup');if(e)e.remove();
+  const div=document.createElement('div');div.id='refPopup';
+  div.style.cssText='position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--text);color:white;padding:14px 22px;border-radius:var(--radius-lg);font-size:13px;line-height:1.65;max-width:520px;width:92%;z-index:9000;box-shadow:0 8px 32px rgba(0,0,0,0.35)';
+  div.innerHTML=`<div style="margin-bottom:5px;font-size:10px;opacity:0.45;letter-spacing:0.08em;text-transform:uppercase;font-family:var(--mono)">계산 근거</div>${REFS[key]||'해당 조항 없음'}<button onclick="this.parentElement.remove()" style="position:absolute;top:12px;right:16px;background:none;border:none;color:white;opacity:0.45;cursor:pointer;font-size:18px">×</button>`;
+  document.body.appendChild(div);setTimeout(()=>{if(div.parentElement)div.remove();},7000);
+}
+
+// ══════════════════════════════════════════════════
+// ⑦ PDF 내보내기
+// ══════════════════════════════════════════════════
+function exportPDF(){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.getElementById('panel4').classList.add('active');
+  state.currentStep=4;
+  document.querySelectorAll('.step-btn').forEach((b,i)=>{b.classList.remove('active');if(i===4)b.classList.add('active');});
+  setTimeout(()=>window.print(),150);
+}
+
 calcAll();
+updateStepProgress();
 </script>
 </body>
 </html>
