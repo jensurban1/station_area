@@ -11,10 +11,10 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
   <!-- ★ API 키 설정 — GitHub 업로드 전 직접 교체하세요 -->
   <script>
-    const KAKAO_API_KEY = 'ebf29618bc5743df48670ec978adc168';   // 카카오 JavaScript 앱 키
+    const KAKAO_API_KEY = 'YOUR_KAKAO_JS_API_KEY';   // 카카오 JavaScript 앱 키
     const LAND_API_KEY  = 'YOUR_LAND_API_KEY';        // 국토교통부 공공데이터포털 API 키 (URL인코딩된 키)
   </script>
-  <script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=ebf29618bc5743df48670ec978adc168&libraries=services"></script>
+  <script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=YOUR_KAKAO_JS_API_KEY&libraries=services"></script>
   <style>
     :root {
       --bg: #EEECE7;
@@ -830,10 +830,10 @@
     <div class="field">
       <label>공시지가 (원/㎡)</label>
       <div style="display:flex;gap:8px;align-items:flex-start">
-        <input type="number" id="publicLandPrice" value="14890000" min="0" oninput="calcAll()" style="flex:1">
-        <button class="btn btn-primary" onclick="fetchLandPrice()" id="landPriceBtn" style="white-space:nowrap;padding:9px 16px;flex-shrink:0">자동조회</button>
+        <input type="number" id="publicLandPrice" value="0" min="0" oninput="calcAll()" style="flex:1">
+        <button class="btn btn-primary" onclick="fetchLandPrice()" id="landPriceBtn" style="white-space:nowrap;padding:9px 16px;flex-shrink:0">🔍 공시지가 조회</button>
       </div>
-      <p class="hint" id="landPriceHint">부지가액 = 공시지가 × 2 적용 (도시계획조례 제21조) · Step 1에서 주소 검색 후 자동조회 가능</p>
+      <p class="hint" id="landPriceHint">주소 검색 후 클릭하면 해당 주소로 공시지가 조회 사이트가 열립니다. 확인 후 직접 입력해주세요.</p>
     </div>
     <div class="field"><label>관광숙박·노인복지주택 도입 비율 (공공기여율 감면)</label>
       <select id="hotelRatio" onchange="calcAll()">
@@ -1475,36 +1475,25 @@ function getDistM(lat1,lng1,lat2,lng2){
 }
 
 // ══════════════════════════════════════════════════
-// ② 공시지가 자동 조회 (국토교통부 API)
+// ② 공시지가 조회 (직접조회 링크 방식 — CORS 제약으로 API 직접호출 불가)
 // ══════════════════════════════════════════════════
-async function fetchLandPrice(){
-  const btn=document.getElementById('landPriceBtn'),hint=document.getElementById('landPriceHint');
-  if(!_searchedCoords){hint.textContent='⚠️ 먼저 주소 검색을 해주세요.';hint.style.color='var(--red)';return;}
-  btn.textContent='조회 중...';btn.disabled=true;
-  hint.textContent='국토교통부 공시지가 조회 중...';
-  try{
-    const addr=_searchedCoords.addr;
-    const parts=addr.replace('서울특별시 ','').split(' ');
-    const bun=parts[2]?parts[2].split('-')[0].padStart(4,'0'):'0000';
-    const ji=parts[2]&&parts[2].includes('-')?parts[2].split('-')[1].padStart(4,'0'):'0000';
-    const url=`https://api.odcloud.kr/api/RealEstateLandStandardPriceInfoService/v1/getRealEstateLandStandardPriceInfo?serviceKey=${LAND_API_KEY}&bun=${bun}&ji=${ji}&numOfRows=1&pageNo=1&type=json`;
-    const res=await fetch(url);
-    const data=await res.json();
-    const item=data?.response?.body?.items?.item?.[0];
-    if(item&&(item.pblntfPclnd||item.stdrPclnd)){
-      const price=parseInt((item.pblntfPclnd||item.stdrPclnd).toString().replace(/,/g,''));
-      document.getElementById('publicLandPrice').value=price;
-      calcAll();
-      hint.textContent=`✅ 공시지가 자동 입력 완료 — ${price.toLocaleString()}원/㎡`;
-      hint.style.color='var(--green)';
-      btn.textContent='재조회';btn.disabled=false;return;
-    }
-    throw new Error('no data');
-  }catch(e){
-    hint.innerHTML=`조회 실패 — <a href="https://www.realtyprice.kr/notice/gsindividual/search.htm" target="_blank" style="color:var(--accent)">직접 조회 →</a>`;
+function fetchLandPrice(){
+  const btn=document.getElementById('landPriceBtn');
+  const hint=document.getElementById('landPriceHint');
+
+  // 검색된 주소가 있으면 해당 주소로 바로 조회 사이트 열기
+  if(_searchedCoords && _searchedCoords.addr){
+    const addr=encodeURIComponent(_searchedCoords.addr);
+    // 국토부 부동산공시가격알리미 (개별공시지가 조회)
+    window.open('https://www.realtyprice.kr/notice/gsindividual/search.htm?searchAddr='+addr,'_blank');
+    hint.innerHTML='🔗 공시지가 조회 사이트가 열렸습니다. 확인 후 아래 입력창에 직접 입력해주세요.';
+    hint.style.color='var(--accent)';
+  } else {
+    // 주소 검색 없이 눌렀을 때 바로 조회 사이트 열기
+    window.open('https://www.realtyprice.kr/notice/gsindividual/search.htm','_blank');
+    hint.textContent='공시지가 조회 사이트에서 확인 후 아래 입력창에 직접 입력해주세요.';
     hint.style.color='var(--text-secondary)';
   }
-  btn.textContent='자동조회';btn.disabled=false;
 }
 
 // ══════════════════════════════════════════════════
