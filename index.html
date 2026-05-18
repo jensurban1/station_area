@@ -1455,7 +1455,10 @@ const STATION_COORDS = {
   "강남구청":[127.0449,37.5173],"강동구청":[127.1528,37.5302]
 };
 let _searchedCoords=null;
-
+let _kakaoMap = null;
+let _kakaoMap2 = null;
+let _markers = [];
+let _circles = [];
 async function searchAddr(){
   const addr=document.getElementById('addrInput').value.trim();
   if(!addr){alert('주소를 입력해주세요.');return;}
@@ -1497,7 +1500,7 @@ async function searchAddr(){
       </div>`;
     });
     resEl.innerHTML=html+'</div>';
-    
+    showMapWithStations(lat, lng, dists);
     // ★ 지도 표시 - 새로 추가된 부분
     showMapWithStations(lat, lng, dists);
   });
@@ -1652,6 +1655,60 @@ function exportPDF(){
 }
 
 calcAll();
+  function showMapWithStations(lat, lng, stations) {
+  const mapContainer = document.getElementById('mapContainer');
+  const mapDiv = document.getElementById('map');
+  if (!mapContainer || !mapDiv) return;
+  
+  mapContainer.style.display = 'block';
+  
+  if (!_kakaoMap) {
+    const mapOption = { center: new kakao.maps.LatLng(lat, lng), level: 5 };
+    _kakaoMap = new kakao.maps.Map(mapDiv, mapOption);
+  } else {
+    _kakaoMap.setCenter(new kakao.maps.LatLng(lat, lng));
+  }
+  
+  _markers.forEach(m => m.setMap(null));
+  _circles.forEach(c => c.setMap(null));
+  _markers = [];
+  _circles = [];
+  
+  const siteMarker = new kakao.maps.Marker({
+    position: new kakao.maps.LatLng(lat, lng),
+    map: _kakaoMap
+  });
+  _markers.push(siteMarker);
+  
+  stations.forEach((station, idx) => {
+    const stationMarker = new kakao.maps.Marker({
+      position: new kakao.maps.LatLng(station.lat, station.lng),
+      map: _kakaoMap
+    });
+    _markers.push(stationMarker);
+    
+    const circle = new kakao.maps.Circle({
+      center: new kakao.maps.LatLng(station.lat, station.lng),
+      radius: station.radius,
+      strokeWeight: 2,
+      strokeColor: '#1A5738',
+      strokeOpacity: 0.6,
+      fillColor: '#1A5738',
+      fillOpacity: 0.15
+    });
+    circle.setMap(_kakaoMap);
+    _circles.push(circle);
+  });
+  
+  const bounds = new kakao.maps.LatLngBounds();
+  bounds.extend(new kakao.maps.LatLng(lat, lng));
+  stations.forEach(s => bounds.extend(new kakao.maps.LatLng(s.lat, s.lng)));
+  _kakaoMap.setBounds(bounds);
+}
+
+function hideMap() {
+  document.getElementById('mapContainer').style.display = 'none';
+}
 updateStepProgress();
 // 지도에 대상지와 인근 역 표시
 function showMapWithStations(lat, lng, stations) {
