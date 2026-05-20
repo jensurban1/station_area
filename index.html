@@ -14,7 +14,7 @@
     const KAKAO_API_KEY = 'ebf29618bc5743df48670ec978adc168';   // 카카오 JavaScript 앱 키
     const LAND_API_KEY  = 'YOUR_LAND_API_KEY';        // 국토교통부 공공데이터포털 API 키 (URL인코딩된 키)
   </script>
-  <script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=ebf29618bc5743df48670ec978adc168&libraries=services"></script>
+  <script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=YOUR_KAKAO_JS_API_KEY&libraries=services"></script>
   <style>
     :root {
       --bg: #EEECE7;
@@ -673,11 +673,31 @@
     </div>
 
     <div class="divider"></div>
+
+    <!-- 사업대상지 유형 -->
     <div class="field">
-      <label>대상지~승강장 경계 거리 (m)</label>
-      <input type="number" id="distToStation" value="150" min="0" oninput="calcAll()">
+      <label>사업대상지 유형</label>
+      <select id="siteType" onchange="onSiteTypeChange()">
+        <option value="역세권" selected>역세권 — 승강장 경계로부터 350m/250m 이내 가로구역</option>
+        <option value="간선도로변">간선도로변 — 역세권 외 노선형 상업지역 포함 가로구역</option>
+      </select>
     </div>
-    <div id="stationCheck" class="inline-result"></div>
+
+    <!-- 역세권 전용 패널 -->
+    <div id="stationPanel">
+      <div class="divider"></div>
+      <div class="field">
+        <label>대상지~승강장 경계 거리 (m)</label>
+        <input type="number" id="distToStation" value="150" min="0" oninput="calcAll()">
+      </div>
+      <div id="stationCheck" class="inline-result"></div>
+    </div>
+
+    <!-- 간선도로변 전용 패널 -->
+    <div id="arterialPanel" style="display:none">
+      <div class="divider"></div>
+      <div class="issue issue-info"><div class="issue-dot"></div><div style="font-size:13px">간선도로변: 역세권 범위 외 노선형 상업지역을 포함한 가로구역. 단, 사업대상지에 노선형 상업지역이 포함되지 않는 경우 제외 (운영기준 2-1-2 나)</div></div>
+    </div>
 
     <div class="divider"></div>
     <div class="field">
@@ -1180,14 +1200,19 @@ function getMaxZ(c,loc){
   const sp=loc!=='일반';
   const ncp=document.getElementById('nonCenterSpecialPanel');
   const isNonCenter=c==='비중심지';
-  if(ncp) ncp.style.display=isNonCenter?'block':'none';
+  if(ncp) ncp.style.display=(isNonCenter&&gv('siteType')!=='간선도로변')?'block':'none';
 
-  // 도심·광역중심: 기본 일반상업(4), 역인접/간선 + 복합 50% → 심의 통해 중심상업(5)
-  // 복합용도 필드 제거 → 역인접/간선 해당 시 최대 중심상업(5) 심의 가능 안내만
+  // ── 간선도로변 (운영기준 3-1-3) ──
+  if(gv('siteType')==='간선도로변'){
+    // 도심·광역중심·지역중심 → 일반상업(4)
+    if(c==='도심'||c==='광역중심'||c==='지역중심') return 4;
+    // 지구중심·비중심지 → 기본 준주거(2), 복합용도 도입 시 심의 통해 근린상업(3)
+    return 2;
+  }
+
+  // ── 역세권 (운영기준 3-1-2) ──
   if(c==='도심'||c==='광역중심') return sp?5:4;
-  // 지역중심: 최대 일반상업(4)
   if(c==='지역중심') return 4;
-  // 지구중심: 기본 근린상업(3), 역인접/간선 → 심의 통해 일반상업(4)
   if(c==='지구중심') return sp?4:3;
 
   // ── 비중심지 특례 (3-1-2 라목) ──
@@ -1361,6 +1386,8 @@ function buildSummary(dist,R,area,bFar,mFar,iFar,cRate,cIdx,tIdx,roadOk){
   const issues=[];
   const lc=gv('locChar');
   const isSpecial=lc!=='일반';
+  const isArterial=gv('siteType')==='간선도로변';
+  if(isArterial) issues.push({t:'info',x:'간선도로변 사업 — 노선형 상업지역 포함 여부 확인 필수. 일반상업지역 상향 시 복합용도 도입 의무 (운영기준 3-1-3 다)'});
   if(!roadOk)issues.push({t:'danger',x:'도로 요건 미충족 — 2면 이상 4m 접도 + 최소 1면 8m 이상 필요'});
   if(tIdx-cIdx===4 && !isSpecial) issues.push({t:'danger',x:'4단계 상향은 역 인접부 또는 간선가로 연접부 해당 시에만 가능 (운영기준 3-1-2 다)'});
   if(tIdx-cIdx>=3 && tIdx-cIdx<4)issues.push({t:'warn',x:'3단계 이상 상향 — 역세권 활성화 기능 확보 당위성 별도 제시 필요 (운영기준 3-1-2 나)'});
@@ -1371,6 +1398,22 @@ function buildSummary(dist,R,area,bFar,mFar,iFar,cRate,cIdx,tIdx,roadOk){
   issues.push({t:'ok',x:'역세권 활성화사업 선정 후 착공까지 약 32개월 소요 예상'});
   document.getElementById('issueList').innerHTML=issues.map(i=>`<div class="issue issue-${i.t}"><div class="issue-dot"></div><div>${i.x}</div></div>`).join('');
 }
+
+function onSiteTypeChange(){
+  const isArterial=gv('siteType')==='간선도로변';
+  // 역세권 패널 / 간선도로변 패널 토글
+  const sp=document.getElementById('stationPanel');
+  const ap=document.getElementById('arterialPanel');
+  if(sp) sp.style.display=isArterial?'none':'block';
+  if(ap) ap.style.display=isArterial?'block':'none';
+  // 간선도로변이면 역 관련 요소 숨김
+  const src=document.getElementById('stationResultCard');
+  const mLink=document.getElementById('manualLink');
+  if(src) src.style.display=isArterial?'none':(state.station?'block':'none');
+  if(mLink) mLink.style.display=isArterial?'none':'';
+  calcAll();
+}
+toggleMapZoom.toString; // no-op placeholder
 
 function toggleMapZoom(img){
   const overlay=document.getElementById('mapOverlay');
@@ -1425,7 +1468,7 @@ async function searchAddr(){
   const resEl=document.getElementById('addrResult');
   if(typeof kakao==='undefined'||!kakao.maps){
     resEl.style.display='block';
-    resEl.innerHTML='<div class="issue issue-warn"><div class="issue-dot"></div><div>카카오맵 API 키를 설정해야 합니다. index.html 상단의 <code>YOUR_KAKAO_JS_API_KEY</code>를 실제 키로 교체해주세요.</div></div>';
+    resEl.innerHTML='<div class="issue issue-warn"><div class="issue-dot"></div><div>카카오맵 API 키를 설정해야 합니다. index.html 상단의 <code>ebf29618bc5743df48670ec978adc168</div></div>';
     return;
   }
   resEl.style.display='block';
@@ -1478,20 +1521,18 @@ function getDistM(lat1,lng1,lat2,lng2){
 // ② 공시지가 조회 (직접조회 링크 방식 — CORS 제약으로 API 직접호출 불가)
 // ══════════════════════════════════════════════════
 function fetchLandPrice(){
-  const btn=document.getElementById('landPriceBtn');
   const hint=document.getElementById('landPriceHint');
 
-  // 검색된 주소가 있으면 해당 주소로 바로 조회 사이트 열기
-  if(_searchedCoords && _searchedCoords.addr){
-    const addr=encodeURIComponent(_searchedCoords.addr);
-    // 국토부 부동산공시가격알리미 (개별공시지가 조회)
-    window.open('https://www.realtyprice.kr/notice/gsindividual/search.htm?searchAddr='+addr,'_blank');
-    hint.innerHTML='🔗 공시지가 조회 사이트가 열렸습니다. 확인 후 아래 입력창에 직접 입력해주세요.';
-    hint.style.color='var(--accent)';
+  if(_searchedCoords && _searchedCoords.lat){
+    const lat=_searchedCoords.lat, lng=_searchedCoords.lng;
+    // 카카오맵 지적편집도 — 해당 좌표로 바로 이동 (지번·필지 확인 가능)
+    const kakaoUrl=`https://map.kakao.com/link/map/${encodeURIComponent(_searchedCoords.addr)},${lat},${lng}`;
+    window.open(kakaoUrl,'_blank');
+    hint.innerHTML=`지도가 열렸습니다. 지번 확인 후 <a href="https://www.realtyprice.kr/notice/gsindividual/search.htm" target="_blank" style="color:var(--accent);font-weight:600">공시지가 조회 →</a> 에서 확인하고 아래에 입력해주세요.`;
+    hint.style.color='var(--text-secondary)';
   } else {
-    // 주소 검색 없이 눌렀을 때 바로 조회 사이트 열기
     window.open('https://www.realtyprice.kr/notice/gsindividual/search.htm','_blank');
-    hint.textContent='공시지가 조회 사이트에서 확인 후 아래 입력창에 직접 입력해주세요.';
+    hint.innerHTML=`<a href="https://www.realtyprice.kr/notice/gsindividual/search.htm" target="_blank" style="color:var(--accent);font-weight:600">공시지가 조회 사이트 →</a> 에서 확인 후 직접 입력해주세요. (Step 1에서 주소를 먼저 검색하면 지도도 함께 열립니다)`;
     hint.style.color='var(--text-secondary)';
   }
 }
@@ -1505,7 +1546,7 @@ function saveCase(){
   const cases=JSON.parse(localStorage.getItem('station_cases')||'{}');
   cases['case_'+Date.now()]={name,savedAt:new Date().toLocaleString('ko-KR'),
     station:state.station,dist:document.getElementById('distToStation').value,
-    currentZone:gv('currentZone'),siteArea:gv('siteArea'),bizType:gv('bizType'),
+    currentZone:gv('currentZone'),siteArea:gv('siteArea'),bizType:gv('bizType'),siteType:gv('siteType'),
     locChar:gv('locChar'),publicLandPrice:gv('publicLandPrice'),hotelRatio:gv('hotelRatio'),
     toggles:{...state.toggles},specials:{...state.specials},
     addrInput:document.getElementById('addrInput').value};
@@ -1540,7 +1581,7 @@ function loadCase(key){
   document.getElementById('siteArea').value=c.siteArea||2000;
   document.getElementById('publicLandPrice').value=c.publicLandPrice||0;
   document.getElementById('hotelRatio').value=c.hotelRatio||0;
-  ['bizType','locChar','currentZone'].forEach(id=>{const el=document.getElementById(id);if(el&&c[id])el.value=c[id];});
+  ['bizType','locChar','currentZone','siteType'].forEach(id=>{const el=document.getElementById(id);if(el&&c[id])el.value=c[id];});
   Object.entries(c.toggles||{}).forEach(([id,v])=>{state.toggles[id]=v;const el=document.getElementById(id);if(el)el.classList.toggle('on',!!v);});
   Object.entries(c.specials||{}).forEach(([id,v])=>{state.specials[id]=v;const el=document.getElementById(id);if(el)el.classList.toggle('on',!!v);});
   calcAll();
