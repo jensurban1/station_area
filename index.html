@@ -14,7 +14,7 @@
     const KAKAO_API_KEY = 'ebf29618bc5743df48670ec978adc168';   // 카카오 JavaScript 앱 키
     const LAND_API_KEY  = 'YOUR_LAND_API_KEY';        // 국토교통부 공공데이터포털 API 키 (URL인코딩된 키)
   </script>
-  <script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=ebf29618bc5743df48670ec978adc168&libraries=services" async defer></script>
+  <script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=ebf29618bc5743df48670ec978adc168&libraries=services&autoload=false"></script>
   <style>
     :root {
       --bg: #EEECE7;
@@ -1466,17 +1466,25 @@ async function searchAddr(){
   const addr=document.getElementById('addrInput').value.trim();
   if(!addr){alert('주소를 입력해주세요.');return;}
   const resEl=document.getElementById('addrResult');
-  if(typeof kakao==='undefined'||!kakao.maps){
-    resEl.style.display='block';
+  resEl.style.display='block';
+  resEl.innerHTML='<div class="inline-result"><span style="color:var(--text-secondary)">검색 중...</span></div>';
+
+  // kakao SDK 로드 보장
+  if(typeof kakao==='undefined'){
     resEl.innerHTML='<div class="issue issue-warn"><div class="issue-dot"></div><div>카카오맵 API 키를 설정해야 합니다. index.html 상단의 <code>YOUR_KAKAO_JS_API_KEY</code>를 실제 키로 교체해주세요.</div></div>';
     return;
   }
-  resEl.style.display='block';
-  resEl.innerHTML='<div class="inline-result"><span style="color:var(--text-secondary)">검색 중...</span></div>';
+
+  // services 라이브러리 로드 보장
+  await new Promise(resolve=>{
+    if(kakao.maps.services) { resolve(); return; }
+    kakao.load(resolve);
+  });
+
   const geocoder=new kakao.maps.services.Geocoder();
   geocoder.addressSearch(addr,function(result,status){
     if(status!==kakao.maps.services.Status.OK){
-      resEl.innerHTML='<div class="issue issue-warn"><div class="issue-dot"></div><div>주소를 찾을 수 없습니다.</div></div>';return;
+      resEl.innerHTML='<div class="issue issue-warn"><div class="issue-dot"></div><div>주소를 찾을 수 없습니다. 다시 확인해주세요.</div></div>';return;
     }
     const lat=parseFloat(result[0].y),lng=parseFloat(result[0].x);
     _searchedCoords={lat,lng,addr:result[0].address_name};
