@@ -11,10 +11,10 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
   <!-- ★ API 키 설정 — GitHub 업로드 전 직접 교체하세요 -->
   <script>
-    const KAKAO_API_KEY = 'ebf29618bc5743df48670ec978adc168';   // 카카오 JavaScript 앱 키
+    const KAKAO_API_KEY = 'ebf29618bc5743df48670ec978adc168';
     const LAND_API_KEY  = 'YOUR_LAND_API_KEY';        // 국토교통부 공공데이터포털 API 키 (URL인코딩된 키)
   </script>
-  <script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=ebf29618bc5743df48670ec978adc168&libraries=services&autoload=false"></script>
+  <script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=ebf29618bc5743df48670ec978adc168&libraries=services"></script>
   <style>
     :root {
       --bg: #EEECE7;
@@ -1469,17 +1469,16 @@ async function searchAddr(){
   resEl.style.display='block';
   resEl.innerHTML='<div class="inline-result"><span style="color:var(--text-secondary)">검색 중...</span></div>';
 
-  // kakao SDK 로드 보장
-  if(typeof kakao==='undefined'){
-    resEl.innerHTML='<div class="issue issue-warn"><div class="issue-dot"></div><div>카카오맵 API 키를 설정해야 합니다. index.html 상단의 <code>YOUR_KAKAO_JS_API_KEY</code>를 실제 키로 교체해주세요.</div></div>';
+  // kakao.maps.services 로드 대기 (최대 5초)
+  let waited=0;
+  while((!window.kakao||!kakao.maps||!kakao.maps.services)&&waited<50){
+    await new Promise(r=>setTimeout(r,100));
+    waited++;
+  }
+  if(!window.kakao||!kakao.maps||!kakao.maps.services){
+    resEl.innerHTML='<div class="issue issue-warn"><div class="issue-dot"></div><div>카카오맵 API를 불러오지 못했습니다. index.html 상단의 <code>YOUR_KAKAO_JS_API_KEY</code>를 실제 키로 교체하고, 카카오 개발자 콘솔에서 <strong>https://jensurban1.github.io</strong> 도메인을 등록했는지 확인해주세요.</div></div>';
     return;
   }
-
-  // services 라이브러리 로드 보장
-  await new Promise(resolve=>{
-    if(kakao.maps.services) { resolve(); return; }
-    kakao.load(resolve);
-  });
 
   const geocoder=new kakao.maps.services.Geocoder();
   geocoder.addressSearch(addr,function(result,status){
