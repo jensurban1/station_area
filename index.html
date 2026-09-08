@@ -12,7 +12,6 @@
   <!-- ★ API 키 설정 — GitHub 업로드 전 직접 교체하세요 -->
   <script>
     const KAKAO_API_KEY = 'ebf29618bc5743df48670ec978adc168';
-    const LAND_API_KEY  = 'YOUR_LAND_API_KEY';        // 국토교통부 공공데이터포털 API 키 (URL인코딩된 키)
   </script>
   <script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=ebf29618bc5743df48670ec978adc168&libraries=services"></script>
   <style>
@@ -83,11 +82,7 @@
       color: rgba(255,255,255,0.38);
       text-transform: uppercase;
     }
-    .header-title {
-      font-size: 14px;
-      font-weight: 600;
-      letter-spacing: -0.01em;
-    }
+    .header-title { font-size: 14px; font-weight: 600; letter-spacing: -0.01em; }
     .header-version {
       font-family: var(--mono);
       font-size: 11px;
@@ -96,11 +91,7 @@
     }
 
     /* ── LAYOUT ── */
-    .container {
-      max-width: 860px;
-      margin: 0 auto;
-      padding: 2.2rem 1.5rem 5rem;
-    }
+    .container { max-width: 860px; margin: 0 auto; padding: 2.2rem 1.5rem 5rem; }
 
     .page-intro {
       margin-bottom: 2rem;
@@ -115,7 +106,6 @@
       color: var(--text);
     }
     .page-intro p { font-size: 14.5px; color: var(--text-secondary); font-weight: 400; }
-    .badge-row { display: flex; gap: 6px; margin-top: 10px; flex-wrap: wrap; }
     .badge {
       font-family: var(--mono);
       font-size: 9.5px;
@@ -153,11 +143,7 @@
       line-height: 1.4;
     }
     .step-btn:last-child { border-right: none; }
-    .step-btn.active {
-      background: var(--text);
-      color: white;
-      font-weight: 600;
-    }
+    .step-btn.active { background: var(--text); color: white; font-weight: 600; }
     .step-btn:not(.active):hover { background: var(--surface3); color: var(--text-secondary); }
     .step-btn .step-num {
       display: block;
@@ -242,7 +228,6 @@
       padding-right: 30px;
     }
     .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-    .field-row3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
     .hint { font-size: 12px; color: var(--text-secondary); margin-top: 5px; line-height: 1.6; }
 
     /* ── TOGGLE ── */
@@ -514,16 +499,6 @@
     .fap-bar { height: 4px; border-radius: 2px; background: var(--border); margin: 7px 0 3px; overflow: hidden; }
     .fap-fill { height: 100%; border-radius: 2px; transition: width 0.4s ease; }
 
-    /* ── OPEN SPACE BOX ── */
-    .os-box { border: 1px solid var(--blue-border); border-radius: var(--radius-lg); overflow: hidden; margin-top: 12px; }
-    .os-header { background: var(--blue-bg); padding: 8px 14px; font-size: 11px; font-weight: 700; color: var(--blue); letter-spacing: 0.08em; text-transform: uppercase; }
-    .os-row { display: flex; justify-content: space-between; padding: 8px 14px; font-size: 12px; border-bottom: 1px solid var(--blue-border); background: var(--surface); }
-    .os-row:last-child { border-bottom: none; }
-    .os-label { color: var(--text-secondary); }
-    .os-val { font-weight: 600; }
-    .os-formula { font-family: var(--mono); font-size: 11.5px; background: var(--surface2); padding: 10px 14px; border-top: 1px solid var(--border-light); line-height: 1.9; color: var(--text-secondary); }
-    .os-result-val { font-family: var(--mono); font-size: 14px; font-weight: 700; color: var(--blue); }
-
     /* ── VERDICT ── */
     .verdict {
       text-align: center;
@@ -553,10 +528,10 @@
     .sc-data-row span:first-child { color: var(--text-secondary); }
     .sc-data-row span:last-child { font-family: var(--mono); font-weight: 700; font-size: 12px; }
 
-    /* ── 지도 이미지 ── */
-    #mapOverlay { display:none;position:fixed;inset:0;background:rgba(22,20,15,0.90);z-index:9999;cursor:zoom-out;justify-content:center;align-items:center;padding:20px; }
+    /* ── 지도 이미지 줌 ── */
+    #mapOverlay { display:none; position:fixed; inset:0; background:rgba(22,20,15,0.90); z-index:9999; cursor:zoom-out; justify-content:center; align-items:center; padding:20px; }
     #mapOverlay.open { display:flex; }
-    #mapOverlay img { max-width:95vw;max-height:92vh;border-radius:var(--radius-lg);object-fit:contain;box-shadow:0 16px 64px rgba(0,0,0,0.6); }
+    #mapOverlay img { max-width:95vw; max-height:92vh; border-radius:var(--radius-lg); object-fit:contain; box-shadow:0 16px 64px rgba(0,0,0,0.6); }
 
     /* ── FOOTER ── */
     footer { margin-top: 4rem; padding: 1.5rem; text-align: center; font-size: 11.5px; color: var(--text-tertiary); border-top: 1px solid var(--border); font-family: var(--mono); letter-spacing: 0.04em; }
@@ -565,15 +540,9 @@
       .container { padding: 1rem 1rem 4rem; }
       .metrics-grid4 { grid-template-columns: 1fr 1fr; }
       .scenario-grid { grid-template-columns: 1fr; }
-      .field-row3 { grid-template-columns: 1fr; }
       header { padding: 0 1rem; }
       .header-version { display: none; }
     }
-
-    /* 지도 이미지 줌 */
-    #mapOverlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.88);z-index:9999;cursor:zoom-out;justify-content:center;align-items:center;padding:20px}
-    #mapOverlay.open{display:flex}
-    #mapOverlay img{max-width:95vw;max-height:92vh;border-radius:var(--radius-lg);object-fit:contain;box-shadow:0 8px 48px rgba(0,0,0,0.6)}
   </style>
 </head>
 <body>
@@ -707,8 +676,8 @@
         <option value="2종">제2종일반주거지역</option>
         <option value="3종">제3종일반주거지역</option>
         <option value="준주거" selected>준주거지역</option>
-        <option value="근린상업" class="opt-commercial">근린상업지역</option>
-        <option value="일반상업" class="opt-commercial">일반상업지역</option>
+        <option value="근린상업">근린상업지역</option>
+        <option value="일반상업">일반상업지역</option>
       </select>
       <p class="hint" id="zoneHint" style="display:none;color:var(--yellow)">비중심지는 주거지역·준주거지역만 사업 대상입니다 (운영기준 2-1-3)</p>
     </div>
@@ -786,7 +755,7 @@
     <!-- Step 1에서 선택한 현재 용도지역 표시 -->
     <div style="display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--surface2);border:1px solid var(--border-light);border-radius:var(--radius-lg);margin-bottom:1rem">
       <span style="font-size:12px;color:var(--text-secondary);flex-shrink:0">현재 용도지역 (Step 1 선택)</span>
-      <span id="currentZoneDisplay" style="font-size:13px;font-weight:500;color:var(--text-primary)">-</span>
+      <span id="currentZoneDisplay" style="font-size:13px;font-weight:500">-</span>
       <button onclick="goStep(0)" style="margin-left:auto;font-size:11px;padding:3px 10px;border-radius:4px;border:1px solid var(--border);background:var(--surface);color:var(--text-secondary);cursor:pointer;white-space:nowrap">← 변경</button>
     </div>
 
@@ -816,7 +785,9 @@
       <div class="card-sub" id="maxZoneSub"></div>
     </div>
 
-    <div class="field"><label>변경 후 용도지역 (시나리오 선택)</label><select id="targetZone" onchange="calcAll()"></select></div>
+    <div class="field"><label>변경 후 용도지역 (시나리오 선택)</label><select id="targetZone" onchange="calcAll()"></select>
+      <p class="hint" id="noUpgradeHint" style="display:none;color:var(--yellow)">현재 용도지역이 이미 최대 상향 수준입니다. 상향 가능한 단계가 없습니다.</p>
+    </div>
     <div class="divider"></div>
 
     <div class="metrics-grid4">
@@ -952,8 +923,13 @@
 </footer>
 
 <script>
+// ══════════════════════════════════════════════════
+// 데이터
+// ══════════════════════════════════════════════════
+
 // 역 → 자치구 매핑 (지역별 공공기여 완화 자동 판별)
 const STATION_GU = {"가산디지털단지":"금천구","가양":"강서구","강남":"서초구","강남구청":"강남구","강동":"강동구","강동구청":"강동구","강변":"광진구","강일":"강동구","개롱":"송파구","개봉":"구로구","개화산":"강서구","거여":"송파구","건대입구":"광진구","경복궁":"종로구","고덕":"강동구","고려대":"성북구","고속터미널":"서초구","공덕":"마포구","공릉":"노원구","공항시장":"강서구","관악산":"관악구","광나루":"광진구","광흥창":"마포구","교대":"서초구","구로":"구로구","구로디지털단지":"구로구","구산":"은평구","구의":"광진구","구파발":"은평구","국회의사당":"영등포구","군자":"중랑구","굽은다리":"강동구","금천구청":"금천구","금호":"성동구","길동":"강동구","길음":"성북구","김포공항":"강서구","까치산":"양천구","낙성대":"관악구","남구로":"구로구","남성":"동작구","남영":"용산구","남태령":"관악구","내방":"서초구","노량진":"동작구","노원":"노원구","녹번":"은평구","녹사평":"용산구","논현":"강남구","답십리":"동대문구","당고개":"노원구","당곡":"관악구","당산":"영등포구","대림":"구로구","대림삼거리":"영등포구","대모산입구":"강남구","대방":"동작구","대치":"강남구","도곡":"강남구","도림사거리":"영등포구","도림천":"구로구","도봉":"도봉구","도봉산":"도봉구","독립문":"서대문구","독바위":"은평구","독산":"금천구","돌곶이":"성북구","동대문":"동대문구","동대문역사문화공원":"중구","동작":"동작구","둔촌동":"강동구","둔촌오륜":"강동구","등촌":"강서구","디지털미디어시티":"마포구","뚝섬":"성동구","마곡":"강서구","마곡나루":"강서구","마들":"노원구","마천":"송파구","마포":"마포구","마포구청":"마포구","망우":"중랑구","망원":"마포구","매봉":"서초구","먹골":"중랑구","면목":"중랑구","명동":"중구","명일":"강동구","목동":"양천구","몽촌토성":"송파구","무악재":"서대문구","문래":"영등포구","미사":"강동구","미아":"강북구","미아사거리":"강북구","반포":"서초구","발산":"강서구","방배":"서초구","방이":"송파구","방학":"도봉구","방화":"강서구","버티고개":"용산구","보라매":"동작구","보라매공원":"동작구","보라매병원":"동작구","보문":"성북구","봉은사":"강남구","봉천":"관악구","봉화산":"노원구","북한산보국문":"은평구","북한산우이":"강북구","불광":"은평구","불암산":"노원구","사가정":"중랑구","사당":"동작구","사평":"서초구","삼각지":"용산구","삼성":"강남구","삼성중앙":"강남구","삼양":"강북구","삼양사거리":"강북구","상계":"노원구","상도":"동작구","상봉":"중랑구","상수":"마포구","상왕십리":"성동구","상월곡":"성북구","상일동":"강동구","새절":"은평구","샛강":"영등포구","서강대":"마포구","서대문":"서대문구","서울":"중구","서울대입구":"관악구","서초":"서초구","석계":"성북구","석촌":"송파구","석촌고분":"송파구","선릉":"강남구","선유도":"영등포구","선정릉":"강남구","성수":"성동구","성신여대입구":"성북구","솔밭공원":"강북구","수락산":"노원구","수색":"마포구","수유":"강북구","숙대입구":"용산구","숭실대입구":"동작구","시청":"중구","시흥사거리":"금천구","신금호":"성동구","신길":"영등포구","신내":"중랑구","신논현":"강남구","신답":"성동구","신대방":"동작구","신대방삼거리":"동작구","신도림":"구로구","신독산":"금천구","신림":"관악구","신반포":"서초구","신방화":"강서구","신사":"강남구","신설동":"동대문구","신용산":"용산구","신이문":"동대문구","신정":"양천구","신정네거리":"양천구","신촌":"서대문구","신풍":"영등포구","쌍문":"도봉구","아차산":"광진구","아현":"서대문구","안국":"종로구","안암":"성북구","암사":"강동구","암사역사공원":"강동구","압구정":"강남구","압구정로데오":"강남구","양원":"중랑구","양재":"서초구","양재시민의숲":"서초구","양천구청":"양천구","양천향교":"양천구","어린이대공원":"광진구","언주":"강남구","여의나루":"영등포구","여의도":"영등포구","역삼":"강남구","역촌":"은평구","연신내":"은평구","염창":"강서구","영등포":"영등포구","영등포구청":"영등포구","영등포시장":"영등포구","오금":"송파구","오류":"구로구","오목교":"양천구","옥수":"성동구","온수":"구로구","올림픽공원":"송파구","왕십리":"성동구","외대앞":"동대문구","용답":"성동구","용두":"동대문구","용마산":"중랑구","용산":"용산구","우장산":"강서구","월곡":"성북구","월드컵경기장":"마포구","을지로3가":"중구","을지로4가":"중구","을지로입구":"중구","응봉":"성동구","응암":"은평구","이대":"서대문구","이수":"동작구","이촌":"용산구","이태원":"용산구","일원":"강남구","자양":"광진구","잠실":"송파구","잠실나루":"송파구","잠실새내":"송파구","잠원":"서초구","장승배기":"동작구","장한평":"동대문구","정릉":"성북구","제기동":"동대문구","종각":"종로구","종로3가":"종로구","종로5가":"종로구","종합운동장":"송파구","중계":"노원구","중곡":"중랑구","중랑":"중랑구","증미":"마포구","증산":"은평구","지축":"은평구","창동":"도봉구","창신":"종로구","천호":"강동구","철산":"금천구","청계산입구":"서초구","청담":"강남구","청량리":"동대문구","총신대입구":"동작구","충무로":"중구","충정로":"서대문구","태릉입구":"노원구","하계":"노원구","하남검단산":"강동구","하남시청":"강동구","하남풍산":"강동구","학동":"강남구","학여울":"강남구","한강진":"용산구","한성대입구":"성북구","한성백제":"송파구","한양대":"성동구","합정":"마포구","행당":"성동구","혜화":"성북구","홍대입구":"마포구","홍제":"서대문구","화계":"강북구","화곡":"강서구","화랑대":"노원구","회기":"동대문구","회현":"중구","효창공원앞":"용산구"};
+
 // 3개년 연속 표준지 공시지가 평균이 서울시 전체 평균 60% 이하 자치구
 const REGIONAL_GU = new Set(["은평구","서대문구","중랑구","성북구","강북구","도봉구","노원구","동대문구","강서구","구로구","금천구"]);
 
@@ -1026,78 +1002,83 @@ const IMG_NAME = {
   "홍대입구":"hongdae","홍제":"hongje","화계":"hwagye","화곡":"hwagok",
   "화랑대":"hwarangdae","회기":"hoegi","회현":"hoehyeon","효창공원앞":"hyochang","흑석":"heukseok"
 };
-// PDF 파일은 저장소 루트에 'station_map.pdf' 로 업로드 필요
-const PDF_FILENAME = 'station_map.pdf';
-const PDF_PAGE_MAP = {
-  "가락시장":25,"가산디지털단지":26,"가양":27,"가오리":28,"가좌":29,"강남구청":30,
-  "경찰병원":44,"고덕":45,"고려대":46,"고속버스터미널":47,"공덕":48,"공릉":49,
-  "공항시장":50,"관악산":51,"광나루":52,"광운대":53,"광화문":54,"광흥창":55,
-  "교대":56,"구로디지털단지":57,"구로":58,"구룡":59,"구반포":60,"구산":61,
-  "구의":62,"구일":63,"구파발":64,"국회의사당":65,"군자":66,"굽은다리":67,
-  "금천구청":68,"금호":69,"길동":70,"길음":71,"김포공항":72,"까치산":73,
-  "낙성대":74,"남구로":75,"남부터미널":76,"남성":77,"남영":78,"남태령":79,
-  "내방":80,"노들":81,"노량진":82,"노원":83,"녹번":84,"녹사평":85,"녹천":86,"논현":87,
-  "답십리":88,"당고개":89,"당곡":90,"당산":91,"대림삼거리":92,"대림":93,
-  "대모산입구":94,"대방":95,"대청":96,"대치":97,"대흥":98,"도곡":99,
-  "도림사거리":100,"도림천":101,"도봉산":102,"도봉":103,"독립문":104,"독바위":105,
-  "독산":106,"돌곶이":107,"동대문":108,"동대문역사문화공원":109,"동대입구":110,
-  "동묘앞":111,"동작":112,"둔촌동":113,"둔촌오륜":114,"등촌":115,
-  "디지털미디어시티":116,"뚝섬":117,"마곡나루":118,"마곡":119,"마들":120,
-  "마장":121,"마천":122,"마포구청":123,"마포":124,"망우":125,"망원":126,
-  "매봉":127,"먹골":128,"면목":129,"명동":130,"명일":131,"목동":132,
-  "몽촌토성":133,"무악재":134,"문래":135,"문정":136,"미아사거리":137,"미아":138,
-  "반포":139,"발산":140,"방배":141,"방이":142,"방학":143,"방화":144,
-  "버티고개":145,"보라매공원":146,"보라매병원":147,"보라매":148,"보문":149,
-  "복정":150,"봉은사":151,"봉천":152,"봉화산":153,"북한산보국문":154,"북한산우이":155,
-  "불광":156,"사가정":157,"사당":158,"사평":159,"삼각지":160,"삼성":161,
-  "삼성중앙":162,"삼양사거리":163,"삼양":164,"삼전":165,"상계":166,"상도":167,
-  "상봉":168,"상수":169,"상왕십리":170,"상월곡":171,"상일동":172,"새절":173,
-  "샛강":174,"서강대":175,"서대문":176,"서울":12,"서원":183,"서초":184,
-  "석계":185,"석수":186,"석촌고분":187,"석촌":188,"선릉":189,"선유도":190,
-  "선정릉":191,"성수":192,"성신여대입구":193,"솔밭공원":194,"수서":195,
-  "수색":196,"수진":197,"수락산":198,"수유":202,"숙대입구":203,"숭실대입구":204,
-  "시청":205,"시흥사거리":206,"신금호":207,"신길":208,"신내":209,"신논현":210,
-  "신답":211,"신당":212,"신대방삼거리":213,"신대방":214,"신도림":215,"신독산":216,
-  "신림":217,"신목동":218,"신반포":219,"신방화":220,"신사":221,"신설동":222,
-  "신용산":223,"신이문":224,"신정네거리":225,"신정":226,"신촌":227,"신풍":229,
-  "쌍문":230,"아차산":231,"아현":232,"안국":233,"안암":234,"암사":235,
-  "암사역사공원":236,"압구정로데오":237,"압구정":238,"애오개":239,"약수":240,
-  "양원":241,"양재시민의숲":242,"양재":243,"양천구청":244,"양천향교":245,
-  "양평":246,"어린이대공원":247,"언주":248,"여의나루":249,"여의도":250,
-  "역삼":251,"역촌":252,"연신내":253,"염창":254,"영등포구청":255,"영등포시장":256,
-  "영등포":257,"오금":258,"오류":259,"오목교":260,"옥수":261,"온수":262,
-  "올림픽공원":263,"왕십리":264,"외대앞":265,"용답":266,"용두":267,"용마산":268,
-  "용산":269,"우장산":270,"월계":271,"월곡":272,"월드컵경기장":273,"을지로3가":274,
-  "을지로4가":275,"을지로입구":276,"응봉":277,"응암":278,"이대":279,"이수":280,
-  "이촌":281,"이태원":282,"일원":283,"자양":284,"잠실나루":285,"잠실새내":286,
-  "잠실":287,"잠원":288,"장승배기":289,"장지":290,"장한평":291,"정릉":292,
-  "제기동":293,"종각":294,"종로3가":295,"종로5가":296,"종합운동장":297,
-  "중계":298,"중곡":299,"중랑":300,"중앙보훈병원":301,"중화":302,"증미":303,
-  "증산":304,"창동":305,"창신":306,"천왕":307,"천호":308,"청계산입구":309,
-  "청구":310,"청담":311,"청량리":312,"충무로":313,"충정로":314,"태릉입구":315,
-  "하계":316,"학동":317,"학여울":318,"한강진":319,"한남":320,"한성대입구":321,
-  "한성백제":322,"한양대":323,"한티":324,"합정":325,"행당":326,"혜화":327,
-  "홍대입구":328,"홍제":329,"화계":330,"화곡":331,"화랑대":332,"회기":333,
-  "회현":334,"효창공원앞":335,"흑석":336
-};
+
 // 환승역(27개): 중심지 미분류 환승역 → 350m
 const TRANSFER_STATIONS = new Set(["가락시장","고속터미널","김포공항","까치산","당산","대림","도곡","도봉산","동작","모란","복정","석계","성신여대입구","신내","신당","신림","약수","오금","올림픽공원","옥수","온수","이촌","청구","충정로","태릉입구","합정","효창공원앞"]);
-// 중심지별 역 분류 (도심44+광역중심21+지역중심25+지구중심18+비중심지112 = 220개)
+
+// 중심지별 역 분류
 const STATION_TO_CENTER = {"강남":"도심","강남구청":"도심","경복궁":"도심","국회의사당":"도심","논현":"도심","동대문":"도심","동대문역사문화공원":"도심","동대입구":"도심","명동":"도심","문래":"도심","봉은사":"도심","삼성":"도심","삼성중앙":"도심","샛강":"도심","서대문":"도심","서울":"도심","서초":"도심","선릉":"도심","선정릉":"도심","신길":"도심","신논현":"도심","신도림":"도심","신사":"도심","안국":"도심","양재":"도심","언주":"도심","영등포":"도심","여의나루":"도심","여의도":"도심","역삼":"도심","영등포구청":"도심","영등포시장":"도심","을지로3가":"도심","을지로4가":"도심","을지로입구":"도심","종각":"도심","종로3가":"도심","종로5가":"도심","종합운동장":"도심","청담":"도심","충무로":"도심","학동":"도심","혜화":"도심","회현":"도심","가산디지털단지":"광역중심","구로디지털단지":"광역중심","노원":"광역중심","독산":"광역중심","마곡":"광역중심","마곡나루":"광역중심","몽촌토성":"광역중심","발산":"광역중심","삼각지":"광역중심","석촌":"광역중심","수색":"광역중심","숙대입구":"광역중심","신용산":"광역중심","용두":"광역중심","용산":"광역중심","왕십리":"광역중심","잠실":"광역중심","제기동":"광역중심","창동":"광역중심","청량리":"광역중심","남영":"광역중심","강동":"지역중심","건대입구":"지역중심","공덕":"지역중심","길동":"지역중심","동묘앞":"지역중심","망우":"지역중심","마포":"지역중심","문정":"지역중심","미아사거리":"지역중심","봉천":"지역중심","불광":"지역중심","사당":"지역중심","상봉":"지역중심","서강대":"지역중심","서울대입구":"지역중심","성수":"지역중심","수서":"지역중심","신설동":"지역중심","신촌":"지역중심","연신내":"지역중심","이대":"지역중심","이수":"지역중심","장지":"지역중심","천호":"지역중심","홍대입구":"지역중심","고덕":"지구중심","구의":"지구중심","내방":"지구중심","돌곶이":"지구중심","먹골":"지구중심","사가정":"지구중심","수락산":"지구중심","수유":"지구중심","신대방삼거리":"지구중심","신정네거리":"지구중심","쌍문":"지구중심","암사":"지구중심","응암":"지구중심","장승배기":"지구중심","장한평":"지구중심","중곡":"지구중심","홍제":"지구중심","화곡":"지구중심","강동구청":"비중심지","강변":"비중심지","강일":"비중심지","개롱":"비중심지","개화산":"비중심지","거여":"비중심지","경찰병원":"비중심지","고려대":"비중심지","공릉":"비중심지","광나루":"비중심지","광명사거리":"비중심지","광흥창":"비중심지","구산":"비중심지","구파발":"비중심지","굽은다리":"비중심지","길음":"비중심지","낙성대":"비중심지","남구로":"비중심지","남부터미널":"비중심지","남성":"비중심지","남위례":"비중심지","남태령":"비중심지","남한산성입구":"비중심지","녹번":"비중심지","녹사평":"비중심지","단대오거리":"비중심지","답십리":"비중심지","대청":"비중심지","대치":"비중심지","대흥":"비중심지","도림천":"비중심지","독립문":"비중심지","독바위":"비중심지","둔촌동":"비중심지","둔촌오륜":"비중심지","뚝섬":"비중심지","마들":"비중심지","마장":"비중심지","마천":"비중심지","마포구청":"비중심지","망원":"비중심지","매봉":"비중심지","면목":"비중심지","명일":"비중심지","목동":"비중심지","무악재":"비중심지","미사":"비중심지","미아":"비중심지","반포":"비중심지","방배":"비중심지","방이":"비중심지","방화":"비중심지","버티고개":"비중심지","봉화산":"비중심지","불암산":"비중심지","산성":"비중심지","삼전":"비중심지","상계":"비중심지","상도":"비중심지","상수":"비중심지","상왕십리":"비중심지","상월곡":"비중심지","상일동":"비중심지","새절":"비중심지","석촌고분":"비중심지","수진":"비중심지","숭실대입구":"비중심지","신금호":"비중심지","신답":"비중심지","신대방":"비중심지","신정":"비중심지","신흥":"비중심지","아차산":"비중심지","아현":"비중심지","안암":"비중심지","암사역사공원":"비중심지","압구정":"비중심지","양천구청":"비중심지","양평":"비중심지","어린이대공원":"비중심지","역촌":"비중심지","오목교":"비중심지","용답":"비중심지","용마산":"비중심지","우장산":"비중심지","월곡":"비중심지","월드컵경기장":"비중심지","이태원":"비중심지","일원":"비중심지","자양":"비중심지","잠실나루":"비중심지","잠실새내":"비중심지","잠원":"비중심지","장암":"비중심지","중계":"비중심지","중앙보훈병원":"비중심지","중화":"비중심지","증산":"비중심지","지축":"비중심지","창신":"비중심지","천왕":"비중심지","철산":"비중심지","하계":"비중심지","하남검단산":"비중심지","하남시청":"비중심지","하남풍산":"비중심지","학여울":"비중심지","한강진":"비중심지","한성대입구":"비중심지","한양대":"비중심지","행당":"비중심지","화랑대":"비중심지"};
-// 검색 풀: 중심지 분류 역(220) + 환승역(27) = 총 247개
+
+// 검색 풀: 중심지 분류 역 + 환승역
 const SAMPLE = ["가락시장","가산디지털단지","강남","강남구청","강동","강동구청","강변","강일","개롱","개화산","거여","건대입구","경복궁","경찰병원","고덕","고려대","고속터미널","공덕","공릉","광나루","광명사거리","광흥창","구로디지털단지","구산","구의","구파발","국회의사당","굽은다리","길동","길음","김포공항","까치산","낙성대","남구로","남부터미널","남성","남영","남위례","남태령","남한산성입구","내방","노원","녹번","녹사평","논현","단대오거리","답십리","당산","대림","대청","대치","대흥","도곡","도림천","도봉산","독립문","독바위","독산","돌곶이","동대문","동대문역사문화공원","동대입구","동묘앞","동작","둔촌동","둔촌오륜","뚝섬","마곡","마곡나루","마들","마장","마천","마포","마포구청","망우","망원","매봉","먹골","면목","명동","명일","모란","목동","몽촌토성","무악재","문래","문정","미사","미아","미아사거리","반포","발산","방배","방이","방화","버티고개","복정","봉은사","봉천","봉화산","불광","불암산","사가정","사당","산성","삼각지","삼성","삼성중앙","삼전","상계","상도","상봉","상수","상왕십리","상월곡","상일동","새절","샛강","서강대","서대문","서울","서울대입구","서초","석계","석촌","석촌고분","선릉","선정릉","성수","성신여대입구","수락산","수색","수서","수유","수진","숙대입구","숭실대입구","신금호","신길","신내","신논현","신답","신당","신대방","신대방삼거리","신도림","신림","신사","신설동","신용산","신정","신정네거리","신촌","신흥","쌍문","아차산","아현","안국","안암","암사","암사역사공원","압구정","약수","양재","양천구청","양평","어린이대공원","언주","여의나루","여의도","역삼","역촌","연신내","영등포","영등포구청","영등포시장","오금","오목교","옥수","온수","올림픽공원","왕십리","용답","용두","용마산","용산","우장산","월곡","월드컵경기장","을지로3가","을지로4가","을지로입구","응암","이대","이수","이촌","이태원","일원","자양","잠실","잠실나루","잠실새내","잠원","장승배기","장암","장지","장한평","제기동","종각","종로3가","종로5가","종합운동장","중계","중곡","중앙보훈병원","중화","증산","지축","창동","창신","천왕","천호","철산","청구","청담","청량리","충무로","충정로","태릉입구","하계","하남검단산","하남시청","하남풍산","학동","학여울","한강진","한성대입구","한양대","합정","행당","혜화","홍대입구","홍제","화곡","화랑대","회현","효창공원앞"];
+
+// 주소 → 가까운 역 계산용 좌표 [경도, 위도]
+const STATION_COORDS = {
+  "가산디지털단지":[126.8826,37.4806],"강남":[127.0281,37.4979],"강남구청":[127.0449,37.5173],
+  "강동":[127.1258,37.5302],"강동구청":[127.1528,37.5302],"강변":[127.0943,37.5315],
+  "건대입구":[127.0702,37.5403],"공덕":[126.9512,37.5445],"고속터미널":[127.0047,37.5047],
+  "광화문":[126.9769,37.5716],"교대":[127.0138,37.4939],"구로디지털단지":[126.9016,37.4850],
+  "까치산":[126.8640,37.5265],"김포공항":[126.8013,37.5616],"낙성대":[126.9628,37.4753],
+  "노원":[127.0655,37.6554],"논현":[127.0224,37.5116],"당산":[126.9017,37.5340],
+  "대림":[126.8959,37.4918],"도곡":[127.0405,37.4887],"도봉산":[127.0463,37.6892],
+  "동대문역사문화공원":[127.0090,37.5648],"동묘앞":[127.0174,37.5755],"동작":[126.9820,37.5029],
+  "디지털미디어시티":[126.8965,37.5757],"뚝섬":[127.0476,37.5474],"마포":[126.9465,37.5437],
+  "망우":[127.0907,37.5965],"모란":[127.1295,37.4355],"목동":[126.8748,37.5258],
+  "미아사거리":[127.0274,37.6131],"발산":[126.8385,37.5584],"방화":[126.8008,37.5705],
+  "복정":[127.1173,37.4835],"봉천":[126.9534,37.4790],"불광":[126.9322,37.6105],
+  "사당":[126.9808,37.4766],"삼각지":[126.9765,37.5376],"삼성":[127.0630,37.5086],
+  "상봉":[127.0851,37.5954],"서울":[126.9723,37.5547],"서울대입구":[126.9528,37.4813],
+  "석계":[127.0634,37.6155],"선릉":[127.0490,37.5048],"성수":[127.0558,37.5446],
+  "성신여대입구":[127.0168,37.5929],"수서":[127.1026,37.4849],"수유":[127.0257,37.6381],
+  "숙대입구":[126.9729,37.5448],"신내":[127.1248,37.5967],"신당":[127.0177,37.5629],
+  "신도림":[126.8909,37.5086],"신림":[126.9295,37.4847],"신사":[127.0225,37.5259],
+  "신설동":[127.0179,37.5784],"신용산":[126.9649,37.5341],"신촌":[126.9371,37.5550],
+  "약수":[127.0142,37.5543],"역삼":[127.0366,37.5006],"연신내":[126.9205,37.6188],
+  "영등포구청":[126.8968,37.5258],"오금":[127.1278,37.4962],"옥수":[127.0179,37.5387],
+  "올림픽공원":[127.1114,37.5210],"온수":[126.8497,37.4935],"왕십리":[127.0374,37.5614],
+  "용산":[126.9643,37.5296],"이수":[126.9808,37.4851],"이촌":[126.9704,37.5218],
+  "잠실":[127.1000,37.5133],"천호":[127.1233,37.5386],"청구":[127.0145,37.5661],
+  "청량리":[127.0457,37.5796],"총신대입구":[126.9811,37.4921],"충정로":[126.9614,37.5564],
+  "태릉입구":[127.0736,37.6176],"합정":[126.9147,37.5497],"홍대입구":[126.9237,37.5573],
+  "홍제":[126.9443,37.5901],"화곡":[126.8495,37.5355],"회기":[127.0582,37.5897],
+  "효창공원앞":[126.9604,37.5388]
+};
 
 const ZONES=['2종일반주거지역','3종일반주거지역','준주거지역','근린상업지역','일반상업지역','중심상업지역'];
 const ZONE_FAR=[200,250,400,600,800,1000];
 const ZONE_KEYS=['2종','3종','준주거','근린상업','일반상업','중심상업'];
 
-const state={toggles:{t_pre:0,t_zone:0,t_regen:0,t_special:0,t_facility:0,t_jgu:0,t_hotel:0,t_zeb:0,t_design:0,t_openspace:0,t_regional:0,t_jbi_aging:0},specials:{special20m:0,special6m:0,special30pct:0},station:null};
+const REFS={
+  '역세권반경':'운영기준 1-3-1: 도심·광역·지역중심 범역 내 역 또는 환승역 350m, 지구중심·비중심지 250m',
+  '기준허용용적률':'운영기준 1-3-5: 변경 전 용도지역에 대한 도시계획조례 제48조에 따른 용적률',
+  '상한용적률':'운영기준 1-3-6: 공공기여 제공 시 적용되는 변경 후 용도지역의 용적률',
+  '증가용적률':'운영기준 4-1-1: 기준(허용)용적률과 상한용적률의 차이',
+  '공공기여율':'운영기준 4-1-1 가: 증가용적률의 50%에 해당하는 용적률을 부지면적으로 환산',
+  '관광숙박인센티브':'운영기준 3-2-2 나: 상한용적률의 1.3배 이하 (도시계획조례 부칙 제9948호, 한시적)',
+  'ZEB인센티브':'운영기준 3-2-2 다: ZEB·녹색건축 인증 기준 초과 획득 시 기준용적률의 15% 이내',
+  '공개공지인센티브':'운영기준 3-2-2 라 / 지구단위계획 수립기준 Ⅱ.3-8-3: 허용용적률 + 법적용적률 × (초과면적/대지면적), 법적용적률 1.2배 이내'
+};
 
+const state={
+  toggles:{t_pre:0,t_zone:0,t_regen:0,t_special:0,t_facility:0,t_jgu:0,t_hotel:0,t_zeb:0,t_design:0,t_openspace:0,t_regional:0,t_jbi_aging:0},
+  specials:{special20m:0,special6m:0,special30pct:0},
+  station:null,
+  currentStep:0
+};
+let _searchedCoords=null;
+
+// ══════════════════════════════════════════════════
+// 역 검색 · 선택
+// ══════════════════════════════════════════════════
 function getSI(n){
   const isT=TRANSFER_STATIONS.has(n),c=STATION_TO_CENTER[n]||null;
   const isUpper=c==='도심'||c==='광역중심'||c==='지역중심';
   return{name:n,isT,center:c,isUpper,radius:(isUpper||isT)?350:250};
 }
+
+function gv(id){return document.getElementById(id)?.value||'';}
+function gn(id){return parseFloat(document.getElementById(id)?.value)||0;}
+function isArterial(){return gv('siteType')==='간선도로변';}
 
 function onStationInput(){
   const v=document.getElementById('stationInput').value.trim(),dd=document.getElementById('dropdown');
@@ -1107,10 +1088,22 @@ function onStationInput(){
   if(!matches.length){dd.style.display='none';return;}
   const G={'도심':[],'광역중심':[],'지역중심':[],'환승역(비중심)':[],'지구중심':[],'비중심지':[]};
   const BC={'도심':'db-도심','광역중심':'db-광역','지역중심':'db-지역','환승역(비중심)':'db-환승','지구중심':'db-기타','비중심지':'db-기타'};
-  matches.forEach(s=>{const i=getSI(s);if(i.center==='도심')G['도심'].push(s);else if(i.center==='광역중심')G['광역중심'].push(s);else if(i.center==='지역중심')G['지역중심'].push(s);else if(i.isT)G['환승역(비중심)'].push(s);else if(i.center==='지구중심')G['지구중심'].push(s);else G['비중심지'].push(s);});
+  matches.forEach(s=>{
+    const i=getSI(s);
+    if(i.center==='도심')G['도심'].push(s);
+    else if(i.center==='광역중심')G['광역중심'].push(s);
+    else if(i.center==='지역중심')G['지역중심'].push(s);
+    else if(i.isT)G['환승역(비중심)'].push(s);
+    else if(i.center==='지구중심')G['지구중심'].push(s);
+    else G['비중심지'].push(s);
+  });
   let h='';
   const r250Groups=new Set(['지구중심','비중심지']);
-  Object.entries(G).forEach(([g,st])=>{if(!st.length)return;h+=`<div class="dd-group">${g} — ${r250Groups.has(g)?'250m':'350m'}</div>`;st.forEach(s=>{h+=`<div class="dd-item" onclick="selectStation('${s}')"><span>${s}역</span><span class="dd-badge ${BC[g]}">${g}</span><span class="radius-hint">${getSI(s).radius}m</span></div>`;});});
+  Object.entries(G).forEach(([g,st])=>{
+    if(!st.length)return;
+    h+=`<div class="dd-group">${g} — ${r250Groups.has(g)?'250m':'350m'}</div>`;
+    st.forEach(s=>{h+=`<div class="dd-item" onclick="selectStation('${s}')"><span>${s}역</span><span class="dd-badge ${BC[g]}">${g}</span><span class="radius-hint">${getSI(s).radius}m</span></div>`;});
+  });
   dd.innerHTML=h;dd.style.display='block';
 }
 
@@ -1118,95 +1111,133 @@ function selectStation(n){
   state.station=n;
   document.getElementById('stationInput').value=n+'역';
   document.getElementById('dropdown').style.display='none';
-  document.getElementById('manualLink').style.display='block';
+  document.getElementById('manualLink').style.display=isArterial()?'none':'block';
   const i=getSI(n);
   const CM={'도심':'db-도심','광역중심':'db-광역','지역중심':'db-지역','지구중심':'db-기타','비중심지':'db-기타'};
   const cl=i.center||(i.isT?'비중심지 환승역':'분류없음');
   const cc=CM[i.center]||(i.isT?'db-환승':'db-기타');
-  document.getElementById('stationResultCard').style.display='block';
+  document.getElementById('stationResultCard').style.display=isArterial()?'none':'block';
   document.getElementById('src-name').textContent=n+'역';
   document.getElementById('src-type').innerHTML=`<span class="dd-badge ${cc}">${cl}</span>${i.isT?' <span class="dd-badge db-환승">환승역</span>':''}`;
   document.getElementById('src-center').textContent=i.center?(i.center+(i.isT?' + 환승역':'')):(i.isT?'비중심지 + 환승역':'분류없음');
   document.getElementById('src-radius').textContent=i.radius+'m';
+
   const gu=STATION_GU[n]||'-';
+  const isRegional=gu!=='-'&&REGIONAL_GU.has(gu);
   const guEl=document.getElementById('src-gu');
-  if(guEl){
-    const isR=gu!=='-'&&REGIONAL_GU.has(gu);
-    guEl.innerHTML=gu+(isR?` <span class="tag tag-info" style="font-size:10px;vertical-align:middle">완화대상</span>`:'');
-  }
+  if(guEl) guEl.innerHTML=gu+(isRegional?' <span class="tag tag-info" style="font-size:10px;vertical-align:middle">완화대상</span>':'');
+
   // 역세권 범위 지도 이미지 표시 (영문 파일명 사용)
-  const pdfRow=document.getElementById('pdfLinkRow');
-  const mapImg=document.getElementById('stationMapImg');
+  const pdfRow=document.getElementById('pdfLinkRow'),mapImg=document.getElementById('stationMapImg');
   if(pdfRow&&mapImg){
     const enName=IMG_NAME[n];
     if(enName){
       mapImg.src='images/'+enName+'.jpg';
       mapImg.alt=n+'역 역세권 범위';
       pdfRow.style.display='flex';
-    } else {
-      pdfRow.style.display='none';
-    }
+    } else pdfRow.style.display='none';
   }
+
   updateZoneOptions();
+
   // 자치구 확인 → 지역별 공공기여 완화 자동 토글
-  const isRegional = gu!=='-' && REGIONAL_GU.has(gu);
-  const tReg = document.getElementById('t_regional');
-  const regNote = document.getElementById('regionalNote');
+  const tReg=document.getElementById('t_regional'),regNote=document.getElementById('regionalNote');
   if(tReg){
-    state.toggles['t_regional'] = isRegional ? 1 : 0;
-    tReg.classList.toggle('on', isRegional);
-    if(regNote) regNote.style.display = isRegional ? 'block' : 'none';
+    state.toggles.t_regional=isRegional?1:0;
+    tReg.classList.toggle('on',isRegional);
+    if(regNote) regNote.style.display=isRegional?'block':'none';
   }
   calcAll();
 }
 
-function clearStation(){state.station=null;document.getElementById('stationInput').value='';document.getElementById('dropdown').style.display='none';document.getElementById('stationResultCard').style.display='none';document.getElementById('manualLink').style.display='none';updateZoneOptions();calcAll();}
+function clearStation(){
+  state.station=null;
+  document.getElementById('stationInput').value='';
+  document.getElementById('dropdown').style.display='none';
+  document.getElementById('stationResultCard').style.display='none';
+  document.getElementById('manualLink').style.display='none';
+  updateZoneOptions();
+  calcAll();
+}
+
+function toggleManual(){
+  const p=document.getElementById('manualPanel'),v=p.style.display==='none';
+  p.style.display=v?'block':'none';
+  document.querySelector('.manual-link').textContent=(v?'▾':'▸')+' 반경을 직접 지정하려면 클릭';
+}
+
+document.addEventListener('click',e=>{if(!e.target.closest('.station-wrap'))document.getElementById('dropdown').style.display='none';});
+
+function getR(){
+  const m=parseInt(document.getElementById('manualRadius')?.value||'0');
+  if(m>0)return m;
+  if(state.station)return getSI(state.station).radius;
+  return null;
+}
+function getC(){return state.station?(getSI(state.station).center||'비중심지'):'비중심지';}
 
 // 비중심지 선택 시 현재 용도지역 상업지역 옵션 비활성화
 function updateZoneOptions(){
-  const ct=getC();
-  const isNonCenter=ct==='비중심지';
-  const sel=document.getElementById('currentZone');
-  const hint=document.getElementById('zoneHint');
-  if(!sel) return;
+  const isNonCenter=getC()==='비중심지';
+  const sel=document.getElementById('currentZone'),hint=document.getElementById('zoneHint');
+  if(!sel)return;
   [...sel.options].forEach(o=>{
     const isCommercial=o.value==='근린상업'||o.value==='일반상업';
     o.disabled=isNonCenter&&isCommercial;
     o.style.color=isNonCenter&&isCommercial?'var(--text-tertiary)':'';
   });
-  // 비중심지인데 상업지역 선택돼 있으면 준주거로 초기화
-  if(isNonCenter&&(sel.value==='근린상업'||sel.value==='일반상업')){
-    sel.value='준주거';
-  }
+  if(isNonCenter&&(sel.value==='근린상업'||sel.value==='일반상업')) sel.value='준주거';
   if(hint) hint.style.display=isNonCenter?'block':'none';
 }
 
-function toggleManual(){const p=document.getElementById('manualPanel'),v=p.style.display==='none';p.style.display=v?'block':'none';document.querySelector('.manual-link').textContent=v?'▾ 반경을 직접 지정하려면 클릭':'▸ 반경을 직접 지정하려면 클릭';}
+// ══════════════════════════════════════════════════
+// 토글 · 패널 전환
+// ══════════════════════════════════════════════════
+function tog(id){
+  state.toggles[id]=state.toggles[id]?0:1;
+  document.getElementById(id).classList.toggle('on',!!state.toggles[id]);
+  if(id==='t_jgu')document.getElementById('jguFarPanel').style.display=state.toggles[id]?'block':'none';
+  if(id==='t_regional')document.getElementById('regionalNote').style.display=state.toggles[id]?'block':'none';
+  calcAll();
+}
+function togSpecial(id){
+  state.specials[id]=state.specials[id]?0:1;
+  document.getElementById(id).classList.toggle('on',!!state.specials[id]);
+  calcAll();
+}
+function goStep(n){
+  state.currentStep=n;
+  document.querySelectorAll('.panel').forEach((p,i)=>p.classList.toggle('active',i===n));
+  document.querySelectorAll('.step-btn').forEach((b,i)=>b.classList.toggle('active',i===n));
+  calcAll();
+}
 
-document.addEventListener('click',e=>{if(!e.target.closest('.station-wrap'))document.getElementById('dropdown').style.display='none';});
+function onSiteTypeChange(){
+  const arterial=isArterial();
+  const sp=document.getElementById('stationPanel'),ap=document.getElementById('arterialPanel');
+  if(sp) sp.style.display=arterial?'none':'block';
+  if(ap) ap.style.display=arterial?'block':'none';
+  const src=document.getElementById('stationResultCard'),mLink=document.getElementById('manualLink');
+  if(src) src.style.display=arterial?'none':(state.station?'block':'none');
+  if(mLink) mLink.style.display=arterial?'none':(state.station?'block':'none');
+  calcAll();
+}
 
-function getR(){const m=parseInt(document.getElementById('manualRadius')?.value||'0');if(m>0)return m;if(state.station)return getSI(state.station).radius;return null;}
-function getC(){if(state.station)return getSI(state.station).center||'비중심지';return '비중심지';}
-
-function tog(id){state.toggles[id]=state.toggles[id]?0:1;document.getElementById(id).classList.toggle('on',!!state.toggles[id]);if(id==='t_jgu')document.getElementById('jguFarPanel').style.display=state.toggles[id]?'block':'none';if(id==='t_regional')document.getElementById('regionalNote').style.display=state.toggles[id]?'block':'none';calcAll();}
-function togSpecial(id){state.specials[id]=state.specials[id]?0:1;document.getElementById(id).classList.toggle('on',!!state.specials[id]);calcAll();}
-
-function goStep(n){document.querySelectorAll('.panel').forEach((p,i)=>p.classList.toggle('active',i===n));document.querySelectorAll('.step-btn').forEach((b,i)=>{b.classList.remove('active');if(i===n)b.classList.add('active');});calcAll();}
-
-function gv(id){return document.getElementById(id)?.value||'';}
-function gn(id){return parseFloat(document.getElementById(id)?.value)||0;}
-
+// ══════════════════════════════════════════════════
+// 용도지역 상향 판정
+// ══════════════════════════════════════════════════
 function getMaxZ(c,loc){
   const sp=loc!=='일반';
-  const ncp=document.getElementById('nonCenterSpecialPanel');
+  const arterial=isArterial();
   const isNonCenter=c==='비중심지';
-  if(ncp) ncp.style.display=(isNonCenter&&gv('siteType')!=='간선도로변')?'block':'none';
+  const ncp=document.getElementById('nonCenterSpecialPanel');
+  if(ncp) ncp.style.display=(isNonCenter&&!arterial)?'block':'none';
 
   // ── 간선도로변 (운영기준 3-1-3) ──
-  if(gv('siteType')==='간선도로변'){
+  if(arterial){
     // 도심·광역중심·지역중심 → 일반상업(4)
     if(c==='도심'||c==='광역중심'||c==='지역중심') return 4;
-    // 지구중심·비중심지 → 기본 준주거(2), 복합용도 도입 시 심의 통해 근린상업(3)
+    // 지구중심·비중심지 → 준주거(2)
     return 2;
   }
 
@@ -1216,116 +1247,142 @@ function getMaxZ(c,loc){
   if(c==='지구중심') return sp?4:3;
 
   // ── 비중심지 특례 (3-1-2 라목) ──
-  const curZ=gv('currentZone');
   const sEl=document.getElementById('specialResult');
-  const s20=!!state.specials.special20m, s6=!!state.specials.special6m, s30=!!state.specials.special30pct;
+  const s20=!!state.specials.special20m,s6=!!state.specials.special6m,s30=!!state.specials.special30pct;
   if(s20&&s6&&s30){
     if(sEl) sEl.innerHTML='<div class="issue issue-ok" style="margin:0"><div class="issue-dot"></div><div style="font-size:12px">특례 조건 충족 (3-1-2 라목) — 최대 일반상업지역까지 상향 가능</div></div>';
     return 4;
-  } else {
-    if(sEl){const m=[];if(!s20)m.push('20m↑ 도로');if(!s6)m.push('6m↑ 도로');if(!s30)m.push('복합용도 30%↑');sEl.innerHTML=m.length?`<div style="font-size:12px;color:var(--text-tertiary)">특례 미충족: ${m.join(', ')}</div>`:''; }
   }
-  return (curZ==='준주거')?3:2;
-}
-function getCurZ(z){if(z==='2종7층'||z==='2종')return 0;if(z==='3종')return 1;if(z==='준주거')return 2;if(z==='근린상업')return 3;if(z==='일반상업')return 4;return 0;}
-
-function getOblig(area,tfa,bt){
-  if(bt==='A'){if(tfa>=5000)return{pct:10,area:area*.1,label:'건축조례 26조①1호 대상, 연면적 5천㎡↑ → 대지면적 10%'};return{pct:0,area:0,label:'연면적 5천㎡ 미만 — 의무 적용 없음'};}
-  if(tfa<5000)return{pct:0,area:0,label:'연면적 5천㎡ 미만 — 의무 적용 없음'};
-  if(tfa<10000)return{pct:5,area:area*.05,label:'연면적 5천~1만㎡ 미만 → 대지면적 5%'};
-  if(tfa<30000)return{pct:7,area:area*.07,label:'연면적 1만~3만㎡ 미만 → 대지면적 7%'};
-  return{pct:10,area:area*.1,label:'연면적 3만㎡ 이상 → 대지면적 10%'};
+  if(sEl){
+    const m=[];
+    if(!s20)m.push('20m↑ 도로');
+    if(!s6)m.push('6m↑ 도로');
+    if(!s30)m.push('복합용도 30%↑');
+    sEl.innerHTML=m.length?`<div style="font-size:12px;color:var(--text-tertiary)">특례 미충족: ${m.join(', ')}</div>`:'';
+  }
+  return gv('currentZone')==='준주거'?3:2;
 }
 
-function calcOS(bFar,legalFar,siteArea,obligArea,actualArea){
-  if(actualArea<=obligArea)return{far:0,excess:0,note:'계획 공개공지 ≤ 의무면적 — 인센티브 없음'};
-  const excess=actualArea-obligArea;
-  const add=legalFar*(excess/siteArea);
-  const cap=legalFar*1.2;
-  const result=Math.min(bFar+add,cap);
-  return{far:parseFloat((result-bFar).toFixed(2)),excess:parseFloat(excess.toFixed(2)),resultFar:parseFloat(result.toFixed(2)),rawAdd:parseFloat(add.toFixed(2)),cap:parseFloat(cap.toFixed(0)),capped:(bFar+add)>cap,note:(bFar+add)>cap?`상한(법적용적률 ${legalFar}% × 1.2 = ${cap.toFixed(0)}%) 적용`:'상한 미도달'};
+function getCurZ(z){
+  if(z==='2종7층'||z==='2종')return 0;
+  if(z==='3종')return 1;
+  if(z==='준주거')return 2;
+  if(z==='근린상업')return 3;
+  if(z==='일반상업')return 4;
+  return 0;
 }
 
+// ══════════════════════════════════════════════════
+// 메인 계산
+// ══════════════════════════════════════════════════
 function calcAll(){
   updateZoneOptions();
-  // Step 3에 현재 용도지역 표시 동기화
-  const zoneNames={
-    '2종7층':'제2종일반주거지역 (7층이하 포함)',
-    '2종':'제2종일반주거지역',
-    '3종':'제3종일반주거지역',
-    '준주거':'준주거지역',
-    '근린상업':'근린상업지역',
-    '일반상업':'일반상업지역'
-  };
+
+  const zoneNames={'2종7층':'제2종일반주거지역 (7층이하 포함)','2종':'제2종일반주거지역','3종':'제3종일반주거지역','준주거':'준주거지역','근린상업':'근린상업지역','일반상업':'일반상업지역'};
   const zd=document.getElementById('currentZoneDisplay');
   if(zd) zd.textContent=zoneNames[gv('currentZone')]||'-';
+
   const biz=gv('bizType');
   document.getElementById('agingPanel').style.display=biz==='jgu'?'block':'none';
   document.getElementById('jbiPanel').style.display=biz==='jbi'?'block':'none';
 
+  // ── 역세권 거리 판정 ──
   const R=getR(),dist=gn('distToStation'),stEl=document.getElementById('stationCheck');
   if(!R)stEl.innerHTML='<span style="color:var(--text-tertiary)">역을 먼저 검색하세요</span>';
   else if(dist<=R)stEl.innerHTML=`<span style="color:var(--green)">역세권 범위 내 해당 (${dist}m ≤ ${R}m)</span><span class="tag tag-ok">적합</span>`;
   else stEl.innerHTML=`<span style="color:var(--red)">역세권 범위 외 (${dist}m > ${R}m)</span><span class="tag tag-fail">부적합</span>`;
 
+  // ── 제외 대상 ──
   const excl=['t_pre','t_zone','t_regen','t_special','t_facility'].some(k=>state.toggles[k]);
-  document.getElementById('excludeResult').innerHTML=excl?'<span style="color:var(--red)">제외 대상 해당 — 사전 확인 필수</span><span class="tag tag-fail">주의</span>':'<span style="color:var(--green)">제외 대상 없음</span><span class="tag tag-ok">이상 없음</span>';
+  document.getElementById('excludeResult').innerHTML=excl
+    ?'<span style="color:var(--red)">제외 대상 해당 — 사전 확인 필수</span><span class="tag tag-fail">주의</span>'
+    :'<span style="color:var(--green)">제외 대상 없음</span><span class="tag tag-ok">이상 없음</span>';
 
+  // ── 면적 ──
   const area=gn('siteArea'),aEl=document.getElementById('areaCheck');
   if(area<1500)aEl.innerHTML='<span style="color:var(--red)">면적 미달 (최소 1,500㎡)</span><span class="tag tag-fail">부적합</span>';
   else if(area>10000&&area<=30000)aEl.innerHTML='<span style="color:var(--yellow)">면적 초과 — 자문단 인정 필요</span><span class="tag tag-warn">조건부</span>';
   else if(area>30000)aEl.innerHTML='<span style="color:var(--red)">30,000㎡ 초과</span><span class="tag tag-fail">부적합</span>';
   else aEl.innerHTML=`<span style="color:var(--green)">면적 요건 충족 (${area.toLocaleString()}㎡)</span><span class="tag tag-ok">적합</span>`;
 
+  // ── 도로 요건 ──
   const faces=parseInt(gv('roadFaces')),maxW=gn('maxRoadWidth'),c1=faces>=2,c2=maxW>=8,roadOk=c1&&c2;
   document.getElementById('roadCheck').innerHTML=`
     <div class="road-row"><span class="road-label">2면 이상이 4m 이상 도로에 접할 것</span><span>${faces}면 접도 <span class="tag ${c1?'tag-ok':'tag-fail'}">${c1?'충족':'미충족'}</span></span></div>
     <div class="road-row"><span class="road-label">최소 1면이 8m 이상 도로에 접할 것</span><span>최대 ${maxW}m <span class="tag ${c2?'tag-ok':'tag-fail'}">${c2?'충족':'미충족'}</span></span></div>
     <div class="road-row"><span class="road-label" style="font-weight:500">도로 요건 종합</span><span class="tag ${roadOk?'tag-ok':'tag-fail'}" style="font-size:12px">${roadOk?'적합':'부적합'}</span></div>`;
 
+  // ── 노후도 ──
   const agEl=document.getElementById('agingCheck');
-  if(biz==='jgu'){const tot=gn('totalBuildings'),old=gn('oldBuildings'),r=tot>0?old/tot:0,p=(r*100).toFixed(1),bw=Math.min(r*100,100).toFixed(1);agEl.innerHTML=`<div style="width:100%"><div style="display:flex;align-items:center;gap:8px"><span style="color:${r>=2/3?'var(--green)':'var(--red)'}">${old}/${tot}동 (${p}%) — 2/3 이상 ${r>=2/3?'충족':'미달'}</span><span class="tag ${r>=2/3?'tag-ok':'tag-fail'}">${r>=2/3?'적합':'부적합'}</span></div><div class="fap-bar"><div class="fap-fill" style="width:${bw}%;background:${r>=2/3?'var(--green)':'var(--red)'}"></div></div></div>`;}
-  else{const ok=!!state.toggles.t_jbi_aging;agEl.innerHTML=ok?'<span style="color:var(--green)">노후도 요건 충족 (동수의 60% 이상)</span><span class="tag tag-ok">적합</span>':'<span style="color:var(--red)">노후도 요건 미확인 — 토글로 충족 여부를 선택하세요</span><span class="tag tag-warn">확인필요</span>';}
+  if(biz==='jgu'){
+    const tot=gn('totalBuildings'),old=gn('oldBuildings'),r=tot>0?old/tot:0;
+    const ok=r>=2/3,color=ok?'var(--green)':'var(--red)';
+    agEl.innerHTML=`<div style="width:100%"><div style="display:flex;align-items:center;gap:8px"><span style="color:${color}">${old}/${tot}동 (${(r*100).toFixed(1)}%) — 2/3 이상 ${ok?'충족':'미달'}</span><span class="tag ${ok?'tag-ok':'tag-fail'}">${ok?'적합':'부적합'}</span></div><div class="fap-bar"><div class="fap-fill" style="width:${Math.min(r*100,100).toFixed(1)}%;background:${color}"></div></div></div>`;
+  } else {
+    const ok=!!state.toggles.t_jbi_aging;
+    agEl.innerHTML=ok
+      ?'<span style="color:var(--green)">노후도 요건 충족 (동수의 60% 이상)</span><span class="tag tag-ok">적합</span>'
+      :'<span style="color:var(--red)">노후도 요건 미확인 — 토글로 충족 여부를 선택하세요</span><span class="tag tag-warn">확인필요</span>';
+  }
 
-  const ct=getC(),lc=gv('locChar'),maxIdx=getMaxZ(ct,lc),cz=gv('currentZone'),cIdx=getCurZ(cz);
+  // ── 용도지역 상향 ──
+  const ct=getC(),maxIdx=getMaxZ(ct,gv('locChar')),cIdx=getCurZ(gv('currentZone'));
   document.getElementById('maxZoneVal').textContent=ZONES[maxIdx];
-  document.getElementById('maxZoneSub').textContent=cIdx>=maxIdx?'현재 용도지역이 이미 최대 수준':'현재에서 최대 '+(maxIdx-cIdx)+'단계 상향 가능';
+  document.getElementById('maxZoneSub').textContent=cIdx>=maxIdx?'현재 용도지역이 이미 최대 수준':`현재에서 최대 ${maxIdx-cIdx}단계 상향 가능`;
 
-  const tzEl=document.getElementById('targetZone'),pv=tzEl.value;tzEl.innerHTML='';
+  const tzEl=document.getElementById('targetZone'),pv=tzEl.value;
+  tzEl.innerHTML='';
   // 최대 → 최소 순서로 옵션 추가 (최대값이 맨 위에 보이도록)
-  for(let i=maxIdx;i>=cIdx+1;i--){const o=document.createElement('option');o.value=ZONE_KEYS[i];o.textContent=ZONES[i];tzEl.appendChild(o);}
-  // 기존 선택값이 유효하면 유지, 아니면 최대(첫 번째) 옵션으로 자동 선택
-  if([...tzEl.options].some(o=>o.value===pv)) tzEl.value=pv;
+  for(let i=maxIdx;i>=cIdx+1;i--){
+    const o=document.createElement('option');
+    o.value=ZONE_KEYS[i];o.textContent=ZONES[i];
+    tzEl.appendChild(o);
+  }
+  // 상향 가능 단계가 없으면 빈 셀렉트 대신 안내 표시
+  const noUpgrade=tzEl.options.length===0;
+  const nuHint=document.getElementById('noUpgradeHint');
+  if(nuHint) nuHint.style.display=noUpgrade?'block':'none';
+  if(noUpgrade){
+    const o=document.createElement('option');
+    o.value='';o.textContent='— 상향 가능 단계 없음 —';o.disabled=true;
+    tzEl.appendChild(o);
+    tzEl.value='';
+  } else if([...tzEl.options].some(o=>o.value===pv)) tzEl.value=pv;
   else tzEl.value=ZONE_KEYS[maxIdx];
 
-  const tk=tzEl.value||ZONE_KEYS[Math.min(cIdx+1,maxIdx)],tIdx=ZONE_KEYS.indexOf(tk);
-  const isJgu=state.toggles['t_jgu'],bFar=isJgu?gn('jguFar'):ZONE_FAR[cIdx],mFar=ZONE_FAR[tIdx]||bFar,iFar=mFar-bFar,legalFar=ZONE_FAR[cIdx];
+  const tk=noUpgrade?ZONE_KEYS[cIdx]:(tzEl.value||ZONE_KEYS[Math.min(cIdx+1,maxIdx)]);
+  const tIdx=ZONE_KEYS.indexOf(tk);
+  const isJgu=state.toggles.t_jgu;
+  const bFar=isJgu?gn('jguFar'):ZONE_FAR[cIdx];
+  const mFar=ZONE_FAR[tIdx]||bFar;
+  const iFar=mFar-bFar;
+  const legalFar=ZONE_FAR[cIdx];
 
   document.getElementById('baseFar').textContent=bFar+'%';
   document.getElementById('maxFar').textContent=mFar+'%';
-  document.getElementById('incFar').textContent='+'+iFar+'%p';
+  document.getElementById('incFar').textContent=(iFar>=0?'+':'')+iFar+'%p';
   document.getElementById('stepCount').textContent=(tIdx-cIdx)+'단계';
 
-  const tZN=ZONES[tIdx]||'';let exFar=0;
-  if(state.toggles['t_hotel'])exFar+=parseFloat((mFar*0.3).toFixed(1));
-  if(state.toggles['t_zeb'])exFar+=parseFloat((bFar*0.15).toFixed(1));
-  if(state.toggles['t_design']&&tZN.includes('상업'))exFar+=110;
-  const openspaceFar=state.toggles['t_openspace']?Math.round(legalFar*0.2):0;
-  if(state.toggles['t_openspace'])exFar+=openspaceFar;
+  // ── 추가 인센티브 ──
+  const tZN=ZONES[tIdx]||'';
+  const openspaceFar=state.toggles.t_openspace?Math.round(legalFar*0.2):0;
+  let exFar=0;
+  if(state.toggles.t_hotel)exFar+=parseFloat((mFar*0.3).toFixed(1));
+  if(state.toggles.t_zeb)exFar+=parseFloat((bFar*0.15).toFixed(1));
+  if(state.toggles.t_design&&tZN.includes('상업'))exFar+=110;
+  if(state.toggles.t_openspace)exFar+=openspaceFar;
 
-  // 4단계 상향 복합용도 의무 안내
   const step4Notice=document.getElementById('step4MixedNotice');
   if(step4Notice) step4Notice.style.display=(tIdx-cIdx>=4)?'block':'none';
 
   const allInc=['t_hotel','t_zeb','t_design','t_openspace'].filter(k=>state.toggles[k]);
   const iEl=document.getElementById('incentiveResult');
-  if(allInc.length>0){
+  if(allInc.length){
     const items=[];
-    if(state.toggles['t_hotel']) items.push({label:'관광숙박시설',val:'+'+(mFar*0.3).toFixed(1)+'%p',sub:'상한용적률 × 1.3배 (한시적)',color:'var(--accent)'});
-    if(state.toggles['t_zeb']) items.push({label:'ZEB·녹색건축 인증',val:'+'+(bFar*0.15).toFixed(1)+'%p',sub:'기준용적률 × 15%',color:'var(--green)'});
-    if(state.toggles['t_design']&&tZN.includes('상업')) items.push({label:'창의혁신 디자인',val:'+110%p',sub:'미적용 원칙 — 예외 인정 시',color:'var(--text-secondary)'});
-    if(state.toggles['t_openspace']) items.push({label:'공개공지 의무면적 이상 설치',val:'+'+openspaceFar+'%p',sub:'법적용적률('+legalFar+'%) × 20% 이내, 상한 1.2배',color:'var(--blue)'});
-    const total=mFar+exFar;
+    if(state.toggles.t_hotel) items.push({label:'관광숙박시설',val:'+'+(mFar*0.3).toFixed(1)+'%p',sub:'상한용적률 × 1.3배 (한시적)',color:'var(--accent)'});
+    if(state.toggles.t_zeb) items.push({label:'ZEB·녹색건축 인증',val:'+'+(bFar*0.15).toFixed(1)+'%p',sub:'기준용적률 × 15%',color:'var(--green)'});
+    if(state.toggles.t_design&&tZN.includes('상업')) items.push({label:'창의혁신 디자인',val:'+110%p',sub:'미적용 원칙 — 예외 인정 시',color:'var(--text-secondary)'});
+    if(state.toggles.t_openspace) items.push({label:'공개공지 의무면적 이상 설치',val:'+'+openspaceFar+'%p',sub:`법적용적률(${legalFar}%) × 20% 이내, 상한 1.2배`,color:'var(--blue)'});
     const ov=allInc.length>=2?'<div class="issue issue-warn" style="margin-top:10px"><div class="issue-dot"></div><div>2개 이상 인센티브 중첩 — 지원 자문단 자문 필요 (운영기준 3-2-2)</div></div>':'';
     iEl.innerHTML=`
       <div style="background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:16px 18px;margin-top:10px">
@@ -1340,128 +1397,99 @@ function calcAll(){
         </div>
         <div style="display:flex;align-items:center;justify-content:space-between;padding-top:12px;border-top:1px solid var(--border)">
           <span style="font-size:13px;color:var(--text-secondary);font-weight:500">인센티브 포함 최대 용적률</span>
-          <span style="font-size:24px;font-weight:700;font-family:var(--mono);color:var(--accent)">${total.toFixed(1)}%</span>
+          <span style="font-size:24px;font-weight:700;font-family:var(--mono);color:var(--accent)">${(mFar+exFar).toFixed(1)}%</span>
         </div>
       </div>${ov}`;
   } else iEl.innerHTML='';
 
-  const plp=gn('publicLandPrice');
-  const hr=parseInt(gv('hotelRatio'));let mf=0.5;if(hr===30)mf=0.4;if(hr===50)mf=0.3;
-  // 기본 공공기여율 계산
+  // ── 공공기여 ──
+  const plp=gn('publicLandPrice'),hr=parseInt(gv('hotelRatio'));
+  let mf=0.5;
+  if(hr===30)mf=0.4;
+  if(hr===50)mf=0.3;
   const baseCr=iFar>0?(iFar*mf/mFar):0;
-  // 지역별 공공기여 완화 (2026.04.30 신설): 공공기여율에서 최대 20%p 차감
-  // 관광숙박·노인복지 완화와 중복 시 지역별 완화는 1/2(=최대 10%p) 적용
-  let regionalDiscount=0;
-  if(state.toggles['t_regional']){
-    const maxDiscount=0.20; // 최대 20%p
-    regionalDiscount = hr>0 ? maxDiscount*0.5 : maxDiscount; // 중복 시 1/2
-  }
-  const cr=Math.max(0,baseCr-regionalDiscount),crp=cr*100,cab=area*cr*plp*2/1e8;
+  // 지역별 완화 (2026.04.30 신설): 최대 20%p 차감, 관광숙박·노인복지 완화와 중복 시 1/2
+  const regionalDiscount=state.toggles.t_regional?(hr>0?0.10:0.20):0;
+  const cr=Math.max(0,baseCr-regionalDiscount),crp=cr*100;
+
   document.getElementById('contribRate').textContent=crp.toFixed(2)+'%';
   document.getElementById('contribRateFormula').textContent=`(${mFar}−${bFar}) × ${(mf*100).toFixed(0)}% ÷ ${mFar}${regionalDiscount>0?' − 지역완화 '+(regionalDiscount*100).toFixed(0)+'%p':''}`;
   document.getElementById('contribArea').textContent=(area*cr).toFixed(2)+'㎡';
   document.getElementById('contribAreaSub').textContent=`${area.toLocaleString()}㎡ × ${crp.toFixed(2)}%`;
-  document.getElementById('contribAmt').textContent=cab.toFixed(2)+'억원';
+  document.getElementById('contribAmt').textContent=(area*cr*plp*2/1e8).toFixed(2)+'억원';
+
   const guideLines=[];
   if(hr>0) guideLines.push(`관광숙박·노인복지 ${hr}% 도입 — 증가용적률의 ${(mf*100).toFixed(0)}% 기준 적용 (운영기준 4-1-1 나)`);
-  if(state.toggles['t_regional']) guideLines.push(`지역별 공공기여 완화 적용 — 최대 20%p 감면${hr>0?' (관광숙박 감면과 중복으로 1/2 적용)':''} (운영기준 4-1-1 나, 2026.04.30 신설)`);
+  if(state.toggles.t_regional) guideLines.push(`지역별 공공기여 완화 적용 — 최대 20%p 감면${hr>0?' (관광숙박 감면과 중복으로 1/2 적용)':''} (운영기준 4-1-1 나, 2026.04.30 신설)`);
   document.getElementById('contribGuide').innerHTML=guideLines.map(g=>`<div class="issue issue-info"><div class="issue-dot"></div><div>${g}</div></div>`).join('');
 
-  buildSummary(dist,R,area,bFar,mFar,iFar,crp,cIdx,tIdx,roadOk);
-  if(typeof updateStepProgress==='function') updateStepProgress();
+  buildSummary(dist,R,area,bFar,mFar,cIdx,tIdx,roadOk);
+  updateStepProgress();
 }
 
-function buildSummary(dist,R,area,bFar,mFar,iFar,cRate,cIdx,tIdx,roadOk){
-  const stOk=R&&dist<=R,aOk=area>=1500&&area<=30000,nEx=!['t_pre','t_zone','t_regen','t_special','t_facility'].some(k=>state.toggles[k]),go=stOk&&aOk&&roadOk&&nEx&&tIdx>cIdx;
+// ══════════════════════════════════════════════════
+// 종합 결과
+// ══════════════════════════════════════════════════
+function buildSummary(dist,R,area,bFar,mFar,cIdx,tIdx,roadOk){
+  const arterial=isArterial();
+  // 간선도로변은 역세권 거리 요건 대상이 아님 → 거리 판정 제외
+  const stOk=arterial?true:!!(R&&dist<=R);
+  const aOk=area>=1500&&area<=30000;
+  const nEx=!['t_pre','t_zone','t_regen','t_special','t_facility'].some(k=>state.toggles[k]);
+  const go=stOk&&aOk&&roadOk&&nEx&&tIdx>cIdx;
+
   const vEl=document.getElementById('verdictBox');
-  if(go){vEl.style.cssText='background:var(--green-bg);border-color:#A0D8B8';vEl.innerHTML='<div class="verdict-icon" style="color:var(--green)">✓</div><div class="verdict-title" style="color:var(--green)">사업 추진 가능</div><div class="verdict-sub">주요 요건 충족 — 위원회 심의를 통해 진행 가능</div>';}
-  else if(!stOk||!nEx){vEl.style.cssText='background:var(--red-bg);border-color:#E8B0B0';vEl.innerHTML='<div class="verdict-icon" style="color:var(--red)">✕</div><div class="verdict-title" style="color:var(--red)">사업 추진 불가</div><div class="verdict-sub">핵심 입지 요건 미충족 또는 제외 대상 해당</div>';}
-  else{vEl.style.cssText='background:var(--yellow-bg);border-color:#E8D080';vEl.innerHTML='<div class="verdict-icon" style="color:var(--yellow)">!</div><div class="verdict-title" style="color:var(--yellow)">조건부 검토 필요</div><div class="verdict-sub">일부 요건 경계 케이스 — 세부 검토 필요</div>';}
+  if(go){
+    vEl.style.cssText='background:var(--green-bg);border-color:#A0D8B8';
+    vEl.innerHTML='<div class="verdict-icon" style="color:var(--green)">✓</div><div class="verdict-title" style="color:var(--green)">사업 추진 가능</div><div class="verdict-sub">주요 요건 충족 — 위원회 심의를 통해 진행 가능</div>';
+  } else if(!stOk||!nEx){
+    vEl.style.cssText='background:var(--red-bg);border-color:#E8B0B0';
+    vEl.innerHTML='<div class="verdict-icon" style="color:var(--red)">✕</div><div class="verdict-title" style="color:var(--red)">사업 추진 불가</div><div class="verdict-sub">핵심 입지 요건 미충족 또는 제외 대상 해당</div>';
+  } else {
+    vEl.style.cssText='background:var(--yellow-bg);border-color:#E8D080';
+    vEl.innerHTML='<div class="verdict-icon" style="color:var(--yellow)">!</div><div class="verdict-title" style="color:var(--yellow)">조건부 검토 필요</div><div class="verdict-sub">일부 요건 경계 케이스 — 세부 검토 필요</div>';
+  }
 
-  const sg=document.getElementById('scenarioGrid');
-  const scs=[];
-  for(let i=cIdx+1;i<=Math.min(cIdx+2,5);i++){const sf=ZONE_FAR[i],si=sf-bFar,sr=si>0?(si*.5/sf*100).toFixed(2):'0.00',sa=(gn('siteArea')*parseFloat(sr)/100).toFixed(1);scs.push({name:ZONES[i],mf:sf,r:sr,a:sa,rec:i===cIdx+1});}
-  sg.innerHTML=scs.map(s=>`<div class="sc-card ${s.rec?'rec':''}"><div class="sc-title">${s.name}${s.rec?'<span class="rec-badge">우선 검토</span>':''}</div><div class="sc-data-row"><span>상한용적률</span><span>${s.mf}%</span></div><div class="sc-data-row"><span>공공기여율</span><span>${s.r}%</span></div><div class="sc-data-row"><span>공공기여 면적</span><span>${s.a}㎡</span></div></div>`).join('');
+  // 시나리오 비교
+  const sg=document.getElementById('scenarioGrid'),scs=[];
+  for(let i=cIdx+1;i<=Math.min(cIdx+2,5);i++){
+    const sf=ZONE_FAR[i],si=sf-bFar;
+    const sr=si>0?(si*.5/sf*100).toFixed(2):'0.00';
+    scs.push({name:ZONES[i],mf:sf,r:sr,a:(gn('siteArea')*parseFloat(sr)/100).toFixed(1),rec:i===cIdx+1});
+  }
+  sg.innerHTML=scs.length
+    ? scs.map(s=>`<div class="sc-card ${s.rec?'rec':''}"><div class="sc-title">${s.name}${s.rec?'<span class="rec-badge">우선 검토</span>':''}</div><div class="sc-data-row"><span>상한용적률</span><span>${s.mf}%</span></div><div class="sc-data-row"><span>공공기여율</span><span>${s.r}%</span></div><div class="sc-data-row"><span>공공기여 면적</span><span>${s.a}㎡</span></div></div>`).join('')
+    : '<div class="issue issue-info" style="grid-column:1/-1"><div class="issue-dot"></div><div>상향 가능한 용도지역이 없어 비교할 시나리오가 없습니다.</div></div>';
 
+  // 예상 이슈
   const issues=[];
-  const lc=gv('locChar');
-  const isSpecial=lc!=='일반';
-  const isArterial=gv('siteType')==='간선도로변';
-  if(isArterial) issues.push({t:'info',x:'간선도로변 사업 — 노선형 상업지역 포함 여부 확인 필수. 일반상업지역 상향 시 복합용도 도입 의무 (운영기준 3-1-3 다)'});
-  if(!roadOk)issues.push({t:'danger',x:'도로 요건 미충족 — 2면 이상 4m 접도 + 최소 1면 8m 이상 필요'});
-  if(tIdx-cIdx===4 && !isSpecial) issues.push({t:'danger',x:'4단계 상향은 역 인접부 또는 간선가로 연접부 해당 시에만 가능 (운영기준 3-1-2 다)'});
-  if(tIdx-cIdx>=3 && tIdx-cIdx<4)issues.push({t:'warn',x:'3단계 이상 상향 — 역세권 활성화 기능 확보 당위성 별도 제시 필요 (운영기준 3-1-2 나)'});
-  if(tIdx>=3)issues.push({t:'warn',x:'인접 저층 주거지역 있을 경우 완충공간·용도관리 계획 필요 (지구단위계획 수립기준)'});
-  if(state.toggles['t_jgu'])issues.push({t:'info',x:'기존 지구단위계획구역 내 — 지침상 높이·전면공지·공공보행통로 등 선결 조건 확인 필요'});
-  if(['t_hotel','t_zeb','t_design','t_openspace'].filter(k=>state.toggles[k]).length>=2)issues.push({t:'warn',x:'추가 인센티브 2개 이상 중첩 — 지원 자문단 자문으로 적정성 인정 필요 (운영기준 3-2-2)'});
-  if(['t_pre','t_zone','t_regen'].some(k=>state.toggles[k]))issues.push({t:'danger',x:'제외 대상 해당 — 예외 규정 적용 가능 여부 별도 검토 필요'});
+  const isSpecial=gv('locChar')!=='일반';
+  if(arterial) issues.push({t:'info',x:'간선도로변 사업 — 노선형 상업지역 포함 여부 확인 필수. 일반상업지역 상향 시 복합용도 도입 의무 (운영기준 3-1-3 다)'});
+  if(!roadOk) issues.push({t:'danger',x:'도로 요건 미충족 — 2면 이상 4m 접도 + 최소 1면 8m 이상 필요'});
+  if(tIdx===cIdx) issues.push({t:'warn',x:'현재 용도지역이 이미 최대 상향 수준 — 용도지역 변경 없이 진행 가능한지 별도 검토 필요'});
+  if(tIdx-cIdx===4&&!isSpecial) issues.push({t:'danger',x:'4단계 상향은 역 인접부 또는 간선가로 연접부 해당 시에만 가능 (운영기준 3-1-2 다)'});
+  if(tIdx-cIdx>=3&&tIdx-cIdx<4) issues.push({t:'warn',x:'3단계 이상 상향 — 역세권 활성화 기능 확보 당위성 별도 제시 필요 (운영기준 3-1-2 나)'});
+  if(tIdx>=3) issues.push({t:'warn',x:'인접 저층 주거지역 있을 경우 완충공간·용도관리 계획 필요 (지구단위계획 수립기준)'});
+  if(state.toggles.t_jgu) issues.push({t:'info',x:'기존 지구단위계획구역 내 — 지침상 높이·전면공지·공공보행통로 등 선결 조건 확인 필요'});
+  if(['t_hotel','t_zeb','t_design','t_openspace'].filter(k=>state.toggles[k]).length>=2) issues.push({t:'warn',x:'추가 인센티브 2개 이상 중첩 — 지원 자문단 자문으로 적정성 인정 필요 (운영기준 3-2-2)'});
+  if(['t_pre','t_zone','t_regen'].some(k=>state.toggles[k])) issues.push({t:'danger',x:'제외 대상 해당 — 예외 규정 적용 가능 여부 별도 검토 필요'});
   issues.push({t:'ok',x:'역세권 활성화사업 선정 후 착공까지 약 32개월 소요 예상'});
   document.getElementById('issueList').innerHTML=issues.map(i=>`<div class="issue issue-${i.t}"><div class="issue-dot"></div><div>${i.x}</div></div>`).join('');
 }
 
-function onSiteTypeChange(){
-  const isArterial=gv('siteType')==='간선도로변';
-  // 역세권 패널 / 간선도로변 패널 토글
-  const sp=document.getElementById('stationPanel');
-  const ap=document.getElementById('arterialPanel');
-  if(sp) sp.style.display=isArterial?'none':'block';
-  if(ap) ap.style.display=isArterial?'block':'none';
-  // 간선도로변이면 역 관련 요소 숨김
-  const src=document.getElementById('stationResultCard');
-  const mLink=document.getElementById('manualLink');
-  if(src) src.style.display=isArterial?'none':(state.station?'block':'none');
-  if(mLink) mLink.style.display=isArterial?'none':'';
-  calcAll();
-}
-toggleMapZoom.toString; // no-op placeholder
-
+// ══════════════════════════════════════════════════
+// 지도 이미지 줌
+// ══════════════════════════════════════════════════
 function toggleMapZoom(img){
-  const overlay=document.getElementById('mapOverlay');
-  const oImg=document.getElementById('mapOverlayImg');
-  if(img){
-    oImg.src=img.src; oImg.alt=img.alt;
-    overlay.classList.add('open');
-  } else {
-    overlay.classList.remove('open');
-  }
+  const overlay=document.getElementById('mapOverlay'),oImg=document.getElementById('mapOverlayImg');
+  if(img){oImg.src=img.src;oImg.alt=img.alt;overlay.classList.add('open');}
+  else overlay.classList.remove('open');
 }
-document.addEventListener('keydown',e=>{if(e.key==='Escape') document.getElementById('mapOverlay').classList.remove('open');});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')document.getElementById('mapOverlay').classList.remove('open');});
 
 // ══════════════════════════════════════════════════
-// ① 주소 → 가까운 역 자동 추출 (카카오맵 API)
+// 주소 → 가까운 역 자동 추출 (카카오맵 API)
 // ══════════════════════════════════════════════════
-const STATION_COORDS = {
-  "가산디지털단지":[126.8826,37.4806],"강남":[127.0281,37.4979],"강남구청":[127.0449,37.5173],
-  "강동":[127.1258,37.5302],"강변":[127.0943,37.5315],"건대입구":[127.0702,37.5403],
-  "공덕":[126.9512,37.5445],"고속터미널":[127.0047,37.5047],"광화문":[126.9769,37.5716],
-  "교대":[127.0138,37.4939],"구로디지털단지":[126.9016,37.4850],"까치산":[126.8640,37.5265],
-  "김포공항":[126.8013,37.5616],"낙성대":[126.9628,37.4753],"노원":[127.0655,37.6554],
-  "논현":[127.0224,37.5116],"당산":[126.9017,37.5340],"대림":[126.8959,37.4918],
-  "도봉산":[127.0463,37.6892],"동대문역사문화공원":[127.0090,37.5648],"동묘앞":[127.0174,37.5755],
-  "동작":[126.9820,37.5029],"디지털미디어시티":[126.8965,37.5757],"뚝섬":[127.0476,37.5474],
-  "마포":[126.9465,37.5437],"망우":[127.0907,37.5965],"목동":[126.8748,37.5258],
-  "미아사거리":[127.0274,37.6131],"발산":[126.8385,37.5584],"방화":[126.8008,37.5705],
-  "복정":[127.1173,37.4835],"봉천":[126.9534,37.4790],"불광":[126.9322,37.6105],
-  "사당":[126.9808,37.4766],"삼각지":[126.9765,37.5376],"삼성":[127.0630,37.5086],
-  "상봉":[127.0851,37.5954],"서울":[126.9723,37.5547],"서울대입구":[126.9528,37.4813],
-  "선릉":[127.0490,37.5048],"성수":[127.0558,37.5446],"성신여대입구":[127.0168,37.5929],
-  "수서":[127.1026,37.4849],"수유":[127.0257,37.6381],"숙대입구":[126.9729,37.5448],
-  "신도림":[126.8909,37.5086],"신림":[126.9295,37.4847],"신사":[127.0225,37.5259],
-  "신설동":[127.0179,37.5784],"신용산":[126.9649,37.5341],"신촌":[126.9371,37.5550],
-  "역삼":[127.0366,37.5006],"연신내":[126.9205,37.6188],"영등포구청":[126.8968,37.5258],
-  "옥수":[127.0179,37.5387],"왕십리":[127.0374,37.5614],"용산":[126.9643,37.5296],
-  "이수":[126.9808,37.4851],"이촌":[126.9704,37.5218],"잠실":[127.1000,37.5133],
-  "천호":[127.1233,37.5386],"청량리":[127.0457,37.5796],"총신대입구":[126.9811,37.4921],
-  "충정로":[126.9614,37.5564],"태릉입구":[127.0736,37.6176],"합정":[126.9147,37.5497],
-  "홍대입구":[126.9237,37.5573],"회기":[127.0582,37.5897],"효창공원앞":[126.9604,37.5388],
-  "도곡":[127.0405,37.4887],"모란":[127.1295,37.4355],"석계":[127.0634,37.6155],
-  "신내":[127.1248,37.5967],"신당":[127.0177,37.5629],"약수":[127.0142,37.5543],
-  "오금":[127.1278,37.4962],"올림픽공원":[127.1114,37.5210],"온수":[126.8497,37.4935],
-  "청구":[127.0145,37.5661],"화곡":[126.8495,37.5355],"홍제":[126.9443,37.5901],
-  "강남구청":[127.0449,37.5173],"강동구청":[127.1528,37.5302]
-};
-let _searchedCoords=null;
-
 async function searchAddr(){
   const addr=document.getElementById('addrInput').value.trim();
   if(!addr){alert('주소를 입력해주세요.');return;}
@@ -1476,22 +1504,22 @@ async function searchAddr(){
     waited++;
   }
   if(!window.kakao||!kakao.maps||!kakao.maps.services){
-    resEl.innerHTML='<div class="issue issue-warn"><div class="issue-dot"></div><div>카카오맵 API를 불러오지 못했습니다. index.html 상단의 <code>YOUR_KAKAO_JS_API_KEY</code>를 실제 키로 교체하고, 카카오 개발자 콘솔에서 <strong>https://jensurban1.github.io</strong> 도메인을 등록했는지 확인해주세요.</div></div>';
+    resEl.innerHTML='<div class="issue issue-warn"><div class="issue-dot"></div><div>카카오맵 API를 불러오지 못했습니다. 카카오 개발자 콘솔에서 <strong>배포 도메인</strong>이 플랫폼에 등록되어 있는지 확인해주세요.</div></div>';
     return;
   }
 
-  const geocoder=new kakao.maps.services.Geocoder();
-  geocoder.addressSearch(addr,function(result,status){
+  new kakao.maps.services.Geocoder().addressSearch(addr,function(result,status){
     if(status!==kakao.maps.services.Status.OK){
-      resEl.innerHTML='<div class="issue issue-warn"><div class="issue-dot"></div><div>주소를 찾을 수 없습니다. 다시 확인해주세요.</div></div>';return;
+      resEl.innerHTML='<div class="issue issue-warn"><div class="issue-dot"></div><div>주소를 찾을 수 없습니다. 다시 확인해주세요.</div></div>';
+      return;
     }
     const lat=parseFloat(result[0].y),lng=parseFloat(result[0].x);
     _searchedCoords={lat,lng,addr:result[0].address_name};
     const dists=Object.entries(STATION_COORDS).map(([name,[sLng,sLat]])=>{
-      const d=getDistM(lat,lng,sLat,sLng);
-      const si=getSI(name);
+      const d=getDistM(lat,lng,sLat,sLng),si=getSI(name);
       return{name,d:Math.round(d),radius:si.radius,within:d<=si.radius};
     }).sort((a,b)=>a.d-b.d).slice(0,5);
+
     let html=`<div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden">
       <div style="padding:10px 14px;background:var(--surface2);border-bottom:1px solid var(--border);font-size:12px;color:var(--text-secondary)">
         📍 <strong style="color:var(--text)">${result[0].address_name}</strong> 기준 가까운 역
@@ -1525,48 +1553,47 @@ function getDistM(lat1,lng1,lat2,lng2){
 }
 
 // ══════════════════════════════════════════════════
-// ② 공시지가 조회 (직접조회 링크 방식 — CORS 제약으로 API 직접호출 불가)
+// 공시지가 조회 (CORS 제약으로 API 직접호출 불가 → 링크 방식)
 // ══════════════════════════════════════════════════
 function fetchLandPrice(){
   const hint=document.getElementById('landPriceHint');
-
-  if(_searchedCoords && _searchedCoords.lat){
-    const lat=_searchedCoords.lat, lng=_searchedCoords.lng;
-    // 카카오맵 지적편집도 — 해당 좌표로 바로 이동 (지번·필지 확인 가능)
-    const kakaoUrl=`https://map.kakao.com/link/map/${encodeURIComponent(_searchedCoords.addr)},${lat},${lng}`;
-    window.open(kakaoUrl,'_blank');
-    hint.innerHTML=`지도가 열렸습니다. 지번 확인 후 <a href="https://www.realtyprice.kr/notice/gsindividual/search.htm" target="_blank" style="color:var(--accent);font-weight:600">공시지가 조회 →</a> 에서 확인하고 아래에 입력해주세요.`;
-    hint.style.color='var(--text-secondary)';
+  const PRICE_URL='https://www.realtyprice.kr/notice/gsindividual/search.htm';
+  if(_searchedCoords&&_searchedCoords.lat){
+    const {lat,lng,addr}=_searchedCoords;
+    window.open(`https://map.kakao.com/link/map/${encodeURIComponent(addr)},${lat},${lng}`,'_blank');
+    hint.innerHTML=`지도가 열렸습니다. 지번 확인 후 <a href="${PRICE_URL}" target="_blank" style="color:var(--accent);font-weight:600">공시지가 조회 →</a> 에서 확인하고 아래에 입력해주세요.`;
   } else {
-    window.open('https://www.realtyprice.kr/notice/gsindividual/search.htm','_blank');
-    hint.innerHTML=`<a href="https://www.realtyprice.kr/notice/gsindividual/search.htm" target="_blank" style="color:var(--accent);font-weight:600">공시지가 조회 사이트 →</a> 에서 확인 후 직접 입력해주세요. (Step 1에서 주소를 먼저 검색하면 지도도 함께 열립니다)`;
-    hint.style.color='var(--text-secondary)';
+    window.open(PRICE_URL,'_blank');
+    hint.innerHTML=`<a href="${PRICE_URL}" target="_blank" style="color:var(--accent);font-weight:600">공시지가 조회 사이트 →</a> 에서 확인 후 직접 입력해주세요. (Step 1에서 주소를 먼저 검색하면 지도도 함께 열립니다)`;
   }
+  hint.style.color='var(--text-secondary)';
 }
 
 // ══════════════════════════════════════════════════
-// ③ 사례 저장 / 불러오기
+// 사례 저장 / 불러오기
 // ══════════════════════════════════════════════════
 function saveCase(){
   const name=prompt('저장할 이름을 입력하세요',state.station?state.station+'역 검토안':'검토안');
   if(!name) return;
   const cases=JSON.parse(localStorage.getItem('station_cases')||'{}');
-  cases['case_'+Date.now()]={name,savedAt:new Date().toLocaleString('ko-KR'),
-    station:state.station,dist:document.getElementById('distToStation').value,
+  cases['case_'+Date.now()]={
+    name,savedAt:new Date().toLocaleString('ko-KR'),
+    station:state.station,dist:gv('distToStation'),
     currentZone:gv('currentZone'),siteArea:gv('siteArea'),bizType:gv('bizType'),siteType:gv('siteType'),
     locChar:gv('locChar'),publicLandPrice:gv('publicLandPrice'),hotelRatio:gv('hotelRatio'),
     toggles:{...state.toggles},specials:{...state.specials},
-    addrInput:document.getElementById('addrInput').value};
+    addrInput:gv('addrInput')
+  };
   localStorage.setItem('station_cases',JSON.stringify(cases));
   alert(`"${name}" 저장 완료!`);
 }
 
 function showSavedCases(){
   const panel=document.getElementById('savedCasesPanel');
-  const cases=JSON.parse(localStorage.getItem('station_cases')||'{}');
-  const keys=Object.keys(cases).reverse();
   panel.style.display=panel.style.display==='none'?'block':'none';
   if(panel.style.display==='none') return;
+  const cases=JSON.parse(localStorage.getItem('station_cases')||'{}');
+  const keys=Object.keys(cases).reverse();
   if(!keys.length){panel.innerHTML='<div class="issue issue-info"><div class="issue-dot"></div><div>저장된 검토안이 없습니다.</div></div>';return;}
   panel.innerHTML=`<div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;margin-bottom:8px">
     <div style="padding:10px 14px;background:var(--surface2);border-bottom:1px solid var(--border);font-size:12px;font-weight:600;color:var(--text-secondary)">저장된 검토안 (${keys.length}개)</div>
@@ -1588,10 +1615,15 @@ function loadCase(key){
   document.getElementById('siteArea').value=c.siteArea||2000;
   document.getElementById('publicLandPrice').value=c.publicLandPrice||0;
   document.getElementById('hotelRatio').value=c.hotelRatio||0;
-  ['bizType','locChar','currentZone','siteType'].forEach(id=>{const el=document.getElementById(id);if(el&&c[id])el.value=c[id];});
+  ['bizType','locChar','currentZone','siteType'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el&&c[id])el.value=c[id];
+  });
   Object.entries(c.toggles||{}).forEach(([id,v])=>{state.toggles[id]=v;const el=document.getElementById(id);if(el)el.classList.toggle('on',!!v);});
   Object.entries(c.specials||{}).forEach(([id,v])=>{state.specials[id]=v;const el=document.getElementById(id);if(el)el.classList.toggle('on',!!v);});
-  calcAll();
+  document.getElementById('jguFarPanel').style.display=state.toggles.t_jgu?'block':'none';
+  document.getElementById('regionalNote').style.display=state.toggles.t_regional?'block':'none';
+  onSiteTypeChange();
   document.getElementById('savedCasesPanel').style.display='none';
   alert(`"${c.name}" 불러오기 완료`);
 }
@@ -1605,7 +1637,7 @@ function deleteCase(key){
 }
 
 // ══════════════════════════════════════════════════
-// ④ 전체 초기화
+// 전체 초기화
 // ══════════════════════════════════════════════════
 function resetAll(){
   if(!confirm('모든 입력값을 초기화하시겠습니까?')) return;
@@ -1615,17 +1647,30 @@ function resetAll(){
   document.getElementById('distToStation').value=150;
   document.getElementById('siteArea').value=2000;
   document.getElementById('publicLandPrice').value=0;
-  ['bizType','locChar','currentZone','hotelRatio'].forEach(id=>{const el=document.getElementById(id);if(el)el.selectedIndex=0;});
+  // siteType 포함 — 간선도로변 상태로 남지 않도록
+  ['bizType','locChar','currentZone','hotelRatio','siteType','manualRadius'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el)el.selectedIndex=0;
+  });
   Object.keys(state.toggles).forEach(id=>{state.toggles[id]=0;const el=document.getElementById(id);if(el)el.classList.remove('on');});
   Object.keys(state.specials).forEach(id=>{state.specials[id]=0;const el=document.getElementById(id);if(el)el.classList.remove('on');});
-  calcAll();goStep(0);
+  document.getElementById('jguFarPanel').style.display='none';
+  document.getElementById('regionalNote').style.display='none';
+  onSiteTypeChange();   // 역세권/간선도로변 패널 표시 복구
+  goStep(0);
 }
 
 // ══════════════════════════════════════════════════
-// ⑤ 진행률 표시
+// 진행률 표시 · 계산 근거 팝업 · PDF
 // ══════════════════════════════════════════════════
 function updateStepProgress(){
-  const checks=[!!state.station,parseFloat(document.getElementById('siteArea')?.value||0)>=1500,!!document.getElementById('targetZone')?.value,parseFloat(document.getElementById('publicLandPrice')?.value||0)>0,true];
+  const checks=[
+    !!state.station||isArterial(),
+    gn('siteArea')>=1500,
+    !!gv('targetZone'),
+    gn('publicLandPrice')>0,
+    true
+  ];
   document.querySelectorAll('.step-btn').forEach((btn,i)=>{
     const numEl=btn.querySelector('.step-num');
     if(!numEl) return;
@@ -1633,26 +1678,19 @@ function updateStepProgress(){
   });
 }
 
-// ══════════════════════════════════════════════════
-// ⑥ 계산 근거 팝업
-// ══════════════════════════════════════════════════
-const REFS={'역세권반경':'운영기준 1-3-1: 도심·광역·지역중심 범역 내 역 또는 환승역 350m, 지구중심·비중심지 250m','기준허용용적률':'운영기준 1-3-5: 변경 전 용도지역에 대한 도시계획조례 제48조에 따른 용적률','상한용적률':'운영기준 1-3-6: 공공기여 제공 시 적용되는 변경 후 용도지역의 용적률','증가용적률':'운영기준 4-1-1: 기준(허용)용적률과 상한용적률의 차이','공공기여율':'운영기준 4-1-1 가: 증가용적률의 50%에 해당하는 용적률을 부지면적으로 환산','관광숙박인센티브':'운영기준 3-2-2 나: 상한용적률의 1.3배 이하 (도시계획조례 부칙 제9948호, 한시적)','ZEB인센티브':'운영기준 3-2-2 다: ZEB·녹색건축 인증 기준 초과 획득 시 기준용적률의 15% 이내','공개공지인센티브':'운영기준 3-2-2 라 / 지구단위계획 수립기준 Ⅱ.3-8-3: 허용용적률 + 법적용적률 × (초과면적/대지면적), 법적용적률 1.2배 이내'};
 function showRef(key){
-  const e=document.getElementById('refPopup');if(e)e.remove();
-  const div=document.createElement('div');div.id='refPopup';
+  const e=document.getElementById('refPopup');
+  if(e)e.remove();
+  const div=document.createElement('div');
+  div.id='refPopup';
   div.style.cssText='position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--text);color:white;padding:14px 22px;border-radius:var(--radius-lg);font-size:13px;line-height:1.65;max-width:520px;width:92%;z-index:9000;box-shadow:0 8px 32px rgba(0,0,0,0.35)';
   div.innerHTML=`<div style="margin-bottom:5px;font-size:10px;opacity:0.45;letter-spacing:0.08em;text-transform:uppercase;font-family:var(--mono)">계산 근거</div>${REFS[key]||'해당 조항 없음'}<button onclick="this.parentElement.remove()" style="position:absolute;top:12px;right:16px;background:none;border:none;color:white;opacity:0.45;cursor:pointer;font-size:18px">×</button>`;
-  document.body.appendChild(div);setTimeout(()=>{if(div.parentElement)div.remove();},7000);
+  document.body.appendChild(div);
+  setTimeout(()=>{if(div.parentElement)div.remove();},7000);
 }
 
-// ══════════════════════════════════════════════════
-// ⑦ PDF 내보내기
-// ══════════════════════════════════════════════════
 function exportPDF(){
-  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
-  document.getElementById('panel4').classList.add('active');
-  state.currentStep=4;
-  document.querySelectorAll('.step-btn').forEach((b,i)=>{b.classList.remove('active');if(i===4)b.classList.add('active');});
+  goStep(4);
   setTimeout(()=>window.print(),150);
 }
 
